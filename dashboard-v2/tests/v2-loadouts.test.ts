@@ -605,7 +605,9 @@ describe('v2 farming and loadout integration', () => {
     expect(source).not.toContain('critical_heal_target() && healReady');
     expect(source).toContain('curseMinHp: 50000');
     expect(source).not.toContain('ActionTiming.after("curse"');
-    expect(source).not.toContain('CaveDreams.inCave()) {\n\t\t\tsetTimeout(combatLoop');
+    // Cave Dreams owns its combat loop; the normal loop must yield inside the cave.
+    // Match whitespace explicitly so this contract is identical on Windows and Linux.
+    expect(source).toMatch(/CaveDreams\.inCave\(\)\)\s*\{\s*setTimeout\(combatLoop, 200\);\s*return;/);
     expect(source).toContain('monster.x + nx * attackPocket');
     expect(source).toContain('attackPocketNeeded');
     expect(source).toContain('e.target === CONFIG.WARRIOR');

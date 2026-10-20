@@ -6,15 +6,13 @@
 ![Node.js 24](https://img.shields.io/badge/Node.js-24-339933?logo=nodedotjs&logoColor=white)
 ![pnpm 12.4.1](https://img.shields.io/badge/pnpm-12.4.1-F69220?logo=pnpm&logoColor=white)
 
-Les trois badges de validation reflètent les résultats réels de GitHub Actions sur `main` : build et tests, lint, puis audit des dépendances et du périmètre public. Aucun score de couverture ou de qualité non mesuré n'est annoncé. Présentation inspirée de [dwyl/repo-badges](https://github.com/dwyl/repo-badges).
+A local dashboard for managing your [Adventure Land](https://adventure.land) characters, configuring farming scripts, and monitoring their activity. Built with React, TypeScript, Fastify, and SQLite, with additional in-game interfaces.
 
-Dashboard local pour piloter ses personnages [Adventure Land](https://adventure.land), configurer les scripts de farming et inspecter leur activité. React, TypeScript, Fastify et SQLite, avec interfaces intégrées au jeu.
+This is an independent project. Run the dashboard on your own computer; the current application is intended for local use and should not be exposed directly to the Internet. Cloning the repository does not deploy any characters.
 
-Ce projet est indépendant du jeu. Le dashboard se lance sur votre ordinateur ; il ne doit pas être exposé tel quel sur Internet. La publication du dépôt ne déploie aucun personnage.
+## Quick start
 
-## Démarrage
-
-Prérequis : Node.js 24 et pnpm 12.4.1.
+Requirements: Git, **Node.js 24**, and **pnpm 12.4.1** available in your terminal.
 
 ```sh
 git clone https://github.com/Eadroma/AL-command-center.git
@@ -23,99 +21,99 @@ pnpm --dir dashboard-v2 install --frozen-lockfile
 pnpm dev
 ```
 
-Ouvrir `http://localhost:5173`. L'API utilise `http://127.0.0.1:9320`.
-L'assistant permet de connecter son propre compte et de choisir ses personnages. Il prépare un profil ; sauvegarde et déploiement sont des actions séparées.
+Open **http://localhost:5173**. The local API runs at **http://127.0.0.1:9320**. The setup wizard connects your account and prepares a profile; saving and deploying are separate actions.
 
-En production locale :
+To run the compiled application locally instead:
 
 ```sh
 pnpm build
 pnpm --dir dashboard-v2 server
 ```
 
-Ouvrir ensuite `http://127.0.0.1:9320`.
+Open **http://127.0.0.1:9320**. Keep the terminal open while using the dashboard; press `Ctrl+C` to stop the service. `pnpm --dir dashboard-v2 preview` serves only the frontend and does not replace the API server. Keep `dashboard-v2/` and `code/` in their original relative locations.
 
-Garder le terminal ouvert pendant l'utilisation ; `Ctrl+C` arrête le service local. `pnpm preview` sert uniquement le frontend et ne remplace pas le serveur API. Conserver `dashboard-v2/` et `code/` dans leur organisation d'origine.
+## First deployment
 
-## Utiliser le dashboard pour la première fois
+These steps use **Browser CODE**: the dashboard and game browser must run on the same computer, with the selected characters open in the game. caracAL is optional and is not needed for this mode.
 
-Le mode décrit ici est **Browser CODE** : le dashboard, le navigateur du jeu et les personnages doivent fonctionner sur le même ordinateur. caracAL n'est pas nécessaire pour ce mode.
+1. Sign in to [Adventure Land](https://adventure.land), open your characters on the desired server, and keep them open.
+2. Open [Mainframe](https://adventure.land/mainframe), select **Connect an AI**, and retrieve your MCP token using **Reveal token**, or **Create token** if needed. Use the token, never your game password. Rotating an existing token invalidates the previous one.
+3. Open **Team → Party** (`/#party`). In **First farming setup**, paste the token and select **Connect and discover characters**. This verifies the account and lists its characters; it does not start them.
+4. Choose the **home** region and server matching the game. Select the characters, their v2 scripts, and the leader. For a solo character, use **Independent / leader**. Selecting a server in the dashboard does not move characters in the game.
+5. Choose a target appropriate for their equipment. The specialized crab rogue and crab ranger scripts keep their dedicated target, even if you choose another global target. The rogue requires equipment that grants its specific skills.
+6. In **Review**, check the composition and select **Stage cautious profile**. This prepares an editable draft. Trading features and advanced activities remain disabled in this initial profile; script-specific potions and safety behavior still apply.
+7. Select **Save profile**, then **Deployment preview → Preview saved deployment**. Review the characters, scripts, and CODE differences before proceeding. Preview does not upload or restart anything.
+8. Select **Deploy saved profile** to apply the saved configuration. This writes generated bundles to `CC_<name>` slots and requests a reload. The dashboard backs up replaced slot contents in its local data directory.
+9. Wait for fresh telemetry in Party, then check the character's movement and CODE console. A successful upload alone does not confirm that the script is running correctly. Use **Stop** in the roster when needed.
 
-1. Se connecter à [Adventure Land](https://adventure.land), ouvrir ses personnages sur le serveur souhaité et les garder ouverts.
-2. Dans [Mainframe](https://adventure.land/mainframe), ouvrir **Connect an AI** et récupérer son token MCP avec **Reveal token**, ou **Create token** si nécessaire. Utiliser ce token, jamais le mot de passe du jeu.
-3. Ouvrir **Team → Party** (`/#party`). Dans **First farming setup**, coller le token et cliquer sur **Connect and discover characters**. Cette étape vérifie le compte et liste les personnages.
-4. Choisir la région et le serveur **home** correspondant au jeu ouvert. Sélectionner les personnages, leurs scripts v2 et le leader. Pour un personnage seul, utiliser **Independent / leader**. Le choix du serveur dans le dashboard ne déplace pas les personnages en jeu.
-5. Choisir une cible adaptée à leur équipement. Le rogue et le ranger spécialisés crabs conservent leur cible dédiée ; ne pas les choisir pour tester une autre cible globale. Le rogue exige l'équipement permettant ses compétences spécifiques.
-6. Dans **Review**, vérifier la composition puis cliquer sur **Stage cautious profile**. Cela prépare le brouillon ; les fonctions commerciales et activités avancées restent désactivées dans ce profil initial.
-7. Cliquer sur **Save profile**, puis **Deployment preview → Preview saved deployment**. Vérifier les scripts, les personnages et les différences de CODE avant de continuer.
-8. Utiliser **Deploy saved profile** pour appliquer le profil sauvegardé. Cette action écrit les bundles dans les slots `CC_<nom>` et demande leur rechargement. Le dashboard conserve une sauvegarde du contenu remplacé dans ses données locales.
-9. Attendre une télémétrie récente dans Party, puis vérifier le déplacement et la console CODE du personnage. Un upload réussi ne confirme pas que le script s'exécute correctement. Utiliser **Stop** dans le roster si nécessaire.
+For later changes, follow **edit → Save profile → Preview saved deployment → Deploy saved profile**. Saving alone does not update running scripts. Deployment remains unavailable while edits are unsaved or an operation is in progress.
 
-Pour toute modification ultérieure : **modifier → Save profile → Preview saved deployment → Deploy saved profile**. Une sauvegarde seule ne change pas les scripts en cours. Le déploiement reste indisponible tant que des modifications ne sont pas sauvegardées.
+The [first farming guide](dashboard-v2/docs/FIRST-FARMING.md) provides additional setup details and runtime limitations in French.
 
-Le [guide premier farming](dashboard-v2/docs/FIRST-FARMING.md) détaille les réglages prudents, les erreurs de connexion et les limites du runtime.
+## Dashboard features
 
-## Où trouver chaque fonction
-
-| Écran | Utilisation |
+| Screen | Purpose |
 | --- | --- |
-| Party (`#party`) | Composition, connexion, état des personnages, sauvegarde, preview, déploiement et arrêt |
-| Inventory (`#inventory`) | Inventaires live, équipements et réservations des builds |
-| Combat (`#combat`) | Performances de session et diagnostic des échecs |
-| Operations (`#operations`) | État des missions, watchdog de déplacement et historique des opérations |
-| Farming (`#farming`) et Events (`#events`) | Cibles, hunts, boss, événements et loadouts |
-| Merchant (`#merchant`) | Consommables, livraisons, achats, ventes, craft, upgrades et stand ; activer progressivement avec des budgets explicites |
-| Bank (`#bank`) | Dernier snapshot bancaire et son horodatage ; ouvrir la banque en jeu pour le rafraîchir |
-| Simulator (`#simulator`) | Estimations XP/or/loot, à comparer aux mesures réelles |
-| Activity (`#activity`) et Scripts (`#scripts`) | Journaux serveur, catalogue et affectations des scripts |
+| Party (`#party`) | Team composition, account connection, character status, saving, preview, deployment, and stopping characters |
+| Inventory (`#inventory`) | Live inventories, equipment, and build reservations |
+| Combat (`#combat`) | Session performance and failure diagnostics |
+| Operations (`#operations`) | Mission state, movement watchdog, and operation history |
+| Farming (`#farming`) and Events (`#events`) | Targets, hunts, bosses, events, and loadouts |
+| Merchant (`#merchant`) | Consumables, deliveries, purchases, sales, crafting, upgrades, and stand settings; enable gradually with explicit budgets |
+| Bank (`#bank`) | Latest bank snapshot and timestamp; open the bank in-game to refresh it |
+| Simulator (`#simulator`) | XP, gold, and loot estimates to compare with actual measurements |
+| Activity (`#activity`) and Scripts (`#scripts`) | Server logs, script catalogue, and saved script assignments |
 
-Les mesures XP et or par heure dépendent de la télémétrie effectivement reçue. `Loot Gold/h` mesure les événements de loot ; `Balance gains/h` peut inclure des transferts. Une absence de télémétrie signifie « non confirmé ». Le voyant WebSocket décrit la liaison avec le dashboard, pas l'état du personnage.
+XP and gold per hour depend on received telemetry. `Loot Gold/h` tracks loot events; `Balance gains/h` can include transfers. Missing telemetry means the current state is unconfirmed. The WebSocket indicator describes the connection to the dashboard, rather than a character's online status.
 
-## Dépannage
+## Configuration and private data
 
-| Symptôme | Vérification |
+The setup wizard stores a verified token in `credentials.json` inside the local data directory. Alternatively, set `AL_MCP_TOKEN` in the server process environment. Environment values take precedence over the saved token. No `.env` file is loaded automatically. Never put a token in source code or an exported profile.
+
+| Variable | Purpose | Default |
+| --- | --- | --- |
+| `ALCC_PORT` | Local API port | `9320` |
+| `ALCC_DATA_DIR` | SQLite, telemetry, backups, and generated bundles | `AdventureLandDashboard` under `LOCALAPPDATA`, or the user home directory |
+| `AL_CODE_DIR` | Character script directory | Sibling `code/` directory |
+| `ALCC_CARACAL_DIR` | Optional external caracAL installation | Sibling `caracAL/` directory |
+| `ALCC_DISABLE_LEGACY_CREDENTIALS` | Set to `1` to disable the legacy MCP configuration fallback | Disabled |
+| `AL_MCP_TOKEN` | Game account token | Wizard's saved token, then legacy MCP configuration if available |
+
+Set environment variables before starting the server. For example, in PowerShell:
+
+```powershell
+$env:ALCC_DATA_DIR = Join-Path $env:LOCALAPPDATA 'ALCommandCenter-Test'
+pnpm dev
+```
+
+This uses a separate local profile and data directory. The Vite development proxy targets port `9320`; changing the API port also requires updating that proxy. The compiled application served by Fastify does not need the Vite proxy.
+
+Credentials, runtime data, backups, installed dependencies, the full game repository, and unrelated local projects are excluded from the publication scope.
+
+## Troubleshooting
+
+| Symptom | What to check |
 | --- | --- |
-| Interface inaccessible ou API indisponible | Relancer `pnpm dev`, vérifier Node 24 et les ports 5173/9320. Pour le build compilé : `pnpm --dir dashboard-v2 server`. |
-| Token refusé | Retester la connexion dans l'assistant et vérifier le compte associé. Une variable `AL_MCP_TOKEN` existante est prioritaire sur la clé enregistrée. |
-| `Open character first` | Ouvrir manuellement le personnage dans Adventure Land sur le serveur choisi. |
-| Déploiement indisponible | Sauvegarder le brouillon et attendre la fin de l'opération en cours. |
-| Pas de télémétrie | Vérifier la console CODE, le script exécuté et l'accès à l'API locale depuis le navigateur du jeu. |
-| Conflit de sauvegarde | Conserver les modifications utiles, utiliser `Discard edits` pour recharger le profil, puis les réappliquer. |
+| UI or API unavailable | Restart `pnpm dev`; check Node 24 and ports 5173/9320. For a compiled build, run `pnpm --dir dashboard-v2 server`. |
+| Token rejected | Retry the wizard connection and check the associated account. An existing `AL_MCP_TOKEN` environment variable overrides the stored token. |
+| `Open character first` | Open that character manually in Adventure Land on the selected server. |
+| Deployment unavailable | Save the draft and wait for any current operation to finish. |
+| No telemetry | Check the CODE console, running script, and access to the local API from the game browser. |
+| Save conflict | Preserve useful edits, use `Discard edits` to reload the profile, then reapply your changes. |
 
-## CI et maintenance
+## Continuous integration
 
-GitHub Actions exécute trois workflows à chaque push et pull request :
+GitHub Actions runs three workflows on every push and pull request:
 
-- **Build and tests** : installation avec lockfile figé, audit du périmètre, compilation TypeScript/frontend, suite Vitest complète, tests des scripts et smoke test des routes API/UI.
-- **Code quality** : lint Oxlint. Ce contrôle ne constitue pas un score global de maintenabilité.
-- **Dependency and publication audit** : scan des signatures de secrets sur le périmètre retenu et audit pnpm bloquant à partir du niveau élevé, également chaque semaine.
+- **Build and tests**: frozen dependency installation, publication audit, TypeScript/frontend build, full Vitest suite, script tests, and an API/UI smoke test.
+- **Code quality**: Oxlint checks.
+- **Dependency and publication audit**: secret-pattern checks within the explicit publication scope and pnpm dependency auditing, failing on high or critical advisories. It also runs weekly.
 
-Ces workflows n'utilisent aucun compte de jeu et n'effectuent aucun déploiement. Dependabot propose les mises à jour hebdomadaires des dépendances et actions. Le smoke test utilise un profil temporaire sans personnages actifs. La vérification TypeScript actuelle couvre le frontend et le schéma partagé ; le backend n'est pas encore intégralement typé en mode strict.
+The workflows need no game credentials and never deploy characters. Dependabot proposes weekly dependency and GitHub Actions updates. The smoke test uses temporary data with no enabled characters. TypeScript checks currently cover the frontend and shared schema; the backend is not yet fully checked in strict mode.
 
-## Organisation
+`main` requires pull requests, an up-to-date branch, and successful `validate`, `lint`, and `audit` checks. Unresolved review conversations block merging. These rules also apply to administrators; force pushes and branch deletion are disabled. No outside approval is required for solo maintenance.
 
-| Dossier | Contenu |
-| --- | --- |
-| `dashboard-v2/` | Application maintenue : UI, API, schémas, tests et ressources |
-| `code/` | Scripts de personnages et interfaces intégrées au jeu |
-| `combat/` | Modules de combat partagés par les scripts historiques |
-| `tests/` | Tests des scripts et du périmètre de publication |
-| `tools/` | Outils de maintenance, audit et export local |
-| `docs/` | Notes d'architecture et audit de publication |
-
-Les noms de personnages présents dans les sources sont des exemples historiques. Le builder du dashboard applique les noms et réglages de votre profil. Les scripts `*-v2.js` sont privilégiés ; les variantes historiques restent utiles aux tests de régression. Le script rogue actuel est spécialisé dans les crabs.
-
-Documentation détaillée : [dashboard](dashboard-v2/README.md), [premier farming](dashboard-v2/docs/FIRST-FARMING.md), [scripts et interfaces](code/README.md).
-
-## Configuration et données privées
-
-La clé `AL_MCP_TOKEN` peut être fournie via l'environnement, ou enregistrée par l'assistant dans le répertoire de données local. Aucun `.env` n'est chargé automatiquement. Ne jamais ajouter une clé au code ou au profil exporté.
-
-`ALCC_DATA_DIR` permet d'isoler SQLite, télémétrie, sauvegardes et bundles générés. `AL_CODE_DIR` remplace le dossier `code/`. L'intégration headless est optionnelle : une installation externe de caracAL peut être indiquée par `ALCC_CARACAL_DIR`.
-
-Le code du jeu, caracAL, les anciens dashboards, les recherches, les sauvegardes et les autres projets du dossier de travail ne font pas partie du périmètre public.
-
-## Validation
+Run the same checks locally from the repository root after installing dependencies:
 
 ```sh
 pnpm lint
@@ -127,14 +125,31 @@ pnpm audit:public
 pnpm --dir dashboard-v2 audit --audit-level high
 ```
 
-Les tests isolent automatiquement les données et ne déploient pas de CODE réel. Le smoke test vérifie les routes localement, sans ouvrir de port ni lire une clé de compte. Le workflow GitHub valide l'ensemble depuis la racine du monorepo, sans secret de compte.
+Tests isolate their data and do not deploy real CODE. The smoke test exercises routes in memory without opening a listening port or reading account credentials. Secret-pattern scanning is a limited check, not proof that all possible secrets are absent.
 
-## Préparation d'une publication
+## Repository layout
+
+| Directory | Contents |
+| --- | --- |
+| `dashboard-v2/` | Maintained application: UI, API, schemas, tests, and assets |
+| `code/` | Character scripts and in-game interfaces |
+| `combat/` | Combat modules shared by historical scripts |
+| `tests/` | Script and publication-scope tests |
+| `tools/` | Maintenance, auditing, and local export tools |
+| `docs/` | Architecture notes and publication audit |
+
+Character names in source files are historical examples. The dashboard builder injects names and settings from your own profile. Prefer `*-v2.js` scripts; historical variants remain for compatibility and regression tests. The current rogue script specializes in crabs.
+
+Further documentation, currently primarily in French: [dashboard reference](dashboard-v2/README.md), [first farming](dashboard-v2/docs/FIRST-FARMING.md), and [scripts and in-game interfaces](code/README.md).
+
+## Preparing a clean export
 
 ```sh
 pnpm export:public
 ```
 
-Cette commande prépare `.release/public-candidate/` avec une liste explicite de fichiers et un manifeste SHA-256. Elle refuse d'écraser une exportation existante et s'arrête sur les signatures de secrets détectées. Elle ne crée aucun dépôt distant et ne pousse rien sur GitHub.
+This creates `.release/public-candidate/` using an explicit file allowlist and a SHA-256 manifest. It refuses to overwrite an existing export and stops if configured secret patterns are detected. To choose a new destination, run `node tools/prepare-public.mjs .release/another-candidate`. The tool does not create a remote repository or push to GitHub.
 
-Avant tout push public, lire [l'audit](docs/REPOSITORY-AUDIT.md), [les crédits et licences](THIRD_PARTY_NOTICES.md) et [la politique de sécurité](SECURITY.md). Une analyse de motifs ne prouve pas l'absence de secrets. Le choix de licence du projet et les droits des éléments tiers doivent être finalisés séparément ; aucune licence MIT globale n'est supposée.
+## Credits and licensing
+
+Read the [repository audit](docs/REPOSITORY-AUDIT.md), [third-party notices](THIRD_PARTY_NOTICES.md), and [security policy](SECURITY.md). Game assets retain their `AdventureLandOnlyUse` terms. Some community-derived scripts still require licensing clarification, and a license for original project contributions has not been selected. Public availability does not grant a blanket MIT license or resolve third-party permissions.
