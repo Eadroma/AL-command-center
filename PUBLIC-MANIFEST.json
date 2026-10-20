@@ -3568,8 +3568,8 @@
     },
     {
       "file": "dashboard-v2/tests/v2-loadouts.test.ts",
-      "bytes": 40552,
-      "sha256": "a3eb8a2c9cffc1dd7264b1c45bc5be39acdfbc13ceb787275daff474e14b65f2"
+      "bytes": 40741,
+      "sha256": "7129d89c99d746447124f343aa45dd82b9021693a49e4f8bf6155aa7f7c5d3e1"
     },
     {
       "file": "dashboard-v2/tests/warrior-weapon-retention.test.ts",
