@@ -1,0 +1,26 @@
+{
+  "map": "d2",
+  "key": "d2",
+  "file": "d2.png",
+  "bounds": {
+    "minX": -112,
+    "maxX": 112,
+    "minY": -736,
+    "maxY": 8
+  },
+  "width": 224,
+  "height": 744,
+  "source": "https://adventure.land/communitymaps/d2",
+  "tilesets": [
+    {
+      "name": "dark",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dark_dimension.png"
+    },
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

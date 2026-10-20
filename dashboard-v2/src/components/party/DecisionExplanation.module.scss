@@ -1,0 +1,12 @@
+@use '../../styles/variables' as v;
+.decision { grid-column: 1 / -1; border-left: 2px solid v.$retro-border-glow; padding: 0.55rem 0.7rem; background: v.$retro-surface; font-size: 0.8rem; }
+.decision p { margin: 0.25rem 0; color: v.$text-muted; overflow-wrap: anywhere; }
+.decision summary { cursor: pointer; color: v.$retro-accent; }
+.decision small { color: v.$text-faint; }
+.warning { border-left-color: v.$retro-amber; }
+.decision dl { display: grid; gap: .5rem; margin: .6rem 0; }
+.decision dl div { display: grid; grid-template-columns: 100px minmax(0, 1fr); gap: .5rem; }
+.decision dt { color: v.$text-faint; }
+.decision dd { margin: 0; color: v.$text-muted; overflow-wrap: anywhere; }
+@media (max-width: 480px) { .decision dl div { grid-template-columns: 1fr; gap: .2rem; } }
+:global(html[data-theme='guild']) { .decision { border: 0; border-radius: 10px; padding: .75rem .9rem; background: rgba(255,255,255,.025); } .decision > strong { font-size: .85rem; font-weight: 600; } .warning { background: rgba(var(--theme-amber-rgb), .06); } .decision summary { color: v.$text-muted; font-size: .8rem; } .decision dl { line-height: 1.6; } }

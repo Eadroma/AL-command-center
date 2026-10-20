@@ -1,0 +1,44 @@
+/**
+ * @file AppShell.module.scss
+ * Global page shell layout: max-width constraint, header + scrollable main.
+ */
+
+@use '../../styles/variables' as v;
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: v.$retro-bg;
+  padding: 1.25rem 0 0.75rem;
+  border-bottom: 1px solid v.$retro-border;
+}
+
+.main {
+  flex: 1;
+  padding: 1.5rem 0 2.5rem;
+}
+.footer { padding: 1rem 0 1.5rem; color: v.$text-muted; font-size: .8rem; line-height: 1.5; }
+.footer a { color: v.$retro-accent; }
+
+
+/* --- v2.1 Chrome : bandeau superieur style borne --- */
+.header { background: linear-gradient(180deg, #141428 0%, v.$retro-bg 100%); box-shadow: 0 1px 0 v.$retro-border, 0 6px 18px rgba(0, 0, 0, 0.35); }
+
+:global(html[data-theme='guild']) {
+  .shell { max-width: 1360px; padding: 0 clamp(1rem, 4vw, 3rem); }
+  .header { background: var(--material-chrome); backdrop-filter: blur(24px) saturate(140%); border: 1px solid var(--material-border); border-top: 0; border-radius: 0 0 18px 18px; padding: 1rem 1.4rem .15rem; box-shadow: 0 8px 32px rgba(0,0,0,.12); }
+  .main { padding-top: 1.4rem; }
+  @media (max-width: 640px) { .header { padding: .9rem 1rem .1rem; } }
+}

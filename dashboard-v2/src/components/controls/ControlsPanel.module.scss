@@ -1,0 +1,52 @@
+/**
+ * @file ControlsPanel.module.scss
+ * Layout for the automation controls panel: toggle list + footer deploy button.
+ */
+
+@use '../../styles/variables' as v;
+
+// Stack of toggle rows with consistent spacing
+.toggleList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+// Each toggle row: the switch + optional description below it
+.toggleRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid v.$retro-border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// Sub-label beneath the toggle switch
+.description {
+  font-family: v.$font-mono;
+  font-size: 0.72rem;
+  color: v.$text-faint;
+  margin: 0;
+  padding-left: 2.6rem; // Align with toggle label (offset by switch width)
+  line-height: 1.4;
+}
+
+// Footer row: separator + full-width deploy button
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid v.$retro-border;
+}
+
+.deployBtn {
+  width: 100%;
+  justify-content: center;
+}
+

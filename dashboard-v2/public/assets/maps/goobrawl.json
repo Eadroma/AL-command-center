@@ -1,0 +1,46 @@
+{
+  "map": "goobrawl",
+  "key": "jayson_GooIsland",
+  "file": "goobrawl.png",
+  "bounds": {
+    "minX": -496,
+    "maxX": 528,
+    "minY": -584,
+    "maxY": 296
+  },
+  "width": 1024,
+  "height": 880,
+  "source": "https://adventure.land/communitymaps/jayson_GooIsland",
+  "tilesets": [
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "outside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/outside.png"
+    },
+    {
+      "name": "beach",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/beach_v2.png"
+    },
+    {
+      "name": "fort",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/fort.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

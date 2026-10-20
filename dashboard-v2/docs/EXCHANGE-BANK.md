@@ -1,0 +1,8 @@
+# Xyn stock from bank
+
+Merchant → Production → Xyn Exchanges has an opt-in bank retrieval toggle and exchanges-per-batch (1–500) per configured item. Save and deploy to apply. Existing rules default to inventory-only.
+
+The runtime drains carried eligible stock first. It calculates raw quantity as recipe item cost (`G.items[item].e`) × batch size, limited to observed usable stock. Bank packs use the existing floor-aware craft retrieval worker: withdraw into an empty slot, split precisely, return surplus to the original empty bank slot; never swap stacks. Locked/bound/other-owner stock is excluded. Fresh inventory is checked before Xyn starts. A bank-funded batch explicitly enables the exchange drain even below the carried minimum-stack trigger. Xyn's existing trip lease drains all currently eligible inventory before leaving. A failed or empty bank probe backs off five minutes; successful batches can provision the next batch after draining. Without a readable bank snapshot a single bounded visit probes stock. Stored bank information can be stale; retrieval rechecks actual contents.
+
+## Inventory pressure during exchanges
+At four free slots or fewer, an active exchange queue pauses. The merchant prioritizes authorized NPC sales, configured bank deposits, then active upgrades of carried equipment. No new upgrade bases are purchased during this pause. Existing upgrade budgets and item protections still apply. Exchanges resume at eight free slots to avoid repeated trips for a single slot. An in-flight exchange finishes first; if no eligible cleanup exists, the merchant stays paused and reports inventory space as its status. The exchange drain state is retained.

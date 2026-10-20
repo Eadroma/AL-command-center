@@ -1,0 +1,46 @@
+{
+  "map": "original_main",
+  "key": "main",
+  "file": "original_main.png",
+  "bounds": {
+    "minX": -632,
+    "maxX": 1408,
+    "minY": -328,
+    "maxY": 944
+  },
+  "width": 2040,
+  "height": 1272,
+  "source": "https://adventure.land/communitymaps/main",
+  "tilesets": [
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "outside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/outside.png"
+    },
+    {
+      "name": "castle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/castle.png"
+    },
+    {
+      "name": "puzzle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/puzzle.png"
+    },
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "house",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/house.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

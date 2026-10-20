@@ -1,0 +1,38 @@
+{
+  "map": "shellsisland",
+  "key": "jayson_shells_island01",
+  "file": "shellsisland.png",
+  "bounds": {
+    "minX": -672,
+    "maxX": 688,
+    "minY": -528,
+    "maxY": 200
+  },
+  "width": 1360,
+  "height": 728,
+  "source": "https://adventure.land/communitymaps/jayson_shells_island01",
+  "tilesets": [
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "winter",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/winter.png"
+    },
+    {
+      "name": "outside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/outside.png"
+    },
+    {
+      "name": "house",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/house.png"
+    },
+    {
+      "name": "doors",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/doors.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

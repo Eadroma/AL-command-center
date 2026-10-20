@@ -1,0 +1,3 @@
+@use '../../styles/variables' as v;
+.banner { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin:1rem 0; padding:1rem; background:v.$retro-surface; border:1px solid v.$retro-border; border-left:3px solid v.$retro-accent; } .banner strong { font-size:.9rem; } .banner p { font-size:.8rem; color:v.$text-muted; margin:.5rem 0; overflow-wrap:anywhere; } .banner a { font-size:.8rem; } @media(max-width:650px){.banner{grid-template-columns:1fr;}}
+:global(html[data-theme='guild']) { .banner { border: 1px solid var(--material-border); border-radius: 12px; padding: 1rem 1.25rem; } .banner a { color: v.$retro-accent; } .banner strong { font-weight: 600; } }

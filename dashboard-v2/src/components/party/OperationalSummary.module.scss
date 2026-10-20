@@ -1,0 +1,10 @@
+@use '../../styles/variables' as v;
+
+.summary {
+  p { line-height: 1.6; overflow-wrap: anywhere; }
+  a { color: v.$retro-cyan; text-underline-offset: 3px; }
+  a:hover { color: v.$text-primary; }
+}
+
+.signals { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 0.4rem 1rem; }
+.signals p { margin: 0; }

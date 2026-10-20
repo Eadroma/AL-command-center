@@ -1,0 +1,22 @@
+{
+  "map": "dungeon0",
+  "key": "dungeon0",
+  "file": "dungeon0.png",
+  "bounds": {
+    "minX": -160,
+    "maxX": 160,
+    "minY": -104,
+    "maxY": 104
+  },
+  "width": 320,
+  "height": 208,
+  "source": "https://adventure.land/communitymaps/dungeon0",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

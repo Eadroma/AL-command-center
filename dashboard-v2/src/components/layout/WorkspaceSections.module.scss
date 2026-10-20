@@ -1,0 +1,12 @@
+@use '../../styles/variables' as v;
+
+.workspace { min-width: 0; margin-bottom: 1rem; }
+.navigation { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.65rem; background: v.$retro-surface; border: 1px solid v.$retro-border; }
+.navigation button { min-height: 40px; padding: 0.55rem 0.8rem; border: 1px solid transparent; background: transparent; color: v.$text-muted; font: inherit; font-size: 0.8rem; cursor: pointer; }
+.navigation button:hover { color: v.$text-primary; background: v.$retro-surface-alt; }
+.navigation button[aria-pressed='true'] { color: v.$text-primary; border-color: v.$retro-cyan; background: v.$retro-surface-alt; }
+.navigation button:focus-visible { outline: 2px solid v.$retro-accent; outline-offset: 2px; }
+.description { color: v.$text-muted; font-size: 0.8rem; line-height: 1.6; margin: 1rem 0; }
+@media (max-width: 600px) { .navigation { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .navigation button { overflow-wrap: anywhere; } }
+
+:global(html[data-theme='guild']) { .navigation { border-radius: 4px; } .navigation button { border-radius: 4px; font-size: 0.9rem; } .navigation button[aria-pressed='true'] { border-color: v.$retro-accent; } }

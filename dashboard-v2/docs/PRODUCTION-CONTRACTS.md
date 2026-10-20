@@ -1,0 +1,9 @@
+# Production contracts and temporary workers
+
+Merchant → Production → Workshop → Production contracts stages craft and bounded upgrade lots using the existing `seller.upgrade.rules[].production` configuration. Each lot has an item, target level, finished-piece quantity, material budget and persistent run ID. NPC bases are allowed only when the catalog identifies an actual shop. The runtime uses carried equipment first; target-level unlocked outputs go to bank through the existing output deposit policy. Destination is bank, not configurable sale or gifting.
+
+Staging does not enable upgrades, deploy CODE, buy items or reset a previous bounded lot. Save and deploy explicitly. Inspect/edit links use the existing upgrade editor; unconfirmed lots link to transaction review. Progress is matched by run ID and labeled live or stored. A produced count does not confirm bank delivery. Budgets include NPC base purchases and scroll replacement value, as defined by the existing runtime. Craft contracts reuse Commercial objectives IDs, counters and runtime, and keep outputs protected on the merchant. Their destination is shown explicitly; craft fees and permitted NPC ingredients follow the existing runtime budget policy.
+
+Temporary characters is available in Events and Merchant Overview. It shows mission ownership, online state, readiness, deaths and the condition remaining before cleanup. Ownership comes from merchant expedition telemetry; unavailable coordinator telemetry is not treated as a current login confirmation. Manual sessions are kept online. Existing cleanup supports late verified unloading after a timeout; the panel does not add forced shutdown actions.
+
+The compact mission banner appears on Party and Merchant and uses the saved profile. It reports current event lifecycle and bounded upgrade lot progress, with links to mission settings and production contracts. Editing drafts remains in the page panels.

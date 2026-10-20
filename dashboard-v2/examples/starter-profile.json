@@ -1,0 +1,170 @@
+{
+  "name": "Starter profile",
+  "onboardingComplete": false,
+  "automation": {
+    "combatGear": [],
+    "activeActivity": "",
+    "activeConsumables": [],
+    "activeBuilds": {},
+    "activities": [],
+    "lootGoals": [],
+    "dangers": {
+      "enabled": false,
+      "maxAttackers": 4,
+      "retreatHpPercent": 25,
+      "resumeHpPercent": 70,
+      "requirePriest": false,
+      "healerRange": 200,
+      "action": "hold",
+      "maxDeaths": 0,
+      "runId": "",
+      "coordinatedRetreat": false
+    },
+    "commercialGoals": []
+  },
+  "server": {
+    "region": "EU",
+    "name": "III"
+  },
+  "characters": [
+    {
+      "name": "Example_warrior_1",
+      "ctype": "warrior",
+      "enabled": false,
+      "runtime": "browser",
+      "script": "eadroma-warrior-v2",
+      "follow": "",
+      "events": false,
+      "job": "hunt",
+      "farmMonster": "",
+      "overrides": {}
+    },
+    {
+      "name": "Example_priest_2",
+      "ctype": "priest",
+      "enabled": false,
+      "runtime": "browser",
+      "script": "aedroma-priest-v2",
+      "follow": "",
+      "events": false,
+      "job": "hunt",
+      "farmMonster": "",
+      "overrides": {}
+    },
+    {
+      "name": "Example_ranger_3",
+      "ctype": "ranger",
+      "enabled": false,
+      "runtime": "browser",
+      "script": "droma-ranger-v2",
+      "follow": "",
+      "events": false,
+      "job": "hunt",
+      "farmMonster": "",
+      "overrides": {}
+    },
+    {
+      "name": "Example_merchant_4",
+      "ctype": "merchant",
+      "enabled": false,
+      "runtime": "browser",
+      "script": "eadrosell-merchant-v2",
+      "follow": "",
+      "events": false,
+      "job": "hunt",
+      "farmMonster": "",
+      "overrides": {}
+    },
+    {
+      "name": "Example_mage_5",
+      "ctype": "mage",
+      "enabled": false,
+      "runtime": "browser",
+      "script": "tonerre-mage",
+      "follow": "",
+      "events": false,
+      "job": "hunt",
+      "farmMonster": "",
+      "overrides": {}
+    }
+  ],
+  "farming": {
+    "defaultMonster": "goo",
+    "hunts": false,
+    "allowedHunts": [],
+    "rareVisits": false,
+    "dailyDungeon": false,
+    "style": {},
+    "loadouts": {},
+    "bossChecks": {
+      "enabled": false,
+      "rules": []
+    }
+  },
+  "events": {
+    "enabled": false,
+    "allowed": [],
+    "style": {}
+  },
+  "seller": {
+    "buy": {
+      "managed": true,
+      "enabled": false,
+      "reserveGold": 1000000,
+      "budget": 100000,
+      "orders": []
+    },
+    "npcEnabled": false,
+    "npcItems": [],
+    "standEnabled": false,
+    "listings": [],
+    "standSpot": {
+      "map": "main",
+      "x": -100,
+      "y": -20
+    },
+    "exchange": {
+      "enabled": false,
+      "items": [],
+      "minimum": {
+        "anniversarygift": 50
+      }
+    },
+    "upgrade": {
+      "enabled": false,
+      "minGold": 0,
+      "rules": []
+    },
+    "craft": {
+      "enabled": false,
+      "reserveGold": 1000000,
+      "rules": []
+    },
+    "ponty": {
+      "enabled": false,
+      "minGold": 200000,
+      "items": []
+    },
+    "kit": {
+      "enabled": false,
+      "rules": []
+    },
+    "consumables": {
+      "enabled": false,
+      "rules": []
+    },
+    "gifts": {
+      "enabled": false,
+      "rules": []
+    },
+    "bankDeposit": {
+      "enabled": false,
+      "items": []
+    },
+    "teamSupervisor": {
+      "enabled": false,
+      "characters": [],
+      "soloGuard": false
+    }
+  }
+}

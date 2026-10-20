@@ -1,0 +1,17 @@
+@use '../../styles/variables' as v;
+.description { max-width: 850px; margin-bottom: 1rem; color: v.$text-muted; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
+.grid article { padding: 0.8rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.grid article.inside { border-color: v.$retro-accent; box-shadow: v.$glow-accent; }
+.head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.head > div { display: grid; }
+.head strong { color: v.$text-primary; }
+.head span { color: v.$text-faint; font-size: 0.68rem; text-transform: uppercase; }
+.grid dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.45rem; margin: 0.75rem 0; }
+.grid dl div { padding: 0.5rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.grid dt { display: flex; align-items: center; gap: 0.25rem; color: v.$text-faint; font-size: 0.62rem; text-transform: uppercase; }
+.grid dd { margin: 0.2rem 0 0; color: v.$text-primary; font: 1.05rem v.$font-hud; }
+.grid article > p { margin: 0; color: v.$text-muted; font-size: 0.72rem; overflow-wrap: anywhere; }
+.notice { color: v.$retro-green; margin-top: 1rem; }
+.error { color: v.$retro-red; margin-top: 1rem; }
+@media (max-width: 850px) { .grid { grid-template-columns: minmax(0, 1fr); } }

@@ -1,0 +1,22 @@
+{
+  "map": "winter_cave",
+  "key": "jayson_xmas_cave1",
+  "file": "winter_cave.png",
+  "bounds": {
+    "minX": -568,
+    "maxX": 408,
+    "minY": -1224,
+    "maxY": 40
+  },
+  "width": 976,
+  "height": 1264,
+  "source": "https://adventure.land/communitymaps/jayson_xmas_cave1",
+  "tilesets": [
+    {
+      "name": "winter",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/winter.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

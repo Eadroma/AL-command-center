@@ -1,0 +1,27 @@
+@use '../../styles/variables' as v;
+.description { max-width: 980px; margin-bottom: 1rem; color: v.$text-muted; }
+.sectionHead { display: flex; align-items: center; gap: 0.45rem; margin: 1.15rem 0 0.55rem; color: v.$retro-cyan; }
+.sectionHead h3 { color: v.$text-primary; font-size: 1rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 0.65rem; }
+.cards > article { min-width: 0; padding: 0.75rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.cardHead { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.cards p { margin: 0.5rem 0; color: v.$text-muted; overflow-wrap: anywhere; }
+.cards small, .timeline small { color: v.$text-faint; }
+.trace { display: grid; gap: 0.25rem; margin: 0.55rem 0 0; padding: 0; list-style: none; color: v.$text-muted; font-size: 0.72rem; }
+.trace li { padding-top: 0.25rem; border-top: 1px dashed v.$retro-border; }
+.trace span { color: v.$retro-cyan; }
+.trace small { float: right; }
+.split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+.timeline { display: grid; gap: 0.45rem; }
+.timeline > article { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.55rem; padding: 0.65rem; color: v.$retro-cyan; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.timeline strong, .timeline span, .timeline small { display: block; overflow-wrap: anywhere; }
+.timeline strong { color: v.$text-primary; text-transform: uppercase; }
+.timeline span { margin: 0.2rem 0; color: v.$text-muted; }
+.validation { display: grid; gap: 0.45rem; }
+.validation article { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 0.6rem; padding: 0.65rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.validation strong { color: v.$text-primary; }
+.validation p { margin: 0.2rem 0 0; color: v.$text-muted; }
+.validation .error { border-color: color-mix(in srgb, v.$retro-red 55%, v.$retro-border); }
+.validation .warning { border-color: color-mix(in srgb, v.$retro-amber 45%, v.$retro-border); }
+.error { color: v.$retro-red; }
+@media (max-width: 800px) { .split { grid-template-columns: 1fr; } }

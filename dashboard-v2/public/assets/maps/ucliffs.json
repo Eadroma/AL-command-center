@@ -1,0 +1,30 @@
+{
+  "map": "ucliffs",
+  "key": "jayson_pvpDungeon_a1",
+  "file": "ucliffs.png",
+  "bounds": {
+    "minX": -600,
+    "maxX": 1016,
+    "minY": -1304,
+    "maxY": 208
+  },
+  "width": 1616,
+  "height": 1512,
+  "source": "https://adventure.land/communitymaps/jayson_pvpDungeon_a1",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

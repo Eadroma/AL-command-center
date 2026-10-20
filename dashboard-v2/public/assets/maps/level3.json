@@ -1,0 +1,46 @@
+{
+  "map": "level3",
+  "key": "jayson_underground_level3v2",
+  "file": "level3.png",
+  "bounds": {
+    "minX": -648,
+    "maxX": 520,
+    "minY": -968,
+    "maxY": 168
+  },
+  "width": 1168,
+  "height": 1136,
+  "source": "https://adventure.land/communitymaps/jayson_underground_level3v2",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "outside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/outside.png"
+    },
+    {
+      "name": "new",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/new.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    },
+    {
+      "name": "doors",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/doors.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

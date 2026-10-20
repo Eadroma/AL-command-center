@@ -1,0 +1,15 @@
+@use '../../styles/variables' as v;
+
+.panel { margin-top: 1rem; padding: 1rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.panelHead { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.8rem; }
+.panelHead span { color: v.$text-faint; font-size: 0.7rem; text-transform: uppercase; }
+.panelHead h3 { color: v.$text-primary; font-size: 1.2rem; }
+.help, .empty { color: v.$text-muted; font-size: 0.8rem; margin-bottom: 1rem; }
+.formGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: end; gap: 0.7rem; padding: 0.8rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.rules { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: 0.65rem; margin-top: 0.8rem; }
+.rules article { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.7rem; padding: 0.75rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.rules strong, .rules span, .rules small { display: block; overflow-wrap: anywhere; }
+.rules strong { color: v.$text-primary; font-size: 0.84rem; }
+.rules span { color: v.$text-muted; font-size: 0.72rem; margin-top: 0.2rem; }
+.rules small { color: v.$text-faint; font-size: 0.66rem; margin-top: 0.25rem; }
+@media (max-width: 700px) { .panelHead { align-items: flex-start; flex-direction: column; } }

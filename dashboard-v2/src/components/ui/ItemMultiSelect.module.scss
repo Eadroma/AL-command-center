@@ -1,0 +1,22 @@
+@use '../../styles/variables' as v;
+.root { min-width: 0; position: relative; }
+.picker { position: relative; }
+.summary { display: flex; justify-content: space-between; gap: .75rem; padding: .65rem .75rem; border: 1px solid v.$retro-border; background: v.$retro-surface; color: v.$text-primary; cursor: pointer; font-size: .78rem; list-style: none; }
+.summary::-webkit-details-marker { display: none; }
+.picker[open] .summary { border-color: v.$retro-accent; }
+.menu { position: absolute; z-index: 80; top: calc(100% + 4px); left: 0; width: min(560px, calc(100vw - 3rem)); padding: .65rem; border: 1px solid v.$retro-accent; background: v.$retro-bg; box-shadow: 0 12px 30px rgba(0,0,0,.55); }
+.menu > input { width: 100%; padding: .6rem; border: 1px solid v.$retro-border; background: v.$retro-surface; color: v.$text-primary; font: inherit; }
+.toolbar { display: flex; gap: .4rem; padding: .5rem 0; }
+.toolbar button { border: 1px solid v.$retro-border; background: transparent; color: v.$text-muted; padding: .3rem .55rem; font: .65rem v.$font-mono; cursor: pointer; }
+.options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .3rem; max-height: 330px; overflow: auto; }
+.options > button { display: grid; grid-template-columns: 36px minmax(0,1fr) auto; align-items: center; gap: .45rem; padding: .35rem; border: 1px solid v.$retro-border; background: v.$retro-surface; color: v.$text-primary; text-align: left; cursor: pointer; }
+.options > button:hover, .options > .active { border-color: v.$retro-green; background: rgba(77, 255, 151, .08); }
+.options span { display: grid; min-width: 0; }
+.options strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .72rem; }
+.options small { overflow: hidden; text-overflow: ellipsis; color: v.$text-faint; font: .58rem v.$font-mono; }
+.options b { color: v.$retro-green; }
+.selected { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .45rem; }
+.selected > button { display: flex; align-items: center; gap: .3rem; max-width: 220px; padding: .2rem .35rem; border: 1px solid v.$retro-border; background: v.$retro-surface; color: v.$text-primary; cursor: pointer; }
+.selected span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .66rem; }
+.selected b { color: v.$retro-red; }
+@media (max-width: 620px) { .options { grid-template-columns: 1fr; } }

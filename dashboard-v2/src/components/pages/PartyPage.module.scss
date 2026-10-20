@@ -1,0 +1,25 @@
+@use '../../styles/variables' as v;
+
+// Each area owns its layout; a tall roster cannot stretch unrelated controls.
+.page { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; }
+.heading h1 { margin: 0; font-size: 1.4rem; color: v.$text-primary; }
+.heading p, .sectionHeading p { margin: 0.45rem 0 0; color: v.$text-muted; line-height: 1.6; font-size: 0.8rem; }
+.live { display: grid; gap: 1rem; min-width: 0; }
+.sectionHeading { margin-bottom: 0.8rem; }
+.sectionHeading h2 { margin: 0; font-size: 1rem; color: v.$text-primary; }
+.setup { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 1rem; }
+.setup > * { min-width: 0; }
+.diagnostics { border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.diagnostics summary { cursor: pointer; padding: 1rem; color: v.$text-primary; font-size: 0.85rem; }
+.diagnostics summary:focus-visible { outline: 2px solid v.$retro-accent; outline-offset: -3px; }
+.diagnosticContent { display: grid; gap: 1rem; padding: 0 1rem 1rem; min-width: 0; }
+@media (max-width: 1000px) {
+  .setup { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .setup > :last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 650px) {
+  .setup { grid-template-columns: minmax(0, 1fr); }
+  .page { gap: 1.2rem; }
+  .diagnosticContent { padding: 0 0.5rem 0.5rem; }
+}
+:global(html[data-theme='guild']) { .heading h1 { font-size: clamp(1.7rem, 3vw, 2.15rem); font-weight: 650; line-height: 1.15; } .heading p, .sectionHeading p { font-size: .9rem; } .diagnostics { border-radius: 12px; } .sectionHeading { margin-top: 1.3rem; } .sectionHeading h2 { font-size: 1.3rem; } }

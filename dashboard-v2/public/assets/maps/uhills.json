@@ -1,0 +1,38 @@
+{
+  "map": "uhills",
+  "key": "jayson_pvpDungeon_a2",
+  "file": "uhills.png",
+  "bounds": {
+    "minX": -872,
+    "maxX": 936,
+    "minY": -976,
+    "maxY": 160
+  },
+  "width": 1808,
+  "height": 1136,
+  "source": "https://adventure.land/communitymaps/jayson_pvpDungeon_a2",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "fort",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/fort.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

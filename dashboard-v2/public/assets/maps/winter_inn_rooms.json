@@ -1,0 +1,34 @@
+{
+  "map": "winter_inn_rooms",
+  "key": "jayson_winter_inn_room1",
+  "file": "winter_inn_rooms.png",
+  "bounds": {
+    "minX": -264,
+    "maxX": 168,
+    "minY": -520,
+    "maxY": 32
+  },
+  "width": 432,
+  "height": 552,
+  "source": "https://adventure.land/communitymaps/jayson_winter_inn_room1",
+  "tilesets": [
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "new",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/new.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

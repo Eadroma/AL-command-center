@@ -1,0 +1,104 @@
+@use 'sass:color';
+@use '../../styles/variables' as *;
+
+.button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: $font-mono;
+  font-weight: 500;
+  border-radius: $radius-none;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+
+  &:focus-visible {
+    outline: 1px solid $retro-accent;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  // Sizes
+  &.small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  &.medium {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  &.large {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
+
+  // Variants
+  &.primary {
+    background-color: $retro-accent;
+    color: #ffffff;
+    border: 1px solid var(--theme-accent-adjust-10, color.adjust(#7c3aed, $lightness: 10%));
+
+    &:hover:not(:disabled) {
+      background-color: var(--theme-accent-adjust-8, color.adjust(#7c3aed, $lightness: 8%));
+      box-shadow: 0 0 10px $retro-accent-glow;
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--theme-accent-adjust-minus5, color.adjust(#7c3aed, $lightness: -5%));
+    }
+  }
+
+  &.secondary {
+    background-color: $retro-surface-alt;
+    color: $text-primary;
+    border: 1px solid $retro-border;
+
+    &:hover:not(:disabled) {
+      border-color: $retro-border-glow;
+      background-color: var(--theme-surface-alt-adjust-4, color.adjust(#1a1a35, $lightness: 4%));
+    }
+  }
+
+  &.danger {
+    background-color: rgba(var(--theme-red-rgb, 239, 68, 68), 0.15);
+    color: $retro-red;
+    border: 1px solid rgba(var(--theme-red-rgb, 239, 68, 68), 0.4);
+
+    &:hover:not(:disabled) {
+      background-color: rgba(var(--theme-red-rgb, 239, 68, 68), 0.25);
+      box-shadow: 0 0 10px rgba(var(--theme-red-rgb, 239, 68, 68), 0.3);
+    }
+  }
+
+  &.ghost {
+    background-color: transparent;
+    color: $text-muted;
+    border: 1px solid transparent;
+
+    &:hover:not(:disabled) {
+      color: $text-primary;
+      background-color: rgba(var(--theme-border-rgb, 42, 42, 74), 0.3);
+    }
+  }
+}
+
+// --- v2.1 Chrome : touches de borne d arcade ---
+.button {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+:global(html[data-theme='guild']) { .button { font-family: 'Segoe UI', system-ui, sans-serif; text-transform: none; letter-spacing: 0; min-height: 40px; font-size: 0.9rem; } .button.small { min-height: 34px; font-size: 0.8rem; } .button.primary { color: #151020; font-weight: 650; } .button:hover:not(:disabled) { box-shadow: none; } .button:focus-visible { outline: 2px solid $retro-accent; outline-offset: 3px; } }
+:global(html[data-theme='guild']) { .button { border-radius: 9px; min-height: 44px; padding: .55rem 1rem; transition: background-color 140ms ease, transform 160ms var(--motion-ease); } .button.small { min-height: 36px; padding: .35rem .7rem; } .button.primary { color: #111c2b; } .button:active:not(:disabled) { transform: scale(.97); transition-duration: 50ms; } }

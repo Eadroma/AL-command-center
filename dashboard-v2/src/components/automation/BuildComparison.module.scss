@@ -1,0 +1,13 @@
+@use '../../styles/variables' as v;
+.help { color: v.$text-muted; font-size: 0.8rem; line-height: 1.6; margin: 0.7rem 0; }
+.controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
+.builds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1rem 0; }
+.builds > div { min-width: 0; padding: 0.8rem; border: 1px solid v.$retro-border; }
+.item { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; font-size: 0.8rem; }
+.item span { overflow-wrap: anywhere; }
+.tableWrap { overflow-x: auto; }
+.tableWrap table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.tableWrap caption { text-align: left; color: v.$text-muted; padding: 0.6rem 0; }
+.tableWrap th, .tableWrap td { padding: 0.5rem; border-bottom: 1px solid v.$retro-border; text-align: right; }
+.tableWrap th:first-child { text-align: left; }
+@media (max-width: 650px) { .controls, .builds { grid-template-columns: minmax(0, 1fr); } }

@@ -1,0 +1,42 @@
+{
+  "map": "duelland",
+  "key": "jayson_duel_arena",
+  "file": "duelland.png",
+  "bounds": {
+    "minX": -1128,
+    "maxX": 1128,
+    "minY": -2072,
+    "maxY": 24
+  },
+  "width": 2256,
+  "height": 2096,
+  "source": "https://adventure.land/communitymaps/jayson_duel_arena",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "outside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/outside.png"
+    },
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

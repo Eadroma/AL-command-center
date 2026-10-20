@@ -1,0 +1,34 @@
+{
+  "map": "mforest",
+  "key": "jayson_undergroundjungle",
+  "file": "mforest.png",
+  "bounds": {
+    "minX": -584,
+    "maxX": 728,
+    "minY": -776,
+    "maxY": 1160
+  },
+  "width": 1312,
+  "height": 1936,
+  "source": "https://adventure.land/communitymaps/jayson_undergroundjungle",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "jungle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/jungle.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "new",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/new.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

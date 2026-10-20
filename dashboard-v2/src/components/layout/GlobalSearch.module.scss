@@ -1,0 +1,18 @@
+@use '../../styles/variables' as v;
+.launch { margin-bottom:1rem; padding:.5rem .8rem; color:v.$text-primary; background:v.$retro-surface; border:1px solid v.$retro-border; cursor:pointer; } .launch kbd { margin-left:1rem; color:v.$text-muted; }
+.dialog { position:fixed; inset:0; margin:auto; width:min(620px,calc(100vw - 2rem)); max-height:80vh; padding:1.2rem; border:1px solid v.$retro-accent; color:v.$text-primary; background:v.$retro-bg; border-radius:8px; }
+.dialog::backdrop { background:rgba(0,0,0,.65); }
+.head { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; } .head button { color:inherit; background:transparent; border:0; font-size:1.5rem; cursor:pointer; }
+.dialog input { width:100%; padding:.8rem; color:v.$text-primary; background:v.$retro-surface; border:1px solid v.$retro-border; }
+.results { max-height:50vh; overflow:auto; margin:.7rem 0; } .results button { width:100%; display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem; text-align:left; padding:.7rem; color:inherit; background:transparent; border:1px solid transparent; cursor:pointer; } .results .active,.results button:focus-visible { border-color:v.$retro-accent; background:v.$retro-surface; } .results span,.dialog small { color:v.$text-muted; }
+:global(html[data-theme='guild']) {
+  .launch { border-radius: 10px; min-height: 44px; color: v.$text-muted; margin-bottom: 0; }
+  .launch kbd { font-size: .75rem; padding: .2rem .4rem; border: 1px solid var(--material-border); border-radius: 5px; }
+  .dialog { background: var(--material-chrome); backdrop-filter: blur(32px) saturate(140%); border: 1px solid var(--material-border); border-radius: 20px; padding: 1.4rem; }
+  .dialog::backdrop { background: rgba(0,0,0,.45); }
+  .dialog input { border-radius: 10px; min-height: 48px; font-size: 1rem; }
+  .head button { width: 44px; height: 44px; border-radius: 50%; }
+  .results button { border-radius: 9px; min-height: 48px; }
+  .results .active { border-color: transparent; background: rgba(var(--theme-accent-rgb), .14); }
+  @media (max-width: 640px) { .launch kbd { display: none; } }
+}

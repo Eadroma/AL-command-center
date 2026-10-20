@@ -1,0 +1,171 @@
+/**
+ * @file PartyMemberRow.module.scss
+ * Styles for a single party member row in the roster.
+ */
+
+@use '../../styles/variables' as v;
+
+.row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid v.$retro-border;
+  background: v.$retro-bg;
+  list-style: none;
+
+}
+
+.portrait {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  align-self: center;
+}
+
+// Identity cell (name + class) — occupies left column, first row
+.identity {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.name {
+  font-family: v.$font-mono;
+  font-size: 0.875rem;
+  color: v.$text-primary;
+  font-weight: 600;
+}
+
+.cls {
+  font-family: v.$font-mono;
+  font-size: 0.72rem;
+  color: v.$text-faint;
+  text-transform: capitalize;
+}
+
+// Resource bars follow identity and status on the third row.
+.bars {
+  grid-column: 2 / -1;
+  grid-row: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.details {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.7rem;
+  color: v.$text-faint;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+
+  span + span::before {
+    content: '·';
+    margin-right: 0.7rem;
+    color: v.$retro-border-glow;
+  }
+}
+
+.gold {
+  color: #fbbf24 !important;
+  font-weight: 700;
+}
+
+.bag {
+  color: #60a5fa !important;
+  font-weight: 600;
+}
+
+.multiplier {
+  color: v.$retro-green !important;
+  font-weight: 600;
+}
+
+.invToggle {
+  margin-left: auto;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid v.$retro-border;
+  border-radius: 4px;
+  color: v.$retro-accent;
+  font-size: 0.68rem;
+  padding: 2px 6px;
+  font-family: inherit;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: v.$retro-surface-alt;
+    border-color: v.$retro-accent;
+  }
+}
+
+.expandedDrawer {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed v.$retro-border;
+}
+
+
+
+.scriptBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.scriptSelect {
+  background: v.$retro-surface-alt;
+  color: v.$text-primary;
+  border: 1px solid v.$retro-border;
+  border-radius: 4px;
+  font-family: v.$font-mono;
+  font-size: 0.68rem;
+  padding: 1px 4px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
+
+  &:hover, &:focus {
+    border-color: v.$retro-accent;
+  }
+}
+
+.statusActions {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+.scriptBadge { min-width: 0; max-width: 100%; }
+.scriptSelect { min-width: 0; max-width: 100%; }
+.details { min-width: 0; overflow-wrap: anywhere; margin-bottom: 0; }
+@media (max-width: 480px) {
+  .row { grid-template-columns: 36px minmax(0, 1fr); gap: 0.4rem; padding: 0.6rem; }
+  .bars, .details { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) { .portrait { grid-row: 1 / span 2; } }
+.summaryStats { grid-column: 2 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: .35rem .9rem; font-size: .8rem; color: v.$text-muted; font-variant-numeric: tabular-nums; }
+.technical { grid-column: 1 / -1; min-width: 0; }
+.technical > summary { color: v.$text-muted; cursor: pointer; font-size: .8rem; }
+:global(html[data-theme='guild']) {
+  .row { padding: 1.15rem; border-radius: 12px; border-color: var(--material-border); background: v.$retro-surface; gap: .55rem .9rem; }
+  .name { font-family: inherit; font-size: 1.05rem; letter-spacing: -.015em; }
+  .cls { font-family: inherit; font-size: .8rem; }
+  .portrait { padding: .3rem; border-radius: 12px; background: rgba(255,255,255,.04); }
+  .details { font-size: .78rem; text-transform: none; line-height: 1.7; padding: .25rem 0 .7rem; }
+  .technical { border-top: 1px solid var(--material-border); }
+  .invToggle { min-height: 36px; padding: .4rem .7rem; font-size: .78rem; border-radius: 8px; }
+  .summaryStats .invToggle { margin-left: 0; }
+}

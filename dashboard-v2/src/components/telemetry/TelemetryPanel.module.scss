@@ -1,0 +1,93 @@
+/**
+ * @file TelemetryPanel.module.scss
+ * Styles for the telemetry console: scrollable log view with level colours.
+ */
+
+@use '../../styles/variables' as v;
+
+// Scrollable log window
+.console {
+  height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: v.$font-mono;
+  font-size: 0.75rem;
+  line-height: 1.5;
+
+  // Subtle custom scrollbar to match the retro theme
+  scrollbar-width: thin;
+  scrollbar-color: v.$retro-border v.$retro-surface;
+}
+
+// Idle placeholder text
+.idle {
+  color: v.$text-faint;
+  font-family: v.$font-mono;
+  font-size: 0.8rem;
+  margin: auto;
+  text-align: center;
+  opacity: 0.6;
+}
+
+// Single log line: timestamp | source | message
+.line {
+  display: grid;
+  grid-template-columns: 7ch 14ch 1fr;
+  gap: 0.5rem;
+  padding: 1px 0;
+  border-left: 2px solid transparent;
+  padding-left: 0.4rem;
+}
+
+// Timestamp column
+.ts {
+  color: v.$text-faint;
+  flex-shrink: 0;
+}
+
+// Source tag — character or subsystem
+.source {
+  color: v.$text-muted;
+  flex-shrink: 0;
+}
+
+// Message body — takes remaining space, wraps if needed
+.msg {
+  color: v.$text-primary;
+  word-break: break-word;
+}
+
+// ── Level variants ──────────────────────────────────────────────────────────
+
+.levelInfo {
+  border-left-color: v.$retro-cyan;
+
+  .msg { color: v.$text-primary; }
+}
+
+.levelWarn {
+  border-left-color: v.$retro-amber;
+
+  .msg { color: v.$retro-amber; }
+}
+
+.levelError {
+  border-left-color: v.$retro-red;
+  background-color: rgba(var(--theme-red-rgb, 239, 68, 68), 0.05);
+
+  .msg { color: v.$retro-red; }
+}
+
+.levelDebug {
+  border-left-color: v.$retro-border;
+
+  .msg { color: v.$text-faint; }
+}
+
+@media (max-width: 640px) {
+  .line { grid-template-columns: 8ch minmax(0, 1fr); }
+  .msg { grid-column: 1 / -1; }
+  .source { overflow-wrap: anywhere; }
+}

@@ -1,0 +1,27 @@
+@use '../../styles/variables' as v;
+
+.metadata {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  dt { color: v.$text-muted; }
+  dd { margin: 0; overflow-wrap: anywhere; }
+}
+
+.details {
+  border-top: 1px solid v.$retro-border;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  min-width: 0;
+  summary { cursor: pointer; color: v.$text-muted; }
+  summary:focus-visible { outline: 2px solid v.$retro-accent; }
+  pre {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    max-height: 320px;
+    overflow: auto;
+    background: v.$retro-bg;
+    font-size: 0.75rem;
+  }
+}

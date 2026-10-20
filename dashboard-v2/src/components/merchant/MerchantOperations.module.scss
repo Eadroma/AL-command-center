@@ -1,0 +1,19 @@
+@use '../../styles/variables' as v;
+.operations { display: grid; gap: 1rem; margin-bottom: 1rem; min-width: 0; }
+.operations p { font-size: .8rem; line-height: 1.5; color: v.$text-muted; }
+.queue { list-style: none; padding: 0; margin: .75rem 0 0; display: grid; gap: .4rem; }
+.queue li { display: grid; grid-template-columns: minmax(160px, 240px) minmax(0, 1fr); align-items: center; gap: .75rem; padding: .4rem; border-top: 1px solid v.$retro-border; }
+.queue button { justify-self: start; text-align: left; white-space: normal; }
+.queue span { font-size: .78rem; line-height: 1.45; color: v.$text-muted; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .queue li { grid-template-columns: 1fr; gap: .25rem; } }
+
+.summaryGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; padding: .5rem 0; }
+.summaryGrid article { display: flex; flex-direction: column; align-items: flex-start; gap: .65rem; min-width: 0; }
+.summaryGrid article:last-child { grid-column: 1 / -1; padding-top: 1rem; border-top: 1px solid v.$retro-border; }
+.summaryGrid strong { color: v.$text-muted; font-size: .8rem; }
+.summaryGrid span { overflow-wrap: anywhere; line-height: 1.55; }
+.details { padding: 1rem 0; }
+.details > summary { cursor: pointer; color: v.$text-muted; padding: .5rem 0; }
+.details > summary:focus-visible { outline: 2px solid v.$retro-accent; outline-offset: 3px; }
+.details[open] > summary { margin-bottom: 1rem; }
+@media (max-width: 640px) { .summaryGrid { grid-template-columns: 1fr; } }

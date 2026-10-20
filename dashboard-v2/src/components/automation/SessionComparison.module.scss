@@ -1,0 +1,13 @@
+@use '../../styles/variables' as v;
+.controls { display: flex; align-items: end; gap: .6rem; flex-wrap: wrap; margin: 1rem 0; }
+.controls label { display: grid; gap: .4rem; color: v.$text-muted; flex: 1; min-width: 180px; }
+.controls input { min-width: 0; padding: .6rem; background: v.$retro-bg; color: v.$text-primary; border: 1px solid v.$retro-border; }
+.snapshots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; margin-bottom: 1rem; }
+.snapshots article { padding: .8rem; border: 1px solid v.$retro-border; overflow-wrap: anywhere; }
+.snapshots p { color: v.$text-muted; font-size: .8rem; }
+.snapshots small { color: v.$text-faint; }
+.snapshots .warning { color: v.$retro-amber; }
+.table { overflow-x: auto; margin-bottom: 1rem; }
+.table table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: .6rem; text-align: left; border-bottom: 1px solid v.$retro-border; white-space: nowrap; }
+@media (max-width: 600px) { .snapshots { grid-template-columns: 1fr; } }

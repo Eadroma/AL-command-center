@@ -1,0 +1,30 @@
+{
+  "map": "abtesting",
+  "key": "jayson_vs_arena",
+  "file": "abtesting.png",
+  "bounds": {
+    "minX": -1192,
+    "maxX": 1192,
+    "minY": -328,
+    "maxY": 280
+  },
+  "width": 2384,
+  "height": 608,
+  "source": "https://adventure.land/communitymaps/jayson_vs_arena",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "puzzle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/puzzle.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

@@ -1,0 +1,26 @@
+{
+  "map": "bank",
+  "key": "jayson_bank0",
+  "file": "bank.png",
+  "bounds": {
+    "minX": -184,
+    "maxX": 184,
+    "minY": -520,
+    "maxY": 0
+  },
+  "width": 368,
+  "height": 520,
+  "source": "https://adventure.land/communitymaps/jayson_bank0",
+  "tilesets": [
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "doors",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/doors.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

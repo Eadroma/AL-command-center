@@ -1,0 +1,72 @@
+﻿@use '../../styles/variables' as *;
+
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  user-select: none;
+}
+
+.root {
+  all: unset;
+  width: 36px;
+  height: 18px;
+  background-color: $retro-surface-alt;
+  border: 1px solid $retro-border;
+  border-radius: $radius-none;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+
+  &:focus-visible {
+    outline: 1px solid $retro-accent;
+  }
+
+  &[data-state='checked'] {
+    background-color: rgba(var(--theme-accent-rgb, 124, 58, 237), 0.4);
+    border-color: $retro-accent;
+    box-shadow: 0 0 8px $retro-accent-glow;
+  }
+
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.thumb {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-color: $text-muted;
+  border-radius: $radius-none;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s;
+  transform: translateX(2px) translateY(2px);
+
+  &[data-state='checked'] {
+    transform: translateX(20px) translateY(2px);
+    background-color: $retro-green;
+    box-shadow: 0 0 6px rgba(var(--theme-green-rgb, 34, 197, 94), 0.6);
+  }
+}
+
+.label {
+  font-family: $font-mono;
+  font-size: 0.85rem;
+  color: $text-muted;
+  transition: color 0.2s;
+
+  &.active {
+    color: $text-primary;
+  }
+}
+
+:global(html[data-theme='guild']) { .root { width: 40px; height: 24px; border-radius: 12px; } .root[data-state='checked'] { background: rgba(var(--theme-accent-rgb), 0.25); box-shadow: none; } .thumb { width: 16px; height: 16px; border-radius: 50%; transform: translateX(3px) translateY(3px); } .thumb[data-state='checked'] { transform: translateX(19px) translateY(3px); background: $retro-accent; box-shadow: none; } .wrapper { min-height: 40px; } .label { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 0.9rem; } }
+:global(html[data-theme='guild']) {
+  .root { width: 44px; height: 28px; border: 0; background: #55565f; flex-shrink: 0; box-shadow: 0 0 0 8px transparent; }
+  .root::before { content: ''; position: absolute; inset: -8px; }
+  .root[data-state='checked'] { background: #309864; }
+  .root:active:not([data-disabled]) { transform: none; filter: brightness(1.12); }
+  .thumb, .thumb[data-state='checked'] { width: 24px; height: 24px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); transform: translateX(calc(2px + 16px * var(--switch-progress, 0))) translateY(2px); transition: none; }
+  .wrapper { min-height: 44px; }
+}

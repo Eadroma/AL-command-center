@@ -1,0 +1,33 @@
+@use '../../styles/variables' as v;
+
+.description, .note { color: v.$text-muted; margin-bottom: 1rem; }
+.dragoldIntel { margin-bottom: 1rem; padding: 0.9rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.dragoldIntel > p { margin: 0.45rem 0 0.75rem; color: v.$text-muted; font-size: 0.75rem; }
+.intelHead { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.intelHead span { color: v.$text-faint; font: 0.62rem v.$font-mono; text-transform: uppercase; }
+.intelHead h3 { color: v.$text-primary; font-size: 1rem; }
+.shards { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.45rem; }
+.shards article, .shards > span { display: grid; gap: 0.15rem; padding: 0.55rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.shards article strong { color: v.$text-primary; font: 0.78rem v.$font-hud; }
+.shards article span { color: v.$text-muted; font: 0.66rem v.$font-mono; }
+.shards article small { color: v.$text-faint; font: 0.6rem v.$font-mono; }
+.shards article.liveShard { border-color: v.$retro-green; box-shadow: 0 0 9px rgba(82, 255, 164, 0.2); }
+.shards article.liveShard span { color: v.$retro-green; }
+.master { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 0.9rem; border: 1px solid v.$retro-accent; background: v.$retro-surface; box-shadow: 0 0 8px v.$retro-accent-glow; }
+.master > span { color: v.$text-faint; font-size: 0.75rem; }
+.participation { margin: 1rem 0; padding: 0.9rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.participation h3 { color: v.$text-muted; font-size: 0.9rem; margin-bottom: 0.7rem; }
+.participation > div { display: flex; flex-wrap: wrap; gap: 0.8rem 1.4rem; }
+.bulk { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 275px), 1fr)); gap: 0.75rem; }
+.grid article { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.65rem; padding: 0.75rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.grid article.allowed { border-color: v.$retro-border-glow; }
+.identity { min-width: 0; }
+.identity h3 { color: v.$text-primary; font-size: 1rem; overflow-wrap: anywhere; }
+.identity span { color: v.$text-faint; font-size: 0.68rem; overflow-wrap: anywhere; }
+.grid article > :nth-child(n + 3) { grid-column: 1 / -1; }
+.styleLabel { color: v.$text-muted; font-size: 0.7rem; text-transform: uppercase; margin-bottom: -0.45rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.2rem 0 0.75rem; padding-top: 1rem; border-top: 1px solid v.$retro-border; }
+.alert { color: v.$retro-red; margin-top: 1rem; }
+.notice { color: v.$retro-green; margin-top: 1rem; }
+.note { font-size: 0.78rem; }

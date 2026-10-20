@@ -1,0 +1,14 @@
+/**
+ * @file DashboardGrid.module.scss
+ * Responsive grid layout for the main dashboard panel area.
+ */
+
+@use '../../styles/variables' as v;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1.25rem;
+  align-items: start; // Panels don't stretch to equal height by default
+}
+

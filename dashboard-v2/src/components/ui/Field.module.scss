@@ -1,0 +1,10 @@
+@use '../../styles/variables' as v;
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  color: v.$text-muted;
+  font-size: 0.85rem;
+}

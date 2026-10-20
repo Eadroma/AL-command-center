@@ -1,0 +1,40 @@
+/**
+ * @file PartyPanel.module.scss
+ * Layout and typography styles for the party roster card.
+ */
+
+@use '../../styles/variables' as v;
+
+// Unstyled list — PartyMemberRow handles its own row styling
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr));
+  gap: 0.8rem;
+  align-items: start;
+  margin: 0;
+  padding: 0;
+}
+
+// Muted helper text (loading / empty notices)
+.hint {
+  font-family: v.$font-mono;
+  font-size: 0.8rem;
+  color: v.$text-faint;
+  margin: 0.25rem 0;
+}
+
+// Centred empty state with icon
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 0;
+  color: v.$text-faint;
+  font-family: v.$font-mono;
+  font-size: 0.8rem;
+}
+
+.emptyIcon {
+  opacity: 0.4;
+}

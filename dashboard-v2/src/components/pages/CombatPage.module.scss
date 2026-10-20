@@ -1,0 +1,25 @@
+@use '../../styles/variables' as v;
+
+.description { color: v.$text-muted; margin-bottom: 1rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 1rem; }
+.metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem; }
+.metrics div { min-width: 0; padding: 0.65rem; background: v.$retro-bg; border: 1px solid v.$retro-border; }
+.metrics dt { display: flex; align-items: center; gap: 0.35rem; color: v.$text-muted; font-size: 0.72rem; text-transform: uppercase; }
+.metrics dd { margin: 0.2rem 0; color: v.$text-primary; font-family: v.$font-hud; font-size: 1.65rem; line-height: 1; }
+.metrics small { display: block; color: v.$text-faint; overflow-wrap: anywhere; }
+.failures { margin-top: 1.75rem; }
+.compliance { margin-top: 1.75rem; }
+.complianceList { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 0.55rem; }
+.complianceList article { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 0.65rem; padding: 0.65rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.complianceList article > div { display: grid; min-width: 0; gap: 0.1rem; }
+.complianceList strong { color: v.$text-primary; }
+.complianceList span, .complianceList small { color: v.$text-faint; overflow-wrap: anywhere; }
+.complianceList span { font-size: 0.68rem; text-transform: uppercase; }
+.failureList { display: grid; gap: 0.55rem; }
+.failureList article { padding: 0.75rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.failureList article > div { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+.failureList strong { color: v.$retro-red; text-transform: uppercase; }
+.failureList span, .failureList p { color: v.$text-muted; }
+.failureList p { margin-top: 0.35rem; }
+
+@media (max-width: 480px) { .metrics { grid-template-columns: minmax(0, 1fr); } }

@@ -1,0 +1,24 @@
+@use '../../styles/variables' as v;
+
+.description { max-width: 850px; margin: 0 0 1rem; color: v.$text-muted; }
+.summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.7rem; margin-bottom: 1rem; }
+.summary div { padding: 0.8rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.summary strong { display: block; color: v.$retro-cyan; font: 1.75rem/1 v.$font-hud; }
+.summary span { color: v.$text-faint; font-size: 0.68rem; text-transform: uppercase; }
+.summary .danger { color: v.$retro-red; }
+.list { display: grid; gap: 0.65rem; }
+.incident { display: grid; grid-template-columns: 42px minmax(0, 1fr); border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.icon { display: grid; place-items: center; color: v.$retro-amber; border-right: 1px solid v.$retro-border; background: v.$retro-bg; }
+.body { min-width: 0; padding: 0.75rem; }
+.head, .footer { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.head > div:first-child { display: grid; gap: 0.15rem; }
+.head strong { color: v.$text-primary; text-transform: uppercase; }
+.head span, .footer span { color: v.$text-faint; font-size: 0.68rem; }
+.badges { display: flex; gap: 0.35rem; }
+.body p { margin: 0.55rem 0; color: v.$text-muted; overflow-wrap: anywhere; }
+.footer button { display: inline-flex; align-items: center; gap: 0.3rem; }
+.resolved { opacity: 0.62; }
+.resolved .icon { color: v.$retro-green; }
+.error { color: v.$retro-red; }
+
+@media (max-width: 650px) { .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

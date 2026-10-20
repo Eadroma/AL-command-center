@@ -1,0 +1,30 @@
+name: Build and tests
+on: [push, pull_request, workflow_dispatch]
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: dashboard-v2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.4.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: dashboard-v2/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: node ../tools/audit-public.mjs
+      - run: pnpm build
+      - run: pnpm test
+      - run: node --import tsx ../tools/smoke-dashboard.mjs
+      - run: node --test ../tests/combat.test.cjs ../tests/public-repository.test.mjs

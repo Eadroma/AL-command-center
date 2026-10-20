@@ -1,0 +1,64 @@
+# Credentials and live game state
+.cursor/
+.env
+.env.*
+!.env.example
+*.env
+credentials.json
+credentials.json.*
+*.sqlite
+*.sqlite-*
+*.db
+telemetry.json
+deployments.json
+**/data/
+**/code-backups/
+**/bundles/
+
+# Dependencies, generated bundles, caches
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/coverage/
+**/.tmp/
+**/.vitest/
+*.tsbuildinfo
+*.log
+.DS_Store
+Thumbs.db
+
+# Local research, backups and export candidates
+/.local-archive/
+/.release/
+/.research/
+/.asset-research/
+/.tmp*/
+/backups/
+/.cursor/
+/.idea/
+
+# External projects and old dashboard generations are not part of this repository.
+/adventureland_mongodb/
+/caracAL/
+/command-center/
+/dashboard/
+/sites/
+
+# Historical one-off diagnostics and account-specific deployment helper
+/.*.txt
+/.*.json
+/.*.js
+/.*.ts
+/.*.sql
+/_*.py
+/_*.json
+/push-code.ps1
+/dashboard-v2/.*.txt
+/dashboard-v2/.build-store.cjs
+/dashboard-v2/.patch.cjs
+/dashboard-v2/.snippet.b64
+/dashboard-v2/store-content.txt
+
+# Screenshots need an explicit privacy review before publication.
+/dashboard-v2/docs/*.png
+/dashboard-v2/docs/*.jpg

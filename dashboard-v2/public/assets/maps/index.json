@@ -1,0 +1,383 @@
+{
+  "maps": {
+    "old_main": {
+      "src": "/assets/maps/old_main.png",
+      "minX": -328,
+      "maxX": 1408,
+      "minY": -328,
+      "maxY": 944
+    },
+    "original_main": {
+      "src": "/assets/maps/original_main.png",
+      "minX": -632,
+      "maxX": 1408,
+      "minY": -328,
+      "maxY": 944
+    },
+    "test": {
+      "src": "/assets/maps/test.png",
+      "minX": -1256,
+      "maxX": 1832,
+      "minY": -1240,
+      "maxY": 696
+    },
+    "crypt": {
+      "src": "/assets/maps/crypt.png",
+      "minX": -328,
+      "maxX": 2920,
+      "minY": -1880,
+      "maxY": 584
+    },
+    "goobrawl": {
+      "src": "/assets/maps/goobrawl.png",
+      "minX": -496,
+      "maxX": 528,
+      "minY": -584,
+      "maxY": 296
+    },
+    "abtesting": {
+      "src": "/assets/maps/abtesting.png",
+      "minX": -1192,
+      "maxX": 1192,
+      "minY": -328,
+      "maxY": 280
+    },
+    "dungeon0": {
+      "src": "/assets/maps/dungeon0.png",
+      "minX": -160,
+      "maxX": 160,
+      "minY": -104,
+      "maxY": 104
+    },
+    "cgallery": {
+      "src": "/assets/maps/cgallery.png",
+      "minX": 0,
+      "maxX": 16,
+      "minY": -8,
+      "maxY": 8
+    },
+    "old_bank": {
+      "src": "/assets/maps/old_bank.png",
+      "minX": -120,
+      "maxX": 248,
+      "minY": -118,
+      "maxY": 168
+    },
+    "bank": {
+      "src": "/assets/maps/bank.png",
+      "minX": -184,
+      "maxX": 184,
+      "minY": -520,
+      "maxY": 0
+    },
+    "bank_b": {
+      "src": "/assets/maps/bank_b.png",
+      "minX": -640,
+      "maxX": 224,
+      "minY": -520,
+      "maxY": 216
+    },
+    "bank_u": {
+      "src": "/assets/maps/bank_u.png",
+      "minX": -520,
+      "maxX": 184,
+      "minY": -584,
+      "maxY": 936
+    },
+    "ship0": {
+      "src": "/assets/maps/ship0.png",
+      "minX": -648,
+      "maxX": 248,
+      "minY": -168,
+      "maxY": 200
+    },
+    "d2": {
+      "src": "/assets/maps/d2.png",
+      "minX": -112,
+      "maxX": 112,
+      "minY": -736,
+      "maxY": 8
+    },
+    "d_e": {
+      "src": "/assets/maps/d_e.png",
+      "minX": -248,
+      "maxX": 200,
+      "minY": -448,
+      "maxY": 48
+    },
+    "cave": {
+      "src": "/assets/maps/cave.png",
+      "minX": -600,
+      "maxX": 1960,
+      "minY": -1488,
+      "maxY": 256
+    },
+    "mtunnel": {
+      "src": "/assets/maps/mtunnel.png",
+      "minX": -136,
+      "maxX": 1304,
+      "minY": -312,
+      "maxY": 216
+    },
+    "main": {
+      "src": "/assets/maps/main.png",
+      "minX": -1616,
+      "maxX": 2320,
+      "minY": -1040,
+      "maxY": 2232
+    },
+    "mansion": {
+      "src": "/assets/maps/mansion.png",
+      "minX": -440,
+      "maxX": 440,
+      "minY": -688,
+      "maxY": 56
+    },
+    "tomb": {
+      "src": "/assets/maps/tomb.png",
+      "minX": -584,
+      "maxX": 632,
+      "minY": -1048,
+      "maxY": 328
+    },
+    "jail": {
+      "src": "/assets/maps/jail.png",
+      "minX": -264,
+      "maxX": 264,
+      "minY": -248,
+      "maxY": 184
+    },
+    "cyberland": {
+      "src": "/assets/maps/cyberland.png",
+      "minX": -248,
+      "maxX": 248,
+      "minY": -192,
+      "maxY": 112
+    },
+    "duelland": {
+      "src": "/assets/maps/duelland.png",
+      "minX": -1128,
+      "maxX": 1128,
+      "minY": -2072,
+      "maxY": 24
+    },
+    "hut": {
+      "src": "/assets/maps/hut.png",
+      "minX": -96,
+      "maxX": 96,
+      "minY": -200,
+      "maxY": 24
+    },
+    "woffice": {
+      "src": "/assets/maps/woffice.png",
+      "minX": -240,
+      "maxX": 176,
+      "minY": -240,
+      "maxY": 112
+    },
+    "tavern": {
+      "src": "/assets/maps/tavern.png",
+      "minX": -328,
+      "maxX": 328,
+      "minY": -312,
+      "maxY": 40
+    },
+    "resort_e": {
+      "src": "/assets/maps/resort_e.png",
+      "minX": -208,
+      "maxX": 224,
+      "minY": -176,
+      "maxY": 128
+    },
+    "resort": {
+      "src": "/assets/maps/resort.png",
+      "minX": -208,
+      "maxX": 224,
+      "minY": -176,
+      "maxY": 128
+    },
+    "winter_inn": {
+      "src": "/assets/maps/winter_inn.png",
+      "minX": -216,
+      "maxX": 216,
+      "minY": -296,
+      "maxY": 48
+    },
+    "winter_inn_rooms": {
+      "src": "/assets/maps/winter_inn_rooms.png",
+      "minX": -264,
+      "maxX": 168,
+      "minY": -520,
+      "maxY": 32
+    },
+    "winter_cave": {
+      "src": "/assets/maps/winter_cave.png",
+      "minX": -568,
+      "maxX": 408,
+      "minY": -1224,
+      "maxY": 40
+    },
+    "winter_cove": {
+      "src": "/assets/maps/winter_cove.png",
+      "minX": -1032,
+      "maxX": 904,
+      "minY": -2376,
+      "maxY": 56
+    },
+    "winter_instance": {
+      "src": "/assets/maps/winter_instance.png",
+      "minX": -296,
+      "maxX": 280,
+      "minY": -344,
+      "maxY": 248
+    },
+    "winterland": {
+      "src": "/assets/maps/winterland.png",
+      "minX": -1064,
+      "maxX": 2008,
+      "minY": -3368,
+      "maxY": 728
+    },
+    "desertland": {
+      "src": "/assets/maps/desertland.png",
+      "minX": -1608,
+      "maxX": 1032,
+      "minY": -2792,
+      "maxY": 664
+    },
+    "shellsisland": {
+      "src": "/assets/maps/shellsisland.png",
+      "minX": -672,
+      "maxX": 688,
+      "minY": -528,
+      "maxY": 200
+    },
+    "halloween": {
+      "src": "/assets/maps/halloween.png",
+      "minX": -1208,
+      "maxX": 1384,
+      "minY": -1992,
+      "maxY": 1136
+    },
+    "spookytown": {
+      "src": "/assets/maps/spookytown.png",
+      "minX": -1064,
+      "maxX": 1320,
+      "minY": -1728,
+      "maxY": 1432
+    },
+    "tunnel": {
+      "src": "/assets/maps/tunnel.png",
+      "minX": -312,
+      "maxX": 312,
+      "minY": -1400,
+      "maxY": 16
+    },
+    "batcave": {
+      "src": "/assets/maps/batcave.png",
+      "minX": -264,
+      "maxX": 376,
+      "minY": -232,
+      "maxY": 216
+    },
+    "arena": {
+      "src": "/assets/maps/arena.png",
+      "minX": -432,
+      "maxX": 1176,
+      "minY": -944,
+      "maxY": 80
+    },
+    "level1": {
+      "src": "/assets/maps/level1.png",
+      "minX": -936,
+      "maxX": 216,
+      "minY": -344,
+      "maxY": 856
+    },
+    "level2": {
+      "src": "/assets/maps/level2.png",
+      "minX": -344,
+      "maxX": 248,
+      "minY": -328,
+      "maxY": 280
+    },
+    "level2n": {
+      "src": "/assets/maps/level2n.png",
+      "minX": -712,
+      "maxX": 520,
+      "minY": -744,
+      "maxY": 24
+    },
+    "level2e": {
+      "src": "/assets/maps/level2e.png",
+      "minX": -24,
+      "maxX": 712,
+      "minY": -232,
+      "maxY": 536
+    },
+    "level2s": {
+      "src": "/assets/maps/level2s.png",
+      "minX": -424,
+      "maxX": 408,
+      "minY": -40,
+      "maxY": 904
+    },
+    "level2w": {
+      "src": "/assets/maps/level2w.png",
+      "minX": -728,
+      "maxX": 40,
+      "minY": -216,
+      "maxY": 392
+    },
+    "level3": {
+      "src": "/assets/maps/level3.png",
+      "minX": -648,
+      "maxX": 520,
+      "minY": -968,
+      "maxY": 168
+    },
+    "level4": {
+      "src": "/assets/maps/level4.png",
+      "minX": -552,
+      "maxX": 600,
+      "minY": -728,
+      "maxY": 594
+    },
+    "gateway": {
+      "src": "/assets/maps/gateway.png",
+      "minX": -536,
+      "maxX": 536,
+      "minY": -928,
+      "maxY": 48
+    },
+    "ucliffs": {
+      "src": "/assets/maps/ucliffs.png",
+      "minX": -600,
+      "maxX": 1016,
+      "minY": -1304,
+      "maxY": 208
+    },
+    "uhills": {
+      "src": "/assets/maps/uhills.png",
+      "minX": -872,
+      "maxX": 936,
+      "minY": -976,
+      "maxY": 160
+    },
+    "mforest": {
+      "src": "/assets/maps/mforest.png",
+      "minX": -584,
+      "maxX": 728,
+      "minY": -776,
+      "maxY": 1160
+    },
+    "spider_instance": {
+      "src": "/assets/maps/spider_instance.png",
+      "minX": -344,
+      "maxX": 344,
+      "minY": -1720,
+      "maxY": 88
+    }
+  },
+  "failures": []
+}

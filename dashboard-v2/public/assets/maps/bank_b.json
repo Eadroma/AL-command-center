@@ -1,0 +1,42 @@
+{
+  "map": "bank_b",
+  "key": "jayson_theBank1",
+  "file": "bank_b.png",
+  "bounds": {
+    "minX": -640,
+    "maxX": 224,
+    "minY": -520,
+    "maxY": 216
+  },
+  "width": 864,
+  "height": 736,
+  "source": "https://adventure.land/communitymaps/jayson_theBank1",
+  "tilesets": [
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "doors",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/doors.png"
+    },
+    {
+      "name": "puzzle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/puzzle.png"
+    },
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

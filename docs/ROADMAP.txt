@@ -1,0 +1,206 @@
+Adventure Land roadmap — Eadroma (warrior) + Aedroma (priest)
+==============================================================
+
+Snapshot this was written against (Mainframe account data, 2026-09-05)
+  Eadroma  warrior  level 18   ~46k gold   main map   online
+  Aedroma  priest   level 1    ~70 gold    main map   online
+
+The priest is far behind. Until Aedroma is within a few levels of Eadroma,
+the party plan is: farm what the priest can survive, not what the warrior
+could solo. XP is shared in a party; dragging a level-1 priest through
+hard monsters just gets them killed.
+
+Numbers below come from deployed G.classes, G.skills, and G.monsters
+(MCP get_game_data). Monster "attack" is the hit, not a level. If a pack
+hits harder than the priest can heal, leave.
+
+----------------------------------------------------------------------
+Third character — locked in
+----------------------------------------------------------------------
+
+Farmer team (3 combat)
+  1. Eadroma  warrior  — tank, taunt, pull
+  2. Aedroma  priest   — heal warrior first, then mage, then attack
+  3. Tonerre  mage — ranged damage + Energize (level 20)
+
+Town / economy (4th, later)
+  4. Merchant — luck, bank, stand. Not a farmer.
+
+CODE for the mage: code/tonerre-mage.js
+After you create them, set the same name in:
+  code/tonerre-mage.js         CONFIG.NAME
+  code/eadroma-warrior.js      CONFIG.PARTY (second entry)
+  code/aedroma-priest.js       CONFIG.MAGE
+Then re-paste all three into the in-game editors.
+
+Create the mage after Aedroma can live on bees/crabs. A dead third farmer
+does not help.
+
+Why mage (short)
+  Energize at 20 feeds priest MP so Curse / Party Heal (400 MP) actually
+  work. Magiport and Burst stay manual / later. Ranger is the only other
+  reasonable farmer #3 if you hate mana play — it does not feed the priest.
+
+----------------------------------------------------------------------
+How to read this roadmap
+----------------------------------------------------------------------
+
+These are objectives, not a forced checklist. Upgrade/compound/scroll
+work can fail and spend gold — do it only when you decide to.
+
+Stay on the same realm. Party + send_cm do not cross servers.
+
+CODE files
+  code/eadroma-warrior.js
+  code/aedroma-priest.js
+When you change farm monster, change CONFIG.MONSTER in the warrior
+(and keep the priest on the warrior's target).
+
+----------------------------------------------------------------------
+Now — levels 1–20 (you are here)
+----------------------------------------------------------------------
+
+Goal: get Aedroma to ~15–18 on the same pack Eadroma is already clearing.
+
+Farm (G.monsters)
+  goo        HP 100    XP 100    ATK 5     stay here until priest ~8–10
+  bee        HP 300    XP 400    ATK 16    first step up
+  crab       HP 400    XP 500    ATK 24    beach / crab packs
+  snake      HP 720    XP 960    ATK 24    only if priest heals keep up
+
+Do not jump to minimush (ATK 120) or poisio (ATK 240) yet.
+
+Warrior skills you already have (no level gate)
+  Charge   +30 speed, 40s CD, 0 MP
+  Taunt    40 MP, 3s CD, 200 range — pull off the priest
+  Dash     120 MP — skip until you have MP to spare
+
+Priest skills
+  Heal         shares the attack cooldown — heal first, then hit
+  Curse        400 MP — skip until MP pool / Energize exists
+  Party Heal   400 MP — same
+  Revive       500 MP + Essence of Life — keep a life essence for later
+
+Gear (cheap, high impact)
+  Eadroma: keep Blade equipped (yours was +4 in inventory). Do not
+           dump gold into high upgrades yet; +4 to +6 is plenty.
+  Aedroma: staff equipped, carry hpot0/mpot0. Warrior should almost
+           never drink HP pots if the priest is in range (already in CODE).
+  Buy extra MP pots for the priest; heal is MP-hungry as they grow.
+
+Party habits
+  Warrior holds aggro. Priest stays ~40–80 px back (heal range 120).
+  If the priest has aggro, warrior Taunts.
+
+----------------------------------------------------------------------
+Levels 20–40
+----------------------------------------------------------------------
+
+Farm
+  armadillo  HP 1600   XP 1720   ATK 20    comfortable physical pack
+  croc       HP 3200   XP 3600   ATK 48    next physical step
+  tortoise   HP 7200   XP 5200   ATK 36    slow, good XP, long fights
+  osnake     HP 720    XP 1600   ATK 24    if the pack is live
+  frog       HP 600    XP 7200   ATK 24    excellent XP if they spawn
+
+Avoid until priest+warrior are solid
+  poisio     ATK 240
+  stoneworm  ATK 360
+  minimush   ATK 120 ranged
+
+Warrior
+  Still Charge / Taunt. Save gold for a better sword/shield rather than
+  Cleave (level 52, needs axe or scythe, 720 MP).
+
+Priest
+  More INT / MP so Curse can land occasionally. Curse: +20% damage taken,
+  -20% damage dealt, -20 speed, 5s, 400 MP. Use on the current tank target
+  only, not on every goo.
+
+If the mage exists and is 20+
+  Mage Energize -> priest every few seconds. This is when Curse/Party Heal
+  become real.
+
+----------------------------------------------------------------------
+Levels 40–55
+----------------------------------------------------------------------
+
+Farm
+  croc / tortoise still fine
+  spider     HP 18000  XP 12000  ATK 80     party content
+  scorpion   HP 24000  XP 20000  ATK 100    party content
+  prat       HP 9200   XP 7600   ATK 320    only with reliable heals
+
+Warrior 52
+  Cleave   720 MP, axe/scythe, 160 range — AoE when you actually wear an axe
+  Stomp    120 MP, basher, 24s CD — stun, different weapon
+
+Do not swap off a good sword just to press Cleave. Weapon type is a build
+choice. For a priest-supported tank, sword/shield or spear is often
+smoother than axe until MP and armor are high.
+
+Priest 55
+  Absorb Sins  200 MP, 240 range — pull aggro off the warrior onto you.
+  That is a *save the warrior* button, not a farming loop. Warrior should
+  Taunt back.
+
+Merchant (if you created #4)
+  Level 40 Mluck: luck buff on farmers. Park merchant in town, buff
+  whoever is farming, keep the stand honest (no spam listings).
+
+----------------------------------------------------------------------
+Levels 55–70
+----------------------------------------------------------------------
+
+Warrior 60  Hardshell — physical mitigation, 16s CD, 8s duration, 480 MP
+Warrior 68  Agitate — taunt all nearby monsters (420 MP). Dangerous if
+            the priest cannot cover the pack.
+Warrior 70  War Cry — party damage buff, 60s CD, 8s. Save for bosses.
+
+Priest 64  Phaseout — needs a shadow stone, panic button
+Priest 70  Dark Blessing — +25% damage, 60s CD, 900 MP. Boss button.
+
+Mage 60    Reflection on the tank for some fights
+Ranger 60  3-shot if you went ranger instead
+
+Farm
+  Only move to high-ATK maps (mole 480, wolfie 320, bigbird 480) when
+  Hardshell + priest heal + potions cover a mistake. xscorpion / bscorpion
+  are endgame packs, not a level-60 tourist stop.
+
+----------------------------------------------------------------------
+Economy and items (all levels)
+----------------------------------------------------------------------
+
+Do not automate upgrades, compounds, NPC dumps, or public trade listings
+unless you set exact item keys, max levels, and gold caps yourself.
+
+Useful habits
+  Bank gold you do not need to carry (warrior CODE currently does not
+  auto-bank — keep that off until you ask for it).
+  Keep scrolls (scroll0 / cscroll0) in the bank, not the farm inventory.
+  Booster (if you own one): XP while fighting, Luck on bosses, Gold when
+  you actually loot a pile of chests — see https://adventure.land/docs
+
+Eadroma already had: blade, hpbelt, ringsj, gem0, potions.
+Aedroma started with gift helmet / staff / shoes and 200/200 pots.
+
+----------------------------------------------------------------------
+CODE upgrades to plan later (not in the current files)
+----------------------------------------------------------------------
+
+  - CONFIG.MONSTER list that steps up when the pack is too easy
+  - Priest Curse when MP > 400 and warrior has a target
+  - Mage script: Energize priest, attack warrior's target, Magiport
+  - Merchant: Mluck the party, no Chat, listings only for items you name
+
+----------------------------------------------------------------------
+Suggested next actions (this week)
+----------------------------------------------------------------------
+
+  1. Keep both on the same server, goo then bees, until Aedroma is ~12–15.
+  2. Re-paste the latest warrior/priest CODE if you have not since the
+     CM-spam fix.
+  3. Create the mage only after the priest can farm bees/crabs without
+     constant deaths.
+  4. Leave merchant for character slot 4.

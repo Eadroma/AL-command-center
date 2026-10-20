@@ -1,0 +1,12 @@
+.box, .fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.box > span { display: block; image-rendering: pixelated; }
+.fallback { color: #64748b; border: 1px solid #2a2a4a; }
+
+.box[role="button"], .fallback[role="button"] { cursor:pointer; border-radius:4px; }
+.box[role="button"]:focus-visible, .fallback[role="button"]:focus-visible { outline:2px solid #a78bfa; outline-offset:3px; }

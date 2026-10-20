@@ -1,0 +1,26 @@
+{
+  "map": "cyberland",
+  "key": "cyberland",
+  "file": "cyberland.png",
+  "bounds": {
+    "minX": -248,
+    "maxX": 248,
+    "minY": -192,
+    "maxY": 112
+  },
+  "width": 496,
+  "height": 304,
+  "source": "https://adventure.land/communitymaps/cyberland",
+  "tilesets": [
+    {
+      "name": "dark",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dark_dimension.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

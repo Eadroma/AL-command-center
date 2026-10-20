@@ -1,0 +1,33 @@
+@use '../../styles/variables' as v;
+
+.panel { margin: 1rem 0; padding: 1rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+.heading span, .heading strong { color: v.$text-faint; font-size: 0.7rem; text-transform: uppercase; }
+.heading h3 { color: v.$text-primary; font-size: 1.2rem; }
+.help, .empty { color: v.$text-muted; margin: 0.6rem 0 1rem; font-size: 0.8rem; }
+.selectors, .addRow { display: grid; gap: 0.75rem; align-items: end; }
+.selectors { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 0.85rem; }
+.addRow { grid-template-columns: 0.8fr 1.8fr 0.7fr auto; padding: 0.85rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.textInput { width: 100%; padding: 0.58rem 0.7rem; color: v.$text-primary; background: v.$retro-surface-alt; border: 1px solid v.$retro-border-glow; font: inherit; }
+.equipmentEditor { display: grid; grid-template-columns: repeat(4, 52px); grid-auto-rows: 52px; gap: 4px; width: fit-content; margin: 0.85rem 0 0.45rem; padding: 5px; background: #080a0f; border: 1px solid #70737a; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 4px 14px rgba(0, 0, 0, 0.28); }
+.equipmentSlot { position: relative; display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; padding: 0; background: #090b10; border: 1px solid #777a81; border-radius: 1px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.035); cursor: pointer; }
+.equipmentSlot:hover, .equipmentSlot:focus-visible, .selectedSlot { border-color: v.$retro-accent; background: #11151d; box-shadow: inset 0 0 0 1px rgba(var(--theme-accent-rgb, 124, 58, 237), 0.18); outline: none; }
+.overrideSlot, .overrideSlot:hover, .overrideSlot:focus-visible { border-color: v.$retro-green; box-shadow: inset 0 0 0 1px rgba(var(--theme-green-rgb, 34, 197, 94), 0.35), 0 0 7px rgba(var(--theme-green-rgb, 34, 197, 94), 0.18); }
+.unsupportedSlot { opacity: 0.28; cursor: not-allowed; }
+.gearLevel { position: absolute; bottom: 2px; left: 3px; color: #ffd447; font: 700 11px/1 var(--font-mono, monospace); text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 0 0 3px #000; pointer-events: none; }
+.overrideMark { position: absolute; top: 3px; right: 3px; width: 6px; height: 6px; background: v.$retro-green; box-shadow: 0 0 5px rgba(var(--theme-green-rgb, 34, 197, 94), 0.8); }
+.legend { display: flex; flex-wrap: wrap; gap: 0.9rem; margin: 0 0 0.65rem; color: v.$text-faint; font-size: 0.68rem; }
+.legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.legend i { width: 10px; height: 10px; background: #090b10; border: 1px solid #777a81; }
+.legend .overrideLegend { border-color: v.$retro-green; box-shadow: 0 0 4px rgba(var(--theme-green-rgb, 34, 197, 94), 0.35); }
+.slotHelp { min-height: 1rem; margin: 0 0 0.8rem; color: v.$text-muted; font-size: 0.72rem; }
+.slotHelp strong { color: v.$text-primary; text-transform: uppercase; }
+.gearActions { display: flex; gap: 0.4rem; align-items: center; }
+.skills { padding-top: 0.8rem; border-top: 1px solid v.$retro-border; }
+.skills > div:first-child { display: flex; justify-content: space-between; color: v.$text-muted; font-size: 0.75rem; }
+.skills > div:last-child { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.6rem; }
+.skills button { min-width: 7.5rem; padding: 0.5rem 0.7rem; color: v.$text-muted; background: v.$retro-bg; border: 1px solid v.$retro-border; font: inherit; cursor: pointer; }
+.skills button.selected { color: v.$text-primary; border-color: v.$retro-accent; background: v.$retro-accent-glow; }
+.skills button:disabled { cursor: not-allowed; opacity: 0.55; }
+.skills small { display: block; color: v.$text-faint; }
+@media (max-width: 700px) { .selectors, .addRow { grid-template-columns: 1fr; } .heading, .skills > div:first-child { align-items: flex-start; flex-direction: column; } }

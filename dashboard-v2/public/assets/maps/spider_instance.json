@@ -1,0 +1,38 @@
+{
+  "map": "spider_instance",
+  "key": "jayson_pvpDungeon_b1",
+  "file": "spider_instance.png",
+  "bounds": {
+    "minX": -344,
+    "maxX": 344,
+    "minY": -1720,
+    "maxY": 88
+  },
+  "width": 688,
+  "height": 1808,
+  "source": "https://adventure.land/communitymaps/jayson_pvpDungeon_b1",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "fort",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/fort.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    },
+    {
+      "name": "puzzle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/puzzle.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

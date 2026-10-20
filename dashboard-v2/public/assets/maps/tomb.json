@@ -1,0 +1,34 @@
+{
+  "map": "tomb",
+  "key": "jayson_MansionCrypt",
+  "file": "tomb.png",
+  "bounds": {
+    "minX": -584,
+    "maxX": 632,
+    "minY": -1048,
+    "maxY": 328
+  },
+  "width": 1216,
+  "height": 1376,
+  "source": "https://adventure.land/communitymaps/jayson_MansionCrypt",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

@@ -1,0 +1,10 @@
+@use '../../styles/variables' as v;
+
+.empty {
+  padding: 2rem 1rem;
+  border: 1px dashed v.$retro-border;
+  text-align: center;
+  color: v.$text-muted;
+  overflow-wrap: anywhere;
+  p + p { margin-top: 0.5rem; font-size: 0.85rem; }
+}

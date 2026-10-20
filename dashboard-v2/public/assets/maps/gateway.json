@@ -1,0 +1,34 @@
+{
+  "map": "gateway",
+  "key": "jayson_pvpDungeon_gateway",
+  "file": "gateway.png",
+  "bounds": {
+    "minX": -536,
+    "maxX": 536,
+    "minY": -928,
+    "maxY": 48
+  },
+  "width": 1072,
+  "height": 976,
+  "source": "https://adventure.land/communitymaps/jayson_pvpDungeon_gateway",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "custom_a",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom_a.png"
+    },
+    {
+      "name": "puzzle",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/puzzle.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

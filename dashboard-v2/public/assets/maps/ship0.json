@@ -1,0 +1,30 @@
+{
+  "map": "ship0",
+  "key": "jayson_PirateShip0",
+  "file": "ship0.png",
+  "bounds": {
+    "minX": -648,
+    "maxX": 248,
+    "minY": -168,
+    "maxY": 200
+  },
+  "width": 896,
+  "height": 368,
+  "source": "https://adventure.land/communitymaps/jayson_PirateShip0",
+  "tilesets": [
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "ship",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/ship.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

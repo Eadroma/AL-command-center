@@ -1,0 +1,60 @@
+﻿@use '../../styles/variables' as *;
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid $retro-border;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $text-muted;
+}
+
+.title {
+  font-family: $font-hud;
+  font-size: 1.75rem;
+  color: $text-primary;
+  line-height: 1;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .sectionHead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .actions { flex-wrap: wrap; }
+}
+
+
+/* --- v2.1 Chrome : titre de section phosphore --- */
+.title { text-shadow: 0 0 8px rgba(124, 58, 237, 0.35); }
+.eyebrow { color: $retro-accent; text-shadow: 0 0 6px rgba(124, 58, 237, 0.4); }
+.sectionHead { border-bottom-style: dashed; }
+
+.sectionHead { gap: 0.75rem; flex-wrap: wrap; }
+.titleGroup { min-width: 0; }
+.actions { flex-wrap: wrap; min-width: 0; }
+.title { overflow-wrap: anywhere; }
+
+:global(html[data-theme='guild']) { .sectionHead { border-bottom-style: solid; } .title { font-size: 1.65rem; font-weight: 650; text-shadow: none; } .eyebrow { color: $text-muted; font-size: 0.7rem; text-shadow: none; letter-spacing: 0.07em; } }
+:global(html[data-theme='guild']) { .sectionHead { border-bottom: 0; margin-bottom: .3rem; padding-bottom: .8rem; } .title { font-size: 1.5rem; line-height: 1.2; letter-spacing: -.035em; } .eyebrow { font-size: .68rem; letter-spacing: .09em; } .actions { gap: .75rem; } }
+:global(html[data-theme='guild']) { @media (max-width: 640px) { .actions { gap: .5rem; } } }

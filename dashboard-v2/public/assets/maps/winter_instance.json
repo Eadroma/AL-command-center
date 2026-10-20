@@ -1,0 +1,30 @@
+{
+  "map": "winter_instance",
+  "key": "jayson_winterInstance",
+  "file": "winter_instance.png",
+  "bounds": {
+    "minX": -296,
+    "maxX": 280,
+    "minY": -344,
+    "maxY": 248
+  },
+  "width": 576,
+  "height": 592,
+  "source": "https://adventure.land/communitymaps/jayson_winterInstance",
+  "tilesets": [
+    {
+      "name": "winter",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/winter.png"
+    },
+    {
+      "name": "outside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/outside.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

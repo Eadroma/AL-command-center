@@ -1,0 +1,26 @@
+{
+  "map": "resort",
+  "key": "resort",
+  "file": "resort.png",
+  "bounds": {
+    "minX": -208,
+    "maxX": 224,
+    "minY": -176,
+    "maxY": 128
+  },
+  "width": 432,
+  "height": 304,
+  "source": "https://adventure.land/communitymaps/resort",
+  "tilesets": [
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

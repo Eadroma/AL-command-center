@@ -1,0 +1,19 @@
+@use '../../styles/variables' as v;
+
+.panel { margin-top: 1rem; padding: 1rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.panelHead { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.8rem; }
+.panelHead span { color: v.$text-faint; font-size: 0.7rem; text-transform: uppercase; }
+.panelHead h3 { color: v.$text-primary; font-size: 1.2rem; }
+.headerActions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 0.65rem; }
+.help, .empty { color: v.$text-muted; margin-bottom: 1rem; font-size: 0.8rem; }
+.formGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); align-items: end; gap: 0.7rem; padding: 0.8rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.input { width: 100%; min-width: 0; padding: 0.6rem; background: v.$retro-surface; color: v.$text-primary; border: 1px solid v.$retro-border; font: inherit; }
+.input:focus-visible { outline: 2px solid v.$retro-accent; outline-offset: 2px; }
+.validation { color: v.$retro-red; margin-top: 0.6rem; font-size: 0.78rem; }
+.rules { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 0.65rem; margin-top: 0.8rem; }
+.rules article { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.65rem; padding: 0.7rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.rules strong, .rules span { display: block; overflow-wrap: anywhere; }
+.rules strong { color: v.$text-primary; font-size: 0.82rem; }
+.rules span { color: v.$text-faint; font-size: 0.68rem; }
+.ruleActions { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+@media (max-width: 700px) { .panelHead { align-items: flex-start; flex-direction: column; } .headerActions { justify-content: flex-start; } }

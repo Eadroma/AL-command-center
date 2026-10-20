@@ -1,0 +1,10 @@
+@use '../../styles/variables' as v;
+.panel { display: grid; gap: 1rem; margin-bottom: 1rem; }
+.head { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.settings { padding: 1rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.settings summary { cursor: pointer; font-weight: 600; margin-bottom: .8rem; }
+.settings p, .roster small { color: v.$text-muted; font-size: .8rem; line-height: 1.5; }
+.inputs { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,220px),1fr)); align-items: start; gap: 1rem; margin: 1rem 0; }
+.roster { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,220px),1fr)); gap: .75rem; margin: .75rem 0; }
+.roster article { display: grid; gap: .35rem; padding: .75rem; border: 1px solid v.$retro-border; }
+.note { margin-bottom: 0; }

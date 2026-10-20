@@ -1,0 +1,23 @@
+@use '../../styles/variables' as v;
+
+.description, .help { color: v.$text-muted; margin-bottom: 1rem; }
+.panel { margin-top: 1rem; padding: 1rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.panelHead { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.8rem; }
+.panelHead span { color: v.$text-faint; font-size: 0.7rem; text-transform: uppercase; }
+.panelHead h3 { color: v.$text-primary; font-size: 1.2rem; }
+.generalGrid, .overrideGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+.switches { display: flex; flex-wrap: wrap; gap: 0.8rem 1.5rem; margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid v.$retro-border; }
+.help { font-size: 0.8rem; }
+.bossGrid, .monsterGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 275px), 1fr)); gap: 0.65rem; }
+.bossGrid article, .monsterGrid article { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 0.6rem; padding: 0.7rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.bossGrid article.active, .monsterGrid article.active { border-color: v.$retro-border-glow; box-shadow: inset 3px 0 v.$retro-accent; }
+.bossGrid strong, .bossGrid span, .monsterGrid strong, .monsterGrid span { display: block; overflow-wrap: anywhere; }
+.bossGrid strong, .monsterGrid strong { color: v.$text-primary; font-size: 0.82rem; }
+.bossGrid span, .monsterGrid span { color: v.$text-faint; font-size: 0.68rem; }
+.bossGrid article > :nth-child(n + 3), .monsterGrid article > :nth-child(n + 3) { grid-column: 1 / -1; }
+.search { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; }
+.search > :first-child { flex: 1; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.2rem 0; padding-top: 1rem; border-top: 1px solid v.$retro-border; }
+.alert { color: v.$retro-red; margin-top: 1rem; }
+.notice { color: v.$retro-green; margin-top: 1rem; }
+@media (max-width: 700px) { .generalGrid, .overrideGrid { grid-template-columns: 1fr; } .panelHead { align-items: flex-start; flex-direction: column; } }

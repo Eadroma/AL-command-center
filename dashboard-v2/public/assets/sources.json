@@ -1,0 +1,625 @@
+{
+  "gameVersion": 17478,
+  "source": "https://github.com/kaansoral/adventureland_mongodb",
+  "license": "https://github.com/kaansoral/adventureland_mongodb/blob/main/LICENSE",
+  "sheets": [
+    {
+      "file": "monster-monsters1.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster1.png"
+    },
+    {
+      "file": "monster-monsters2.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster2.png"
+    },
+    {
+      "file": "monster-birds1.png",
+      "width": 504,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/birds1_modded.png"
+    },
+    {
+      "file": "monster-animals2.png",
+      "width": 504,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/animals2.png"
+    },
+    {
+      "file": "monster-mcustom1.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/custom1.png"
+    },
+    {
+      "file": "monster-cbee.png",
+      "width": 78,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/cbee.png"
+    },
+    {
+      "file": "monster-bscorpion.png",
+      "width": 176,
+      "height": 256,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/blackscorpion.png"
+    },
+    {
+      "file": "monster-rharpy.png",
+      "width": 156,
+      "height": 212,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/harpy_a_1.png"
+    },
+    {
+      "file": "monster-harpy.png",
+      "width": 156,
+      "height": 212,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/harpy_b_1.png"
+    },
+    {
+      "file": "monster-monsters4.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster4.png"
+    },
+    {
+      "file": "monster-monsters3.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster3c.png"
+    },
+    {
+      "file": "monster-vampires.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/vampire2d.png"
+    },
+    {
+      "file": "monster-dknight2.png",
+      "width": 141,
+      "height": 200,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster_dknight2.png"
+    },
+    {
+      "file": "monster-goos.png",
+      "width": 360,
+      "height": 256,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/goos.png"
+    },
+    {
+      "file": "monster-monsterbird1.png",
+      "width": 183,
+      "height": 228,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster_bird1.png"
+    },
+    {
+      "file": "monster-ligerx.png",
+      "width": 150,
+      "height": 184,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/liger_x.png"
+    },
+    {
+      "file": "monster-phoenix.png",
+      "width": 183,
+      "height": 228,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster_phoenix.png"
+    },
+    {
+      "file": "monster-stompy.png",
+      "width": 141,
+      "height": 200,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/stompy3.png"
+    },
+    {
+      "file": "monster-wolf1.png",
+      "width": 195,
+      "height": 264,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster_wolf1.png"
+    },
+    {
+      "file": "monster-wolf2.png",
+      "width": 195,
+      "height": 264,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster_wolf2.png"
+    },
+    {
+      "file": "monster-boar.png",
+      "width": 195,
+      "height": 264,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monster_boar.png"
+    },
+    {
+      "file": "monster-monsterc6.png",
+      "width": 692,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monsterc6.png"
+    },
+    {
+      "file": "monster-creatures2.png",
+      "width": 624,
+      "height": 424,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/creatures2.png"
+    },
+    {
+      "file": "monster-creatures1.png",
+      "width": 312,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/creatures1.png"
+    },
+    {
+      "file": "monster-mcustom2.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/custom2.png"
+    },
+    {
+      "file": "monster-mrgreen.png",
+      "width": 80,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/green.png"
+    },
+    {
+      "file": "monster-slenderman.png",
+      "width": 141,
+      "height": 200,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/slenderman.png"
+    },
+    {
+      "file": "monster-mrpumpkin.png",
+      "width": 80,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/mr_pumpkin.png"
+    },
+    {
+      "file": "monster-icegolem.png",
+      "width": 141,
+      "height": 200,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/iceGolem.png"
+    },
+    {
+      "file": "monster-jrpumpkins.png",
+      "width": 155,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/jrpumpkins.png"
+    },
+    {
+      "file": "monster-monsterc2.png",
+      "width": 564,
+      "height": 400,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/monsterc2.png"
+    },
+    {
+      "file": "monster-robots1.png",
+      "width": 372,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/robots_walkin_B_1.png"
+    },
+    {
+      "file": "monster-dryad.png",
+      "width": 78,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/dryad_green_1.png"
+    },
+    {
+      "file": "monster-spiderqueens.png",
+      "width": 480,
+      "height": 384,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/giantspider.png"
+    },
+    {
+      "file": "monster-dinos.png",
+      "width": 456,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/mondinos_1.png"
+    },
+    {
+      "file": "monster-fairies.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/fairies.png"
+    },
+    {
+      "file": "monster-elementals.png",
+      "width": 720,
+      "height": 512,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/elemental.png"
+    },
+    {
+      "file": "monster-rudolph.png",
+      "width": 195,
+      "height": 264,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/rudolphi.png"
+    },
+    {
+      "file": "monster-grinch.png",
+      "width": 82,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/grinch.png"
+    },
+    {
+      "file": "monster-tiger.png",
+      "width": 150,
+      "height": 184,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/tiger.png"
+    },
+    {
+      "file": "monster-snowman.png",
+      "width": 76,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/snowman.png"
+    },
+    {
+      "file": "monster-chara5.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara5.png"
+    },
+    {
+      "file": "monster-tinyfairies.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/tinyfairies.png"
+    },
+    {
+      "file": "monster-dragold.png",
+      "width": 156,
+      "height": 212,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/Dragold.png"
+    },
+    {
+      "file": "monster-franky.png",
+      "width": 76,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/frankenstein.png"
+    },
+    {
+      "file": "monster-adversaries.png",
+      "width": 324,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/adversaries.png"
+    },
+    {
+      "file": "monster-goblinos.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/goblinos.png"
+    },
+    {
+      "file": "monster-mage.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/mage.png"
+    },
+    {
+      "file": "monster-mechagnome.png",
+      "width": 78,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/mecha_gnome.png"
+    },
+    {
+      "file": "monster-chara4.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara4.png"
+    },
+    {
+      "file": "monster-automatron.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/automatron2.png"
+    },
+    {
+      "file": "monster-animals1.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/animals1.png"
+    },
+    {
+      "file": "monster-robots.png",
+      "width": 372,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/robots.png"
+    },
+    {
+      "file": "monster-cobold.png",
+      "width": 141,
+      "height": 200,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/coboldProto.png"
+    },
+    {
+      "file": "monster-rimedjinn.png",
+      "width": 156,
+      "height": 212,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/monsters/femaledjinn_1.png"
+    },
+    {
+      "file": "monster-marmor6.png",
+      "width": 324,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/cosmetics/armors/marmor6.png"
+    },
+    {
+      "file": "monster-mbody6.png",
+      "width": 324,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/cosmetics/armors/mbody6.png"
+    },
+    {
+      "file": "monster-military3.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/military3.png"
+    },
+    {
+      "file": "monster-marmor10.png",
+      "width": 324,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/cosmetics/armors/marmor10.png"
+    },
+    {
+      "file": "monster-mbody3.png",
+      "width": 324,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/cosmetics/armors/mbody3.png"
+    },
+    {
+      "file": "character-angel_wingless.png",
+      "width": 456,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/angel_wingless.png"
+    },
+    {
+      "file": "character-test.png",
+      "width": 312,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/ninja_turtles.png"
+    },
+    {
+      "file": "character-jpb.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/winners_jpb.png"
+    },
+    {
+      "file": "character-jubchan.png",
+      "width": 78,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/jubchan_1.png"
+    },
+    {
+      "file": "character-swa.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/sheet_winnersa.png"
+    },
+    {
+      "file": "character-jpa.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/winners_jpa.png"
+    },
+    {
+      "file": "character-swb.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/sheet_winnersb.png"
+    },
+    {
+      "file": "character-collection1.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/collection1.png"
+    },
+    {
+      "file": "character-collection2.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/collection2.png"
+    },
+    {
+      "file": "character-collectionx.png",
+      "width": 456,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/collectionx.png"
+    },
+    {
+      "file": "character-custom1.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/custom1.png"
+    },
+    {
+      "file": "character-custom2.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/custom2.png"
+    },
+    {
+      "file": "character-custom3.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/custom3.png"
+    },
+    {
+      "file": "character-jsonx.png",
+      "width": 141,
+      "height": 200,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/others/jsonX.png"
+    },
+    {
+      "file": "character-newyear_tree.png",
+      "width": 144,
+      "height": 64,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/others/newyear_tree.png"
+    },
+    {
+      "file": "character-ship1.png",
+      "width": 201,
+      "height": 64,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/others/ship2.png"
+    },
+    {
+      "file": "character-bonus1.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/bonus1.png"
+    },
+    {
+      "file": "character-military2.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/military2.png"
+    },
+    {
+      "file": "character-knights.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/knights.png"
+    },
+    {
+      "file": "character-chara2.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara2.png"
+    },
+    {
+      "file": "character-chara3.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara3.png"
+    },
+    {
+      "file": "character-chara6.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara6.png"
+    },
+    {
+      "file": "character-chara8.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara8.png"
+    },
+    {
+      "file": "character-chara7.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/chara7.png"
+    },
+    {
+      "file": "character-npc3.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/npc3.png"
+    },
+    {
+      "file": "character-npc4.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/npc4.png"
+    },
+    {
+      "file": "character-npc5.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/npc5.png"
+    },
+    {
+      "file": "character-npc1.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/npc1.png"
+    },
+    {
+      "file": "character-npc6.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/npc6.png"
+    },
+    {
+      "file": "character-dwarf2.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/dwarf2.png"
+    },
+    {
+      "file": "character-tristone_m.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/tristone_m.png"
+    },
+    {
+      "file": "character-tristone_f.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/tristone_f.png"
+    },
+    {
+      "file": "character-animationc.png",
+      "width": 564,
+      "height": 400,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/animationc.png"
+    },
+    {
+      "file": "character-mystics.png",
+      "width": 312,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/mystics.png"
+    },
+    {
+      "file": "character-animation2.png",
+      "width": 564,
+      "height": 400,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/animation2.png"
+    },
+    {
+      "file": "character-animation1.png",
+      "width": 564,
+      "height": 400,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/animation1i.png"
+    },
+    {
+      "file": "character-animation3.png",
+      "width": 564,
+      "height": 400,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/characters/animation3.png"
+    },
+    {
+      "file": "items-rawitems.png",
+      "width": 400,
+      "height": 800,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/raw_items.png"
+    },
+    {
+      "file": "items-pack_20.png",
+      "width": 320,
+      "height": 1280,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/pack_20vt8.png"
+    },
+    {
+      "file": "items-custom.png",
+      "width": 140,
+      "height": 180,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/custom.png"
+    },
+    {
+      "file": "items-items40.png",
+      "width": 200,
+      "height": 80,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/items_40_remastered.png"
+    },
+    {
+      "file": "items-community.png",
+      "width": 140,
+      "height": 180,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/community.png"
+    },
+    {
+      "file": "items-pack_1a.png",
+      "width": 256,
+      "height": 2048,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/pack_1a.png"
+    }
+  ]
+}

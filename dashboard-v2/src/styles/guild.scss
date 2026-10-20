@@ -1,0 +1,74 @@
+// Guild is opt-in through the root attribute. Retro uses the original SCSS fallbacks.
+html[data-theme='guild'] {
+  color-scheme: dark;
+  --theme-bg: #111214;
+  --theme-surface: #1c1d20;
+  --theme-surface-alt: #28292e;
+  --theme-border: #38393f;
+  --theme-border-rgb: 56, 57, 63;
+  --theme-border-strong: #65666f;
+  --theme-accent: #78b4ff;
+  --theme-accent-rgb: 120, 180, 255;
+  --theme-accent-adjust-10: #98c6ff;
+  --theme-accent-adjust-8: #8bbfff;
+  --theme-accent-adjust-minus5: #65a5f2;
+  --theme-surface-alt-adjust-4: #33343a;
+  --theme-accent-glow: transparent;
+  --theme-green: #6ee7a4;
+  --theme-green-rgb: 110, 231, 164;
+  --theme-amber: #f5c76b;
+  --theme-amber-rgb: 245, 199, 107;
+  --theme-red: #ff8b94;
+  --theme-red-rgb: 255, 139, 148;
+  --theme-cyan: #7dd3fc;
+  --theme-cyan-rgb: 125, 211, 252;
+  --theme-text: #f3f3f5;
+  --theme-muted: #b9bac3;
+  --theme-faint: #a0a2ad;
+  --theme-radius: 14px;
+  --theme-display-font: system-ui;
+  --material-chrome: rgba(24, 25, 28, 0.86);
+  --material-border: rgba(255, 255, 255, 0.09);
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  // Aliases for inventory panels that previously used separate fallback colours.
+  --surface-1: var(--theme-surface);
+  --border-color: var(--theme-border);
+  --text-primary: var(--theme-text);
+  --text-muted: var(--theme-muted);
+  --font-mono: 'JetBrains Mono', monospace;
+
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.55; font-optical-sizing: auto; }
+  body::before, body::after { display: none; }
+  h1, h2, h3, h4 { font-family: 'Segoe UI', system-ui, sans-serif; text-transform: none; letter-spacing: -0.015em; text-shadow: none; }
+  button, input, select, textarea { font-family: inherit; }
+  :focus-visible { outline: 2px solid var(--theme-accent); outline-offset: 3px; }
+  input, select, textarea { color-scheme: dark; }
+  a { text-underline-offset: 3px; }
+  code, pre { font-family: 'JetBrains Mono', monospace; }
+  dl dd, table { font-variant-numeric: tabular-nums; }
+  h1 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); line-height: 1.15; letter-spacing: -0.035em; }
+  h2 { letter-spacing: -0.025em; line-height: 1.25; }
+  h3, h4 { letter-spacing: -0.012em; }
+  button, a, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  button:not(:disabled), summary, a { transition: background-color 140ms ease, color 140ms ease, transform 180ms var(--motion-ease); }
+  button:active:not(:disabled), summary:active { transform: scale(0.98); transition-duration: 50ms; }
+  summary { min-height: 2.75rem; align-content: center; }
+  input, select, textarea { border-radius: 8px; }
+  button, summary { font-variant-numeric: tabular-nums; }
+  :where(dialog) { box-shadow: 0 24px 90px rgba(0, 0, 0, .45); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; }
+    button:active:not(:disabled), summary:active { transform: none; }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    --material-chrome: #1c1d20;
+    :where(header, dialog) { backdrop-filter: none !important; }
+  }
+  @media (prefers-contrast: more) {
+    --theme-border: #92939e;
+    --theme-muted: #dedee5;
+    --theme-faint: #d0d1d9;
+    --material-border: #92939e;
+    --material-chrome: #1c1d20;
+  }
+}

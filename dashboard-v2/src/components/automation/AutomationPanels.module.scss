@@ -1,0 +1,14 @@
+@use '../../styles/variables' as v;
+
+.panel { margin-bottom: 18px; }
+.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; align-items: end; }
+.participants { display: flex; flex-wrap: wrap; gap: 14px; margin: 12px 0; }
+.rules { display: grid; gap: 10px; margin-top: 16px; }
+.rule { border: 1px solid v.$retro-border; padding: 12px; min-width: 0; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.help { color: v.$text-muted; line-height: 1.6; }
+.log { display: grid; gap: 8px; padding: 0; list-style: none; font-size: .75rem; }
+.log li { display: flex; flex-wrap: wrap; gap: 8px; }
+.metric { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.panel a { color: v.$retro-cyan; }
+.panel details summary { cursor: pointer; padding: 8px 0; }

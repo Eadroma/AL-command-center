@@ -1,0 +1,49 @@
+@use '../../styles/variables' as v;
+
+.description { color: v.$text-muted; margin-bottom: 1rem; }
+.layout { display: grid; grid-template-columns: minmax(280px, 360px) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.controls, .results { display: grid; gap: 1rem; min-width: 0; }
+.monsterStats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.45rem; margin-top: 0.8rem; }
+.monsterStats div { border: 1px solid v.$retro-border; background: v.$retro-bg; padding: 0.5rem; min-width: 0; }
+.monsterStats dt { color: v.$text-faint; font-size: 0.68rem; text-transform: uppercase; }
+.monsterStats dd { margin: 0.2rem 0 0; color: v.$text-primary; font-family: v.$font-hud; font-size: 1.1rem; overflow-wrap: anywhere; }
+.partyList { display: grid; gap: 0.55rem; }
+.partyList article { display: grid; grid-template-columns: minmax(0, 1fr) 108px; gap: 0.25rem 0.65rem; padding: 0.65rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.partyList article.participantActive { border-color: v.$retro-green; box-shadow: inset 3px 0 0 v.$retro-green; }
+.characterToggle { display: flex; align-items: center; gap: 0.55rem; cursor: pointer; min-width: 0; }
+.characterToggle span { display: grid; min-width: 0; }
+.characterToggle strong { color: v.$text-primary; }
+.characterToggle small, .observed { color: v.$text-faint; }
+.partyList article > :nth-child(2) { grid-row: span 2; }
+.observed { margin-left: 1.4rem; }
+.comparisonWarning { margin: 0.75rem 0 0; padding: 0.6rem; border-left: 3px solid v.$retro-amber; background: rgba(245, 158, 11, 0.08); color: v.$text-muted; }
+.assumptions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: end; }
+.metrics { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 0.75rem; }
+.metrics strong { display: block; color: v.$retro-cyan; font-family: v.$font-hud; font-size: 2rem; line-height: 1; }
+.metrics small { display: block; color: v.$text-faint; margin-top: 0.35rem; }
+.dropList { display: grid; gap: 0.4rem; }
+.dropList article { display: grid; grid-template-columns: 44px minmax(140px, 1fr) minmax(110px, .55fr) minmax(110px, .55fr); align-items: center; gap: 0.65rem; padding: 0.45rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.dropList article > div { display: grid; min-width: 0; }
+.dropList strong { color: v.$text-primary; overflow-wrap: anywhere; }
+.dropList small { color: v.$text-faint; overflow-wrap: anywhere; }
+.rankingHead, .rankingList button { display: grid; grid-template-columns: 34px minmax(180px, 1fr) minmax(105px, .6fr) minmax(90px, .45fr) minmax(100px, .55fr) minmax(120px, .55fr); align-items: center; gap: 0.6rem; }
+.rankingHead { padding: 0 0.55rem 0.4rem; color: v.$text-faint; font-size: 0.68rem; text-transform: uppercase; }
+.rankingList { display: grid; max-height: 620px; overflow: auto; border: 1px solid v.$retro-border; }
+.rankingList button { width: 100%; min-height: 48px; border: 0; border-bottom: 1px solid v.$retro-border; padding: 0.4rem 0.55rem; background: v.$retro-bg; color: v.$text-muted; font: inherit; text-align: left; cursor: pointer; }
+.rankingList button:hover, .rankingList button:focus-visible { background: v.$retro-surface-alt; outline: 1px solid v.$retro-accent; outline-offset: -1px; }
+.rankingList button.rankingActive { background: rgba(124, 58, 237, 0.13); box-shadow: inset 3px 0 0 v.$retro-accent; }
+.rankingList button > strong { color: v.$retro-amber; font-family: v.$font-hud; font-size: 1.1rem; }
+.rank { color: v.$text-faint; text-align: center; }
+.rankingMonster { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
+.rankingMonster > span { display: grid; min-width: 0; }
+.rankingMonster strong { color: v.$text-primary; overflow-wrap: anywhere; }
+.rankingMonster small { color: v.$text-faint; }
+.rankingList :global(.badge) svg { vertical-align: -2px; }
+.notes { display: flex; align-items: flex-start; gap: 0.65rem; border: 1px solid v.$retro-border; background: v.$retro-surface; padding: 0.75rem; color: v.$text-muted; }
+.notes svg { flex: 0 0 auto; color: v.$retro-amber; }
+.notes p { margin: 0; flex: 1; }
+.notes strong { color: v.$text-primary; }
+
+@media (max-width: 1050px) { .layout { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dropList article { grid-template-columns: 44px minmax(0, 1fr); } .rankingHead { display: none; } .rankingList button { grid-template-columns: 28px minmax(120px, 1fr) minmax(88px, .6fr); } .rankingList button > :nth-child(4), .rankingList button > :nth-child(5) { display: none; } .rankingList button > :nth-child(6) { grid-column: 2 / 4; } }
+@media (max-width: 480px) { .monsterStats, .assumptions, .metrics { grid-template-columns: 1fr 1fr; } .partyList article { grid-template-columns: 1fr; } }

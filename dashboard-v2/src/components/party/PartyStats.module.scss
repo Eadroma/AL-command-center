@@ -1,0 +1,40 @@
+@use '../../styles/variables' as v;
+.page { display:grid; gap:1.5rem; min-width:0; }
+.heading { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+.heading h2 { margin:0; font-size:1.1rem; }
+.heading p,.card p,.note { color:v.$text-muted; font-size:.8rem; line-height:1.6; }
+.ranges { display:flex; gap:.4rem; }
+.characters { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem; }
+.card { border:1px solid v.$retro-border; background:v.$retro-surface; padding:1.25rem; min-width:0; border-radius:8px; }
+.card header { display:flex; justify-content:space-between; align-items:start; gap:.7rem; }
+.card h3 { margin:0 0 .35rem; font-size:1rem; }.card header span,.location { font-size:.75rem; color:v.$text-muted; }
+.live { color:#72dfb4!important; }.offline { color:v.$text-muted; }
+.resource { display:grid; grid-template-columns:25px minmax(0,1fr) 105px; align-items:center; gap:.5rem; font-size:.7rem; margin:.8rem 0; }.resource>div { height:9px; background:rgba(128,128,128,.15); border-radius:3px; overflow:hidden; }.resource i { height:100%; display:block; }.resource strong { text-align:right; font-weight:400; }.hp { background:#e4798a; }.mp { background:#69a8ef; }
+.metrics { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.1rem; margin:1.5rem 0; }.metrics dt { font-size:.7rem; color:v.$text-muted; margin-bottom:.4rem; }.metrics dd { margin:0; font-size:.95rem; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }.card summary { cursor:pointer; font-size:.75rem; padding:.7rem 0; border-top:1px solid v.$retro-border; }
+.effects { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; }.effects span { font-size:.65rem; background:rgba(128,128,128,.12); padding:.3rem .45rem; border-radius:4px; }
+.charts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25rem; }.comparison { display:grid; grid-template-columns:90px minmax(0,1fr) 70px; gap:.7rem; align-items:center; margin:1rem 0; font-size:.75rem; }.comparison>div { background:rgba(128,128,128,.12); height:10px; border-radius:3px; overflow:hidden; }.comparison i { display:block; background:#72dfb4; height:100%; }.comparison strong { text-align:right; }.plot { width:100%; height:160px; }.plot rect { fill:#e3bd72; }.axis { display:flex; justify-content:space-between; gap:1rem; color:v.$text-muted; font-size:.65rem; }.note { margin:0; }
+@media(max-width:650px) { .charts,.characters { grid-template-columns:minmax(0,1fr); } }
+
+.xp { background:#e3bd72; }.cc { background:#c7a0ef; }
+.scroll { max-height:320px; overflow:auto; padding-right:.4rem; }
+.itemGrid { display:grid; grid-template-columns:repeat(auto-fill,44px); gap:6px; margin:1rem 0; }
+.wide { grid-column:1 / -1; }
+.trackerRow { display:grid; grid-template-columns:32px 1fr auto; align-items:center; gap:.8rem; padding:.6rem 0; border-bottom:1px solid v.$retro-border; font-size:.8rem; }
+.contribution { display:grid; gap:.5rem; padding:1rem 0; border-bottom:1px solid v.$retro-border; }.contribution span { font-size:.75rem; color:v.$text-muted; }
+.card select,.card input { background:v.$retro-surface; color:inherit; border:1px solid v.$retro-border; border-radius:5px; padding:.5rem; max-width:100%; font:inherit; font-size:.75rem; }
+.card header { flex-wrap:wrap; }.ranges { flex-wrap:wrap; }
+.filters { display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:start; }
+.filters fieldset { border:0; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:.75rem 1.25rem; }
+.filters legend { color:v.$text-muted; font-size:.75rem; margin-bottom:.75rem; }
+.filters label { display:flex; align-items:center; gap:.5rem; font-size:.8rem; }
+.filters input[type='checkbox'] { accent-color:#72dfb4; width:16px; height:16px; }
+.filters>label { flex-direction:column; align-items:start; }
+.filters>p { flex-basis:100%; margin:0; }
+.quality { display:block; font-size:.7rem; color:v.$text-muted; line-height:1.6; }
+.warning { color:#e3bd72; }
+.tableWrap { overflow-x:auto; margin:1rem 0; }
+.balanceTable { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-size:.8rem; }
+.balanceTable th,.balanceTable td { padding:.85rem .7rem; border-bottom:1px solid v.$retro-border; text-align:right; white-space:nowrap; }
+.balanceTable th:first-child { text-align:left; }
+.balanceTable thead th { color:v.$text-muted; font-size:.7rem; font-weight:500; }
+.balanceTable small { display:block; color:v.$text-muted; font-size:.65rem; padding-top:.4rem; }

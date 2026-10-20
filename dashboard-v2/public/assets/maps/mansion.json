@@ -1,0 +1,30 @@
+{
+  "map": "mansion",
+  "key": "jayson_Mansion",
+  "file": "mansion.png",
+  "bounds": {
+    "minX": -440,
+    "maxX": 440,
+    "minY": -688,
+    "maxY": 56
+  },
+  "width": 880,
+  "height": 744,
+  "source": "https://adventure.land/communitymaps/jayson_Mansion",
+  "tilesets": [
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "doors",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/doors.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

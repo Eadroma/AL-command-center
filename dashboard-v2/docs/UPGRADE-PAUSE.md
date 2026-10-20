@@ -1,0 +1,5 @@
+# Pausing an upgrade target
+
+Merchant → Production → Upgrade targets exposes Pause / Resume per item. It submits a Browser CODE request to the merchant and updates the draft rule. Save the profile to keep the dashboard in sync. The runtime stores the operator override per character/item, so a CODE restart does not silently resume the item. Pausing changes neither the production run ID nor counters/budget/target. Existing submitted actions are reconciled normally; the pause blocks new attempts and NPC base purchases. Resume removes the block without resetting production limits or unresolved transactions.
+
+The paused flag also lives in the profile schema and compiled policy. Sale protection for configured upgrade stock remains in place. The request uses the configured enabled merchant and only accepts configured item IDs. Remote execution is queued by the game; receipt is not proof of immediate application. Failures are displayed in the panel. Use a fresh deployed merchant bundle for restart-persistent overrides.

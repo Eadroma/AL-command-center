@@ -1,0 +1,81 @@
+How to run Eadroma (warrior) and Aedroma (priest) together
+==========================================================
+
+Rules that must be true
+-----------------------
+- Both characters must be on the SAME game server (example: EU II).
+  Parties and CODE messages (send_cm) do not cross servers.
+- Never load the same character twice (browser + Mainframe, or two windows).
+- Paste each script into that character's CODE editor, then press RUN.
+- Do not enable Chat spam. These scripts only use game_log and send_cm.
+
+Easiest method while you are at the PC (recommended)
+----------------------------------------------------
+1. Log into Adventure Land.
+2. Put Eadroma on EU II (or any one realm). Note the exact server.
+3. Open a second window: type /window in chat, or Character Select -> New Game Window.
+4. Log Aedroma into THAT SAME server.
+5. Open code/eadroma-warrior.js, copy ALL of it, paste into Eadroma's CODE, RUN.
+6. Open code/aedroma-priest.js, copy ALL of it, paste into Aedroma's CODE, RUN.
+7. Third window: log Tonerre (mage) onto the SAME server, paste
+   code/tonerre-mage.js, RUN. Merchant is character #4, not this step.
+
+What should happen
+------------------
+- Eadroma equips the Blade, farms goo, invites Aedroma, shares target via send_cm.
+- Eadroma drinks HP potions only in an emergency (about 12% HP if the priest is close,
+  22% if the priest is not). MP potions only if MP is below 40 (Taunt cost).
+- Aedroma follows Eadroma, heals first when the warrior is below 85% HP (or missing
+  180+ HP), and only then attacks the same monster. Heal and attack share one cooldown.
+- They ignore monsters already fighting unrelated players.
+
+If they do not party
+--------------------
+- Confirm both CODE runners are actually running (green RUN).
+- Confirm both names in CONFIG.PARTNER match exactly (capital letters matter).
+- Confirm they are on the same realm, not just the same region.
+- Stand them near each other once so the invite can land.
+
+Mainframe / 24-7 (optional, uses Steam hours)
+---------------------------------------------
+Steam free time is used before Shells. Each direct Mainframe link is billed
+separately. Prefer: start Eadroma on Mainframe, then let CODE call
+start_character("Aedroma") so Aedroma is an included worker on the same machine.
+
+Do not Mainframe-link a character that is already online in the browser.
+
+These files are the source of truth. Re-copy them into the in-game CODE editor
+whenever you change them. Saving a CODE slot in-game does not update these files.
+
+caracAL (run CODE on this PC, not in the browser)
+-------------------------------------------------
+Folder: caracAL/  (client from https://github.com/numbereself/caracAL)
+
+1. Log Eadroma, Aedroma, and Tonerre OUT of the game client.
+   The same character cannot be in the browser and in caracAL at once.
+2. Sync scripts:  caracAL\sync-farm-code.cmd
+   (or edit files under caracAL\CODE\farm\ directly)
+3. First login, pick one:
+   a) Copy caracAL\config.farm.EXAMPLE.js to caracAL\config.js
+      Replace session with user_id-user_auth (from in-game:
+      show_json(parent.user_id+"-"+parent.user_auth)
+      or set AL_SESSION in the environment).
+   b) cd caracAL ; node main.js
+      Answer email/password, enable Eadroma / Aedroma / Tonerre, realm EU II.
+      Then edit config.js so scripts are:
+      farm/eadroma-warrior.js
+      farm/aedroma-priest.js
+      farm/tonerre-mage.js
+      Set enable_TYPECODE to false unless you want Webpack.
+4. Start:  caracAL\start-farm.cmd
+   Optional dashboard: http://localhost:924  (enable_bwi in config.js)
+   Windows may block .ps1 files; use the .cmd launchers, not start-farm.ps1.
+
+Node 14 is what caracAL documents. This PC also has a newer Node; if
+socket.io fails, install Node 14 (nvm-windows) and run with that.
+
+Do not share config.js. The session key is a full account login.
+
+Long-term plan (levels, farms, third class)
+-------------------------------------------
+See docs/ROADMAP.txt — mage is the recommended third class; merchant is fourth.

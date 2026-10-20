@@ -1,0 +1,30 @@
+{
+  "map": "level2w",
+  "key": "jayson_underground_level2_westv2",
+  "file": "level2w.png",
+  "bounds": {
+    "minX": -728,
+    "maxX": 40,
+    "minY": -216,
+    "maxY": 392
+  },
+  "width": 768,
+  "height": 608,
+  "source": "https://adventure.land/communitymaps/jayson_underground_level2_westv2",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom2",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom2.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

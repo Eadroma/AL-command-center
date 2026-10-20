@@ -1,0 +1,33 @@
+@use '../../styles/variables' as v;
+
+.description, .capture { color: v.$text-muted; margin-bottom: 1rem; }
+.deposit { margin-bottom: 1rem; padding: .9rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.depositHead { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; }
+.depositHead span { color: v.$text-faint; font: .62rem v.$font-mono; text-transform: uppercase; }
+.depositHead h3 { color: v.$text-primary; font-size: 1rem; }
+.deposit p { margin: 0 0 .8rem; color: v.$text-muted; font-size: .76rem; }
+.depositActions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.sorter { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; padding: 0.9rem; border: 1px solid v.$retro-accent; background: v.$retro-surface; }
+.sorter > div:first-child { min-width: 0; }
+.sorter span { color: v.$text-faint; font: 0.62rem v.$font-mono; text-transform: uppercase; }
+.sorter h3 { color: v.$text-primary; font-size: 1rem; }
+.sorter p { margin: 0.25rem 0; color: v.$text-muted; font-size: 0.78rem; }
+.sorter small { color: v.$text-faint; font-size: 0.68rem; }
+.sortActions { display: grid; justify-items: end; gap: 0.5rem; flex: 0 0 auto; }
+.sortNotice, .sortError { margin: 0 0 0.75rem; font-size: 0.75rem; }
+.sortNotice { color: v.$retro-green; }
+.sortError { color: v.$retro-red; }
+.capture { font-size: 0.8rem; }
+.tools {
+  display: grid;
+  grid-template-columns: minmax(150px, .8fr) minmax(220px, 2fr) minmax(150px, 1fr) auto;
+  align-items: end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.groups { display: grid; gap: 1.5rem; }
+.group h3 { color: v.$text-muted; font-size: 1rem; margin-bottom: 0.6rem; }
+.group h3 span { color: v.$text-faint; margin-left: 0.4rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 0.6rem; }
+
+@media (max-width: 760px) { .depositHead, .sorter { align-items: stretch; flex-direction: column; } .sortActions { justify-items: stretch; } .tools { grid-template-columns: minmax(0, 1fr); } }

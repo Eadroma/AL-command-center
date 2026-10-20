@@ -1,0 +1,18 @@
+@use '../../styles/variables' as v;
+.description { max-width: 900px; margin-bottom: 1rem; color: v.$text-muted; }
+.windows { display: flex; gap: 0.35rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 0.8rem; }
+.grid article { padding: 0.85rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.head strong { color: v.$text-primary; font: 1.1rem v.$font-hud; }
+.grid dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; margin: 0.7rem 0; }
+.grid dl div { padding: 0.45rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.grid dt { display: flex; align-items: center; gap: 0.2rem; color: v.$text-faint; font-size: 0.6rem; text-transform: uppercase; }
+.grid dd { margin: 0.2rem 0 0; color: v.$text-primary; font: 1rem v.$font-hud; }
+.chart { display: flex; align-items: end; gap: 2px; height: 76px; padding: 5px; border: 1px solid v.$retro-border; background: v.$retro-bg; overflow: hidden; }
+.chart span { flex: 1 1 4px; min-width: 2px; max-width: 14px; background: v.$retro-cyan; opacity: 0.8; }
+.grid article > small { display: block; margin-top: 0.4rem; color: v.$text-faint; }
+.error { color: v.$retro-red; }
+@media (max-width: 460px) { .grid dl { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }

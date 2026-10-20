@@ -1,0 +1,26 @@
+{
+  "map": "batcave",
+  "key": "batcave",
+  "file": "batcave.png",
+  "bounds": {
+    "minX": -264,
+    "maxX": 376,
+    "minY": -232,
+    "maxY": 216
+  },
+  "width": 640,
+  "height": 448,
+  "source": "https://adventure.land/communitymaps/batcave",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

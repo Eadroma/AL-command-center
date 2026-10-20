@@ -1,0 +1,17 @@
+@use '../../styles/variables' as v;
+
+.card { grid-column: 1 / -1; }
+.list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 0.7rem; }
+.row { padding: 0.75rem; border: 1px solid v.$retro-border; background: v.$retro-bg; }
+.head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.head strong { color: v.$text-primary; }
+.state { display: block; margin: 0.55rem 0; color: v.$retro-accent; font-size: 0.8rem; overflow-wrap: anywhere; }
+.row dl { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin: 0; }
+.row dl div { min-width: 0; }
+.row dt { color: v.$text-faint; font-size: 0.62rem; text-transform: uppercase; }
+.row dd { margin: 0.1rem 0 0; color: v.$text-muted; font-size: 0.7rem; overflow-wrap: anywhere; }
+.blocked { margin: 0.55rem 0 0; color: v.$retro-amber; font-size: 0.72rem; }
+.watchdog { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.5rem; margin-top: 0.65rem; padding-top: 0.55rem; border-top: 1px solid v.$retro-border; color: v.$text-faint; font-size: 0.64rem; text-transform: uppercase; }
+.watchdog small { grid-column: 1 / -1; color: v.$text-muted; font-size: 0.67rem; text-transform: none; overflow-wrap: anywhere; }
+.watchdogWarning { color: v.$retro-amber; }
+.effects { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.65rem; padding-top: 0.55rem; border-top: 1px solid v.$retro-border; }

@@ -1,0 +1,73 @@
+@use '../../styles/variables' as *;
+
+.card {
+  background-color: $retro-surface;
+  border: 1px solid $retro-border;
+  border-radius: $radius-none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &.active {
+    border-color: $retro-accent;
+    box-shadow: 0 0 10px $retro-accent-glow;
+  }
+
+  &.alert {
+    border-color: $retro-red;
+    box-shadow: 0 0 10px rgba(var(--theme-red-rgb, 239, 68, 68), 0.2);
+  }
+}
+
+// Header bar: title left, optional actions right
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid $retro-border;
+  background-color: $retro-surface-alt;
+  gap: 0.5rem;
+}
+
+.title {
+  font-family: $font-hud;
+  font-size: 1.25rem;
+  margin: 0;
+  color: $text-primary;
+  flex: 1;
+}
+
+// Slot for header badge / button nodes
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.content {
+  padding: 0.8rem;
+  flex: 1;
+}
+
+.title { overflow-wrap: anywhere; min-width: 0; }
+.card, .content { min-width: 0; }
+.header { flex-wrap: wrap; }
+
+// --- v2.1 Chrome : effet "fenetre HUD" ---
+.card {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.card.active {
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.35), inset 0 0 14px rgba(124, 58, 237, 0.08);
+}
+
+.title {
+  text-shadow: 0 0 6px rgba(124, 58, 237, 0.25);
+}
+
+:global(html[data-theme='guild']) { .card { box-shadow: none; } .card.active { border-color: $retro-border; box-shadow: none; } .card.alert { box-shadow: none; } .header { background: $retro-surface; padding: 0.85rem 1rem; } .content { padding: 1rem; } .title { font-size: 1rem; font-weight: 650; text-shadow: none; } }
+:global(html[data-theme='guild']) { .card { box-shadow: 0 2px 8px rgba(0,0,0,.08); } .header { border-radius: 14px 14px 0 0; border-bottom-color: var(--material-border); padding: 1.05rem 1.25rem; } .content { padding: 1.25rem; } .title { font-size: 1.05rem; } }

@@ -1,0 +1,9 @@
+@use '../../styles/variables' as v;
+.spotLayout { display:grid; grid-template-columns:minmax(0,440px) minmax(160px,1fr); gap:1.5rem; align-items:start; }
+.map { width:100%; max-width:440px; image-rendering:pixelated; cursor:crosshair; border:1px solid v.$retro-border; }
+.map text { fill:white; font-size:11px; paint-order:stroke; stroke:#101722; stroke-width:3px; }
+.fields { display:grid; gap:.8rem; max-width:320px; }
+.rows { display:grid; gap:.6rem; margin:1rem 0; }
+.row { display:flex; gap:.7rem; align-items:center; flex-wrap:wrap; padding:.7rem; border:1px solid v.$retro-border; }
+.row span { flex:1; min-width:180px; overflow-wrap:anywhere; }
+@media(max-width:650px) { .spotLayout { grid-template-columns:1fr; } }

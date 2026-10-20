@@ -1,0 +1,108 @@
+﻿@use './variables' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: $retro-bg;
+  color: $text-primary;
+  font-family: $font-mono;
+  font-size: 14px;
+  line-height: 1.5;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar retro pixel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $retro-bg;
+  border-left: 1px solid $retro-border;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $retro-border-glow;
+  border: 1px solid $retro-bg;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $retro-accent;
+}
+
+/* Typographie Headings */
+h1, h2, h3, h4 {
+  font-family: $font-hud;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* --- Couches CRT (v2.1) — superposees a toute l'app, non interactives --- */
+
+/* Trame scanline horizontale, comme un ecran cathodique */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    $scanline-color 0px,
+    $scanline-color 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.5;
+}
+
+/* Vignette : bords de l'ecran assombris (tube CRT) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    $vignette-color 100%
+  );
+}
+
+/* Selection de texte aux couleurs du theme */
+::selection {
+  background: $retro-accent;
+  color: #ffffff;
+}
+
+/* Clavier : anneau de focus visible (accessibilite) */
+:focus-visible {
+  outline: 1px solid $retro-border-glow;
+  outline-offset: 2px;
+}
+
+/* Respect des preferences : desactive toute animation si l'utilisateur l'a demande */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

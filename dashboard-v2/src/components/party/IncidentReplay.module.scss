@@ -1,0 +1,10 @@
+@use '../../styles/variables' as v;
+.replay { margin: .8rem 0; padding: .8rem; border: 1px solid v.$retro-border; min-width: 0; }
+.replay summary { cursor: pointer; color: v.$retro-accent; }
+.scrubber { display: grid; gap: .5rem; color: v.$text-muted; font-size: .8rem; margin: 1rem 0; }
+.scrubber input { width: 100%; }
+.details { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: .7rem; }
+.details dt { color: v.$text-faint; font-size: .7rem; }
+.details dd { margin: .3rem 0; overflow-wrap: anywhere; color: v.$text-primary; }
+.actions { padding-left: 1.2rem; font-size: .8rem; color: v.$text-muted; overflow-wrap: anywhere; }
+.replay .warning { color: v.$retro-amber; }

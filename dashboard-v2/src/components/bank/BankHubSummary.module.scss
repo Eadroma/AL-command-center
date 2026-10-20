@@ -1,0 +1,6 @@
+.card { padding: 1.5rem; margin-bottom: 1.5rem; border: 1px solid var(--border, #384354); border-radius: .6rem; }
+.head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; h3 { margin: 0; } }
+.summary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.5rem; margin: 1.5rem 0; div { display: flex; flex-direction: column; gap: .5rem; } span { opacity: .7; } }
+.card details { margin-top: 1rem; summary { cursor: pointer; } li { margin: .75rem 0; } }
+.table { overflow: auto; table { width: 100%; border-collapse: collapse; } th,td { text-align: left; padding: .6rem; border-bottom: 1px solid #384354; } }
+@media(max-width:640px) { .summary { grid-template-columns: 1fr; } .head { flex-wrap: wrap; } }

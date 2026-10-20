@@ -1,0 +1,54 @@
+﻿@use '../../styles/variables' as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: $radius-none;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+
+  &.success {
+    background-color: rgba(var(--theme-green-rgb, 34, 197, 94), 0.15);
+    color: $retro-green;
+    border-color: rgba(var(--theme-green-rgb, 34, 197, 94), 0.3);
+  }
+
+  &.warning {
+    background-color: rgba(var(--theme-amber-rgb, 245, 158, 11), 0.15);
+    color: $retro-amber;
+    border-color: rgba(var(--theme-amber-rgb, 245, 158, 11), 0.3);
+  }
+
+  &.danger {
+    background-color: rgba(var(--theme-red-rgb, 239, 68, 68), 0.15);
+    color: $retro-red;
+    border-color: rgba(var(--theme-red-rgb, 239, 68, 68), 0.3);
+  }
+
+  &.info {
+    background-color: rgba(var(--theme-cyan-rgb, 6, 182, 212), 0.15);
+    color: $retro-cyan;
+    border-color: rgba(var(--theme-cyan-rgb, 6, 182, 212), 0.3);
+  }
+
+  &.neutral {
+    background-color: rgba(var(--theme-border-rgb, 42, 42, 74), 0.4);
+    color: $text-muted;
+    border-color: $retro-border;
+  }
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+:global(html[data-theme='guild']) { .badge { font-family: 'Segoe UI', system-ui, sans-serif; text-transform: none; font-size: 0.78rem; } .dot { box-shadow: none; } }

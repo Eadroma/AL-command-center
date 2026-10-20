@@ -1,0 +1,17 @@
+@use '../../styles/variables' as v;
+
+.panel { margin-top: 1rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.head { min-height: 4.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 1rem; }
+.trigger { min-width: 0; flex: 1; display: flex; align-items: center; gap: 0.7rem; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.trigger:focus-visible { outline: 2px solid v.$retro-accent; outline-offset: 4px; }
+.trigger span, .trigger small, .trigger strong { display: block; }
+.trigger small { color: v.$text-faint; font-size: 0.7rem; text-transform: uppercase; }
+.trigger strong { margin-top: 0.12rem; color: v.$text-primary; font-size: 1.2rem; }
+.chevron, .chevronOpen { flex: 0 0 auto; color: v.$retro-accent; transition: transform 150ms ease; }
+.chevron { transform: rotate(-90deg); }
+.chevronOpen { transform: rotate(0); }
+.actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 0.65rem; }
+.content { padding: 0 1rem 1rem; border-top: 1px solid color-mix(in srgb, v.$retro-border 65%, transparent); }
+@media (max-width: 700px) { .head { align-items: flex-start; flex-direction: column; } .actions { width: 100%; justify-content: flex-start; } }
+
+:global(html[data-theme='guild']) { .panel { border-radius: 4px; } }

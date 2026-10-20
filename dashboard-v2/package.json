@@ -1,0 +1,45 @@
+{
+  "name": "dashboard-v2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n \"API,APP\" -c \"magenta,cyan\" \"pnpm:server:watch\" \"pnpm:client\"",
+    "client": "vite",
+    "server": "tsx server/index.ts",
+    "server:watch": "tsx watch server/index.ts",
+    "build": "tsc -b && vite build",
+    "test": "vitest run",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "assets:refresh": "node server/import-assets.mjs",
+    "test:unit": "vitest run tests/api-client.test.ts tests/bank.test.ts tests/combat.test.ts tests/dashboard-state.test.ts tests/events.test.ts tests/farming.test.ts tests/merchant.test.ts tests/v2-loadouts.test.ts tests/telemetry.test.ts tests/deployment-status.test.ts tests/fleet-health.test.ts tests/filters.test.ts tests/profile-api.test.ts"
+  },
+  "dependencies": {
+    "@fastify/static": "^10.1.4",
+    "@fastify/websocket": "^11.3.1",
+    "@radix-ui/react-switch": "^1.3.7",
+    "@tanstack/react-query": "^5.103.1",
+    "acorn": "^8.18.0",
+    "drizzle-orm": "^0.45.2",
+    "esbuild": "^0.28.2",
+    "fastify": "^5.12.5",
+    "lucide-react": "^1.47.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sass": "^1.104.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
+    "oxlint": "^1.81.0",
+    "tsx": "^4.23.13",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
+  }
+}

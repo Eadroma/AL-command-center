@@ -1,0 +1,30 @@
+{
+  "map": "test",
+  "key": "test",
+  "file": "test.png",
+  "bounds": {
+    "minX": -1256,
+    "maxX": 1832,
+    "minY": -1240,
+    "maxY": 696
+  },
+  "width": 3088,
+  "height": 1936,
+  "source": "https://adventure.land/communitymaps/test",
+  "tilesets": [
+    {
+      "name": "biocaves",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/biocaves.png"
+    },
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

@@ -1,0 +1,34 @@
+{
+  "map": "winter_cove",
+  "key": "jayson_frozenCave",
+  "file": "winter_cove.png",
+  "bounds": {
+    "minX": -1032,
+    "maxX": 904,
+    "minY": -2376,
+    "maxY": 56
+  },
+  "width": 1936,
+  "height": 2432,
+  "source": "https://adventure.land/communitymaps/jayson_frozenCave",
+  "tilesets": [
+    {
+      "name": "winter",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/winter.png"
+    },
+    {
+      "name": "water",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/water_updated.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    },
+    {
+      "name": "new",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/new.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

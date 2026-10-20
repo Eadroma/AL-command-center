@@ -1,0 +1,26 @@
+{
+  "map": "arena",
+  "key": "arena3",
+  "file": "arena.png",
+  "bounds": {
+    "minX": -432,
+    "maxX": 1176,
+    "minY": -944,
+    "maxY": 80
+  },
+  "width": 1608,
+  "height": 1024,
+  "source": "https://adventure.land/communitymaps/arena3",
+  "tilesets": [
+    {
+      "name": "dungeon",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/dungeon.png"
+    },
+    {
+      "name": "custom",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/custom.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

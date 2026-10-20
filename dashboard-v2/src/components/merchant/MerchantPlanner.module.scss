@@ -1,0 +1,55 @@
+@use '../../styles/variables' as v;
+.panel { margin: 1rem 0; padding: 1rem; border: 1px solid v.$retro-accent; background: v.$retro-bg; box-shadow: v.$glow-accent; }
+.head { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; margin-bottom: 0.4rem; }
+.head span { color: v.$text-faint; font-size: 0.65rem; text-transform: uppercase; }
+.head h3 { color: v.$text-primary; font-size: 1.15rem; }
+.panel > p { margin: 0 0 0.8rem; color: v.$text-muted; font-size: 0.76rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0.55rem; }
+.grid article { padding: 0.65rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.grid article.active { border-color: v.$retro-green; box-shadow: v.$glow-green; }
+.grid article > div { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; }
+.grid strong { color: v.$text-primary; font-size: 0.78rem; }
+.grid span { display: block; margin-top: 0.35rem; color: v.$text-muted; font-size: 0.68rem; }
+.grid small { display: flex; align-items: center; gap: 0.25rem; margin-top: 0.45rem; color: v.$text-faint; }
+.grid p { margin: 0.45rem 0 0; color: v.$retro-amber; font-size: 0.68rem; }
+.circuit { margin-bottom: 1rem; padding: 1rem; border: 1px solid v.$retro-border; border-left: 3px solid v.$retro-green; background: v.$retro-surface; }
+.circuit > strong { color: v.$text-primary; }
+.circuit p, .circuit li { color: v.$text-muted; font-size: .8rem; overflow-wrap: anywhere; }
+.circuit summary { margin-top: .75rem; cursor: pointer; color: v.$retro-accent; }
+.production { display: grid; gap: 0.65rem; min-width: 0; border-top: 1px solid v.$retro-border; padding-top: 0.8rem; } .production p { font-size: 0.75rem; line-height: 1.5; color: v.$text-muted; }
+.reviewCard { display: grid; align-content: start; gap: 0.6rem; min-width: 0; }
+.reviewHeading { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; }
+.tableWrap { overflow-x: auto; margin: 0.8rem 0; }
+.historyTable { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.historyTable th, .historyTable td { text-align: left; padding: 0.6rem; border-bottom: 1px solid v.$retro-border; white-space: nowrap; }
+.historyTable th { color: v.$text-muted; }
+
+.priorityRow { display: flex; align-items: center; gap: .5rem; padding: .35rem 0; }
+.priorityRow strong { flex: 1; }
+
+.upgradeTable { min-width: 740px; }
+.upgradeTable caption { text-align: left; padding: .5rem 0; color: v.$text-muted; }
+.upgradeTable td:nth-child(2) input { width: 80px; }
+.upgradeTable td:nth-child(4) { white-space: normal; min-width: 220px; max-width: 340px; }
+.upgradeTable details summary { cursor: pointer; color: v.$retro-accent; }
+.upgradeTable .production { margin-top: .7rem; }
+
+.stepEditor { margin-top: .65rem; }
+.stepEditor table { min-width: 510px; }
+.stepEditor[open] { min-width: 510px; }
+.stepEditor p { font-size: .75rem; line-height: 1.5; color: v.$text-muted; }
+.stepEditor select { min-width: 170px; }
+
+.stepChoice { display: flex; align-items: center; gap: .4rem; }
+.stepEditor small { display: block; color: v.$retro-amber; margin-top: .35rem; }
+
+.upgradeTable td { vertical-align: top; }
+.upgradeTable .stepsCell { white-space: normal; background: v.$retro-bg; padding: 1rem; }
+.stepsCell .stepEditor { width: 100%; }
+.stepsCell table { width: 100%; }
+
+.upgradeActive > td:first-child { border-left: 3px solid #65c9a5; }
+.upgradePaused > td { background: rgba(128, 140, 155, .07); }
+.upgradePaused > td:first-child { border-left: 3px solid #8793a2; }
+.upgradePaused > td:not(:last-child) { opacity: .65; }
+.upgradePaused > td:last-child { opacity: 1; }

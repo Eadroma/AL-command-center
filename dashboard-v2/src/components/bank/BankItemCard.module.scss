@@ -1,0 +1,19 @@
+@use '../../styles/variables' as v;
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.7rem;
+  background: v.$retro-surface;
+  border: 1px solid v.$retro-border;
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+  strong, small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  strong { color: v.$text-primary; font-size: 0.85rem; }
+  small { color: v.$text-faint; font-size: 0.7rem; margin-top: 0.25rem; }
+}

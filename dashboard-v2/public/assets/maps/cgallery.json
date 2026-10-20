@@ -1,0 +1,22 @@
+{
+  "map": "cgallery",
+  "key": "cgallery",
+  "file": "cgallery.png",
+  "bounds": {
+    "minX": 0,
+    "maxX": 16,
+    "minY": -8,
+    "maxY": 8
+  },
+  "width": 16,
+  "height": 16,
+  "source": "https://adventure.land/communitymaps/cgallery",
+  "tilesets": [
+    {
+      "name": "inside",
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/map/inside.png"
+    }
+  ],
+  "license": "AdventureLandOnlyUse — see ../LICENSE.txt",
+  "attribution": "https://adventure.land"
+}

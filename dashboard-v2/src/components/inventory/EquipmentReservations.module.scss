@@ -1,0 +1,6 @@
+.group {
+  margin-top: 12px;
+  summary { cursor: pointer; padding: 8px 0; }
+}
+.rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 8px; }
+.row { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; align-items: center; padding: 10px; border: 1px solid #303047; overflow-wrap: anywhere; > :last-child { grid-column: 2; justify-self: start; max-width: 100%; white-space: normal; } }
