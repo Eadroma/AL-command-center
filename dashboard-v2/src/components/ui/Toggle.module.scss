@@ -9,6 +9,8 @@
 
 .root {
   all: unset;
+  display: inline-flex;
+  flex: 0 0 auto;
   width: 36px;
   height: 18px;
   background-color: $retro-surface-alt;
@@ -34,17 +36,21 @@
   }
 }
 
-.thumb {
+.root > .thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin: 0;
   display: block;
   width: 12px;
   height: 12px;
   background-color: $text-muted;
   border-radius: $radius-none;
   transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s;
-  transform: translateX(2px) translateY(2px);
+  transform: translateX(2px) translateY(-50%);
 
   &[data-state='checked'] {
-    transform: translateX(20px) translateY(2px);
+    transform: translateX(20px) translateY(-50%);
     background-color: $retro-green;
     box-shadow: 0 0 6px rgba(var(--theme-green-rgb, 34, 197, 94), 0.6);
   }
@@ -67,6 +73,6 @@
   .root::before { content: ''; position: absolute; inset: -8px; }
   .root[data-state='checked'] { background: #309864; }
   .root:active:not([data-disabled]) { transform: none; filter: brightness(1.12); }
-  .thumb, .thumb[data-state='checked'] { width: 24px; height: 24px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); transform: translateX(calc(2px + 16px * var(--switch-progress, 0))) translateY(2px); transition: none; }
+  .root > .thumb, .root > .thumb[data-state='checked'] { width: 24px; height: 24px; margin: 0; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25); transform: translateX(calc(2px + 16px * var(--switch-progress, 0))) translateY(-50%); transition: none; }
   .wrapper { min-height: 44px; }
 }
