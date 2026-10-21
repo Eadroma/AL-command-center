@@ -5,7 +5,7 @@ function fixture() {
   let now = 100000;
   const stored: Record<string, unknown> = {};
   const c = { character: { name: 'Merchant', map: 'main', items: [{ name: 'leather', q: 10 }], slots: {} as Record<string, unknown>, q: {} }, __ALCC: { profile: 'test', bankDeposit: { items: ['leather'] } }, Date: { now: () => now }, game_log: () => {}, get: (k: string) => stored[k], set: (k: string,v: unknown) => { stored[k] = structuredClone(v); } };
-  const context = vm.createContext(c); const source = fs.readFileSync('../code/merchant-transactions.js','utf8'); vm.runInContext(source,context);
+  const context = vm.createContext(c); const source = fs.readFileSync(new URL('../../code/merchant-transactions.js', import.meta.url),'utf8'); vm.runInContext(source,context);
   return { c, runtime: context.MerchantLoopGuard, advance: (ms: number) => { now += ms; }, reload: () => { vm.runInContext(source,context); return context.MerchantLoopGuard; } };
 }
 it('suspends repeated bank transitions without stock progress, and persists across restart', () => {

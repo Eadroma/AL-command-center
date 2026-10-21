@@ -16,6 +16,7 @@ deployments.json
 **/bundles/
 
 # Dependencies, generated bundles, caches
+/PUBLIC-MANIFEST.json
 **/node_modules/
 **/dist/
 **/dist-ssr/

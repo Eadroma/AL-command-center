@@ -7,7 +7,7 @@ function setup() {
   const values: Record<string, unknown> = {};
   const context = { Date: { now: () => now }, Math, game_log: () => {}, character: { name: 'Seller', map: 'main', gold: 10000, items: [{ name: 'coat', level: 6, q: 1 }, { name: 'scroll1', level: 0, q: 5 }, { name: 'offeringp', level: 0, q: 3 }], q: {} as Record<string, unknown> }, __ALCC: { profile: 'test', upgrade: { rules: [{ item: 'coat', maxLevel: 7, production: { enabled: true, runId: 'one', budget: 10000, quantity: 1 } }] } }, get: (k: string) => values[k], set: (k: string, v: unknown) => { values[k] = JSON.parse(JSON.stringify(v)); } };
   const sandbox = vm.createContext(context);
-  vm.runInContext(readFileSync('../code/upgrade-production.js', 'utf8'), sandbox);
+  vm.runInContext(readFileSync(new URL('../../code/upgrade-production.js', import.meta.url), 'utf8'), sandbox);
   const runtime = sandbox.UpgradeProduction;
   return { context, runtime, advance: (ms: number) => { now += ms; }, begin: () => runtime.begin('coat', 1600, { kind: 'upgrade', level: 6, scroll: 'scroll1', offering: 'offeringp' }) };
 }
