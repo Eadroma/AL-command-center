@@ -1,48 +1,13 @@
-/**
- * @file PageHeader.tsx
- * Global dashboard page header.
- *
- * Renders the application title (eyebrow + main heading) on the left,
- * and a slot for global actions (connection badge, refresh button…) on the right.
- * Built on top of SectionHead — provides the dashboard-specific wiring.
- */
-
-import { ThemeSelector } from './ThemeSelector';
 import type { ReactNode } from 'react';
-import { RefreshCw } from 'lucide-react';
-import { SectionHead, Badge, Button } from '../ui';
-
-// ---------------------------------------------------------------------------
-// Props & Component
-// ---------------------------------------------------------------------------
-
-export interface PageHeaderProps {
-  /** True when the WebSocket / API connection is live. */
-  connected: boolean;
-  /** Called when the user clicks the Refresh button. */
-  onRefresh?: () => void;
-  search?: ReactNode;
+import { Compass, RefreshCw } from 'lucide-react';
+import { UsageStats } from './UsageStats';
+import { ThemeSelector } from './ThemeSelector';
+import styles from './PageHeader.module.scss';
+export interface PageHeaderProps { connected: boolean; onRefresh?: () => void; search?: ReactNode; nav?: ReactNode; }
+export function PageHeader({ connected, onRefresh, search, nav }: PageHeaderProps) {
+  return <div className={styles.header}>
+    <a href="#team" className={styles.brand} aria-label="Command Center — Team"><span className={styles.mark}><Compass size={20}/></span><div><strong>Command Center</strong><small>Adventure Land</small></div></a>
+    {nav && <div className={styles.nav}>{nav}</div>}
+    <div className={styles.actions}>{search}<UsageStats/><ThemeSelector/><span className={styles.connection} title={connected ? 'Connected to the local server' : 'Connecting to the local server'}><i data-connected={connected}/><span>{connected ? 'Connected' : 'Connecting'}</span></span><button type="button" className={styles.refresh} onClick={onRefresh} data-usage="action.refresh" aria-label="Refresh dashboard" title="Refresh dashboard"><RefreshCw size={16}/></button></div>
+  </div>;
 }
-
-/**
- * PageHeader
- *
- * Pinned at the top of the page inside AppShell's sticky header region.
- * Connection status drives the badge colour (green = live, amber = reconnecting).
- */
-export function PageHeader({ connected, onRefresh, search }: PageHeaderProps) {
-  return (
-    <SectionHead eyebrow="Adventure Land" title="Command Center">
-      {search}
-      <ThemeSelector />
-      <Badge variant={connected ? 'success' : 'warning'}>
-        {connected ? 'Live' : 'Reconnecting…'}
-      </Badge>
-      <Button variant="secondary" size="small" onClick={onRefresh}>
-        <RefreshCw size={13} />
-        Refresh
-      </Button>
-    </SectionHead>
-  );
-}
-

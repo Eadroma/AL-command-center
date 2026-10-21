@@ -4,9 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App } from './App.tsx';
 import './styles/global.scss';
 import './styles/guild.scss';
+import { startUsageTracking } from './models/usage-store';
 import { applyTheme, readTheme } from './models/theme';
 
 applyTheme(readTheme());
+startUsageTracking();
 
 const queryClient = new QueryClient({
   defaultOptions: {

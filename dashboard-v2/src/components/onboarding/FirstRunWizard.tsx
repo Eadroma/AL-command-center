@@ -45,7 +45,7 @@ export function FirstRunWizard({ profile, catalog, dirty, pending, onChange }: {
         <p>Create or reveal your Adventure Land MCP token in <a href="https://adventure.land/mainframe" target="_blank" rel="noreferrer">Mainframe</a>. Use a token, not your game password. Leave this field empty to test the server's existing credential.</p>
         <Field label="MCP token (optional if already configured)" htmlFor="setup-token"><TextInput id="setup-token" type="password" autoComplete="off" value={secret} onChange={setSecret} disabled={busy} /></Field>
         <p>A verified token is saved in the local dashboard data directory, outside the profile and repository. Keep that directory private; Windows file permissions follow your user account. AL_MCP_TOKEN takes priority.</p>
-        <Button disabled={busy || pending} onClick={connect}>{busy?'Checking account…':'Connect and discover characters'}</Button>
+        <Button variant="primary" disabled={busy || pending} onClick={connect}>{busy?'Checking account…':'Connect and discover characters'}</Button>
       </div>}
       {step === 2 && <>
         <div className={styles.grid}>

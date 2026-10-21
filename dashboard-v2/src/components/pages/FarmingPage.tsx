@@ -167,9 +167,9 @@ export function FarmingPage({
       {error && <p role="alert" className={styles.alert}>{error}</p>}
       {notice && <p role="status" className={styles.notice}>{notice}</p>}
       <div className={styles.actions}>
-        <Button onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button>
-        <Button variant="ghost" onClick={onDiscard} disabled={pending || !dirty}>Discard edits</Button>
-        <Button variant="secondary" onClick={onDeploy} disabled={!canDeploy}>{pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}</Button>
+        <Button variant="primary" data-usage="action.save" onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button>
+        <Button variant="ghost" data-usage="action.discard" onClick={onDiscard} disabled={pending || !dirty}>Discard edits</Button>
+        <Button variant="primary" data-usage="action.deploy" onClick={onDeploy} disabled={!canDeploy}>{pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}</Button>
       </div>
     </section>
   );

@@ -1,74 +1,85 @@
-// Guild is opt-in through the root attribute. Retro uses the original SCSS fallbacks.
+// "Night" — the default theme (root attribute `guild` kept for stored preferences).
+// Deep blue-green ink, one gold accent (the game's currency) for primary actions and gold amounts.
+// Retro uses the original SCSS fallbacks in _variables.scss.
 html[data-theme='guild'] {
+  font-size: 16px;
   color-scheme: dark;
-  --theme-bg: #111214;
-  --theme-surface: #1c1d20;
-  --theme-surface-alt: #28292e;
-  --theme-border: #38393f;
-  --theme-border-rgb: 56, 57, 63;
-  --theme-border-strong: #65666f;
-  --theme-accent: #78b4ff;
-  --theme-accent-rgb: 120, 180, 255;
-  --theme-accent-adjust-10: #98c6ff;
-  --theme-accent-adjust-8: #8bbfff;
-  --theme-accent-adjust-minus5: #65a5f2;
-  --theme-surface-alt-adjust-4: #33343a;
+  --theme-bg: #11181a;
+  --theme-surface: #172022;
+  --theme-surface-alt: #1e292c;
+  --theme-surface-alt-adjust-4: #253235;
+  --theme-border: #263236;
+  --theme-border-rgb: 38, 50, 54;
+  --theme-border-strong: #4a5a5e;
+  --theme-accent: #e2b65c;
+  --theme-accent-rgb: 226, 182, 92;
+  --theme-accent-adjust-10: #ecc475;
+  --theme-accent-adjust-8: #eac06e;
+  --theme-accent-adjust-minus5: #d3a64b;
   --theme-accent-glow: transparent;
-  --theme-green: #6ee7a4;
-  --theme-green-rgb: 110, 231, 164;
-  --theme-amber: #f5c76b;
-  --theme-amber-rgb: 245, 199, 107;
-  --theme-red: #ff8b94;
-  --theme-red-rgb: 255, 139, 148;
-  --theme-cyan: #7dd3fc;
-  --theme-cyan-rgb: 125, 211, 252;
-  --theme-text: #f3f3f5;
-  --theme-muted: #b9bac3;
-  --theme-faint: #a0a2ad;
-  --theme-radius: 14px;
-  --theme-display-font: system-ui;
-  --material-chrome: rgba(24, 25, 28, 0.86);
-  --material-border: rgba(255, 255, 255, 0.09);
+  --theme-button-bg: #e2b65c;
+  --theme-on-accent: #1b1406;
+  --theme-green: #7dd49a;
+  --theme-green-rgb: 125, 212, 154;
+  --theme-amber: #f0a868;
+  --theme-amber-rgb: 240, 168, 104;
+  --theme-red: #f08a7e;
+  --theme-red-rgb: 240, 138, 126;
+  --theme-cyan: #7fb0ee;
+  --theme-cyan-rgb: 127, 176, 238;
+  --theme-text: #e4ebe7;
+  --theme-muted: #a3b1ac;
+  --theme-faint: #8b9994;
+  --theme-radius: 10px;
+  --theme-display-font: 'IBM Plex Sans';
+  // Components styled with $font-mono read this; code and logs keep JetBrains Mono below.
+  --theme-ui-font: 'IBM Plex Sans';
+  --material-chrome: rgba(17, 24, 26, 0.88);
+  --material-border: rgba(228, 235, 231, 0.08);
   --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   // Aliases for inventory panels that previously used separate fallback colours.
   --surface-1: var(--theme-surface);
   --border-color: var(--theme-border);
   --text-primary: var(--theme-text);
   --text-muted: var(--theme-muted);
-  --font-mono: 'JetBrains Mono', monospace;
+  // Inventory panels use this alias for UI numbers, not code.
+  --font-mono: 'IBM Plex Sans', system-ui, sans-serif;
 
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.55; font-optical-sizing: auto; }
+  body { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 15px; line-height: 1.55; background: var(--theme-bg); }
   body::before, body::after { display: none; }
-  h1, h2, h3, h4 { font-family: 'Segoe UI', system-ui, sans-serif; text-transform: none; letter-spacing: -0.015em; text-shadow: none; }
+  h1, h2, h3, h4 { font-family: inherit; font-weight: 600; text-transform: none; letter-spacing: -0.01em; text-shadow: none; }
+  h1 { font-size: 1.75rem; line-height: 1.2; letter-spacing: -0.02em; }
+  h2 { font-size: 1.2rem; line-height: 1.3; }
+  h3, h4 { font-size: 1rem; line-height: 1.35; }
   button, input, select, textarea { font-family: inherit; }
-  :focus-visible { outline: 2px solid var(--theme-accent); outline-offset: 3px; }
-  input, select, textarea { color-scheme: dark; }
-  a { text-underline-offset: 3px; }
-  code, pre { font-family: 'JetBrains Mono', monospace; }
-  dl dd, table { font-variant-numeric: tabular-nums; }
-  h1 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); line-height: 1.15; letter-spacing: -0.035em; }
-  h2 { letter-spacing: -0.025em; line-height: 1.25; }
-  h3, h4 { letter-spacing: -0.012em; }
+  input, select, textarea { color-scheme: dark; border-radius: 8px; }
+  :focus-visible { outline: 2px solid var(--theme-accent); outline-offset: 2px; }
+  ::selection { background: rgba(226, 182, 92, 0.35); color: var(--theme-text); }
+  a { color: var(--theme-text); text-underline-offset: 3px; text-decoration-color: var(--theme-border-strong); }
+  a:hover { text-decoration-color: var(--theme-accent); }
+  // Night has no all-caps labels; legacy component rules forced them in about 20 modules.
+  :where(main, dialog) * { text-transform: none !important; }
+  code, pre { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  dl dd, table, button, summary { font-variant-numeric: tabular-nums; }
   button, a, summary { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-  button:not(:disabled), summary, a { transition: background-color 140ms ease, color 140ms ease, transform 180ms var(--motion-ease); }
-  button:active:not(:disabled), summary:active { transform: scale(0.98); transition-duration: 50ms; }
-  summary { min-height: 2.75rem; align-content: center; }
-  input, select, textarea { border-radius: 8px; }
-  button, summary { font-variant-numeric: tabular-nums; }
-  :where(dialog) { box-shadow: 0 24px 90px rgba(0, 0, 0, .45); }
+  button:not(:disabled), summary, a { transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease; }
+  summary { min-height: 2.5rem; align-content: center; cursor: pointer; }
+  :where(dialog) { box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5); }
+  ::-webkit-scrollbar-track { background: var(--theme-bg); border-left: 0; }
+  ::-webkit-scrollbar-thumb { background: var(--theme-border); border: 2px solid var(--theme-bg); border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--theme-border-strong); }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; }
-    button:active:not(:disabled), summary:active { transform: none; }
   }
   @media (prefers-reduced-transparency: reduce) {
-    --material-chrome: #1c1d20;
+    --material-chrome: #11181a;
     :where(header, dialog) { backdrop-filter: none !important; }
   }
   @media (prefers-contrast: more) {
-    --theme-border: #92939e;
-    --theme-muted: #dedee5;
-    --theme-faint: #d0d1d9;
-    --material-border: #92939e;
-    --material-chrome: #1c1d20;
+    --theme-border: #6b7c80;
+    --theme-muted: #e4ebe7;
+    --theme-faint: #d2dbd7;
+    --material-border: #6b7c80;
+    --material-chrome: #11181a;
   }
 }

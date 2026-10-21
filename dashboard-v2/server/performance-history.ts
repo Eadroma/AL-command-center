@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { throttledJsonWriter } from './json-file';
 
 export interface PerformanceSample {
   sessionId: string; character: string; at: number;
@@ -20,18 +21,18 @@ const BUCKET_MS = 5 * 60 * 1000;
 const RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
 // Match the telemetry liveness window. Beyond it the interval is unobserved.
 const MAX_SAMPLE_GAP_MS = 20_000;
-const delta = (current: number, previous: number) => current >= previous ? current - previous : 0;
+const bucketKey = (row: Pick<PerformanceBucket, 'character' | 'at' | 'map' | 'server' | 'farmContext'>) =>
+  `${row.character}|${row.at}|${row.map}|${row.server}|${JSON.stringify(row.farmContext)}`;
+const delta =(current: number, previous: number) => current >= previous ? current - previous : 0;
 
 /** Persist compact five-minute deltas and reset baselines across CODE sessions. */
 export class PerformanceHistory {
   private state: State = { last: {}, buckets: [] };
-  constructor(private file?: string, private now = Date.now) {
+  private index?: Map<string, PerformanceBucket>;
+  private persist: () => void;
+  constructor(file?: string, private now = Date.now) {
+    this.persist = throttledJsonWriter(file, () => this.state);
     if (file && fs.existsSync(file)) try { this.state = JSON.parse(fs.readFileSync(file, 'utf8')); } catch {}
-  }
-  private persist() {
-    if (!this.file) return;
-    fs.writeFileSync(`${this.file}.tmp`, JSON.stringify(this.state));
-    fs.renameSync(`${this.file}.tmp`, this.file);
   }
   record(sample: PerformanceSample) {
     const previous = this.state.last[sample.character];
@@ -45,10 +46,14 @@ export class PerformanceHistory {
     const map = sample.stats.map === previous.stats.map ? sample.stats.map : 'transition';
     const server = sample.stats.server === previous.stats.server ? sample.stats.server : 'transition';
     const farmContext = (sample.farmContext?.monster || sample.farmContext?.activity) && JSON.stringify(sample.farmContext) === JSON.stringify(previous.farmContext) ? sample.farmContext : undefined;
-    let bucket = this.state.buckets.find(row => row.character === sample.character && row.at === at && row.map === map && row.server === server && JSON.stringify(row.farmContext) === JSON.stringify(farmContext));
+    this.index ??= new Map(this.state.buckets.map(row => [bucketKey(row), row]));
+    let bucket = this.index.get(bucketKey({ character: sample.character, at, map, server, farmContext }));
     if (!bucket) {
       bucket = { character: sample.character, at, map, server, farmContext, elapsedMs: 0, damage: 0, healing: 0, kills: 0, deaths: 0, attacks: 0, movingMs: 0, combatMs: 0, xp: 0, gold: 0 };
+      // Prune when a bucket opens (once per character per 5 min), not on every sample.
+      this.state.buckets = this.state.buckets.filter(row => row.at >= this.now() - RETENTION_MS).sort((a, b) => a.at - b.at);
       this.state.buckets.push(bucket);
+      this.index = new Map(this.state.buckets.map(row => [bucketKey(row), row]));
     }
     bucket.elapsedMs += elapsedMs;
     bucket.damage += delta(sample.combat.damageDealt, previous.combat.damageDealt);
@@ -78,7 +83,6 @@ export class PerformanceHistory {
       bucket.npcSalesGold = (bucket.npcSalesGold ?? 0) + sample.economy.npcSalesGold - previous.economy.npcSalesGold;
       bucket.npcSalesElapsedMs = (bucket.npcSalesElapsedMs ?? 0) + elapsedMs;
     }
-    this.state.buckets = this.state.buckets.filter(row => row.at >= this.now() - RETENTION_MS).sort((a, b) => a.at - b.at);
     this.persist(); return true;
   }
   view(hours = 24) {

@@ -1,5 +1,6 @@
 import { ChevronDown } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
+import { recordUsage } from '../../models/usage-store';
 import styles from './CollapsiblePanel.module.scss';
 
 interface Props {
@@ -22,6 +23,7 @@ export function CollapsiblePanel({ id, eyebrow, title, actions, children, defaul
   });
   const toggle = () => setOpen(value => {
     const next = !value;
+    if(next)recordUsage(id);
     try { localStorage.setItem(storageKey, next ? 'open' : 'closed'); } catch {}
     return next;
   });
@@ -35,7 +37,7 @@ export function CollapsiblePanel({ id, eyebrow, title, actions, children, defaul
     return () => window.removeEventListener('alcc:open-rule', reveal);
   }, [id, storageKey]);
   return (
-    <section className={styles.panel} aria-labelledby={`${id}-title`}>
+    <section className={styles.panel} data-usage-scope={id} aria-labelledby={`${id}-title`}>
       <div className={styles.head}>
         <button type="button" className={styles.trigger} aria-expanded={open} aria-controls={`${id}-content`} onClick={toggle}>
           <ChevronDown size={18} className={open ? styles.chevronOpen : styles.chevron} />

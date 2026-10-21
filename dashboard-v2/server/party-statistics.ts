@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { throttledJsonWriter } from './json-file';
 import type { LootCount, PartyStatistics } from '../shared/party-statistics';
 import { statisticsActivity } from '../shared/statistics-activity';
 
@@ -6,7 +7,9 @@ interface Sample { sessionId: string; character: string; at: number; stats: { go
 /** Cumulative loot counters are scoped to CODE sessions; inventory transfers are never loot. */
 export class PartyStatisticsHistory {
   private state: PartyStatistics & { last: Record<string, Sample> } = { startedAt: 0, balances: [], items: [], last: {} };
-  constructor(private file?: string) {
+  private persist: () => void;
+  constructor(file?: string) {
+    this.persist = throttledJsonWriter(file, () => this.state);
     if (file && fs.existsSync(file)) try { this.state = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* Start a new history if the file is corrupt. */ }
   }
   record(sample: Sample) {
@@ -36,7 +39,7 @@ export class PartyStatisticsHistory {
     this.state.receipts = this.state.receipts.filter(row => row.at >= sample.at - 7 * 86400000).slice(-30000);
     this.state.balances = this.state.balances.filter(row => row.at >= sample.at - 366 * 86400000).slice(-30000);
     this.state.items = this.state.items.filter(row => row.month >= new Date(sample.at - 366 * 86400000).toISOString().slice(0, 7)).slice(-10000);
-    if (this.file) { fs.writeFileSync(this.file + '.tmp', JSON.stringify(this.state)); fs.renameSync(this.file + '.tmp', this.file); }
+    this.persist();
   }
   view(): PartyStatistics { return { startedAt: this.state.startedAt, balances: this.state.balances, items: this.state.items, receipts: this.state.receipts ?? [] }; }
 }

@@ -51,4 +51,10 @@
   box-shadow: 0 0 6px currentColor;
 }
 
-:global(html[data-theme='guild']) { .badge { font-family: 'Segoe UI', system-ui, sans-serif; text-transform: none; font-size: 0.78rem; } .dot { box-shadow: none; } }
+:global(html[data-theme='guild']) {
+  .badge { font-family: inherit; text-transform: none; font-size: .78rem; font-weight: 500; border-radius: 6px; border-color: transparent; padding: .1rem .5rem; }
+  .success, .warning, .danger, .info { background-color: transparent; padding-left: 0; }
+  .success::before, .warning::before, .danger::before, .info::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .neutral { background-color: var(--theme-surface-alt); }
+  .dot { box-shadow: none; }
+}

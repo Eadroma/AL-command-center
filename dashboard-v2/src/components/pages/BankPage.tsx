@@ -1,9 +1,11 @@
+import { PageIntro } from '../layout/PageIntro';
+import { TaskDialog } from '../layout/TaskDialog';
 import { useState } from 'react';
 import type { Catalog, DeploymentsResponse, Profile } from '../../types';
 import { bankSnapshots, bankSortPreview, filterBankItems, groupBankItems } from '../../models/bank';
 import { setBankDepositEnabled, setBankDepositItems } from '../../models/merchant';
 import { api } from '../../api/client';
-import { Badge, Button, EmptyState, Field, ItemMultiSelect, SectionHead, SelectInput, TextInput, Toggle } from '../ui';
+import { Badge, Button, EmptyState, Field, ItemMultiSelect, SelectInput, TextInput, Toggle } from '../ui';
 import { BankItemCard } from '../bank/BankItemCard';
 import { BankHubSummary } from '../bank/BankHubSummary';
 import { MerchantDepositInventory } from '../bank/MerchantDepositInventory';
@@ -27,6 +29,7 @@ export interface BankPageProps {
 
 /** Browse the latest persisted bank snapshot reported by each deployed character. */
 export function BankPage({ profile, catalog, deployments, loading, merchantName, dirty, conflict, pending, deploymentBusy, onChange, onSave, onDiscard, onDeploy }: BankPageProps) {
+  const [manage, setManage] = useState(false);
   const [owner, setOwner] = useState('');
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
@@ -59,47 +62,11 @@ export function BankPage({ profile, catalog, deployments, loading, merchantName,
   };
 
   return (
-    <section aria-label="Bank viewer">
-      <SectionHead eyebrow="Latest persisted snapshot" title="Bank">
-        {selected && <Badge variant={selected.live ? 'success' : 'neutral'}>{selected.live ? 'Reporter live' : 'Stored snapshot'}</Badge>}
-        {selected && <Badge>{items.length} slots · {quantity.toLocaleString()} items</Badge>}
-      </SectionHead>
-      <p className={styles.description}>A snapshot refreshes when a rebuilt character can read its bank. It remains available after that character leaves the bank.</p>
-      <BankHubSummary hub={merchantTelemetry?.bankHub} live={!!merchantTelemetry?.live} />
-      <MerchantDepositInventory name={merchantName} telemetry={merchantTelemetry??undefined} catalog={catalog} busy={sortBusy||deploymentBusy}/>
-      {profile && catalog && <section className={styles.deposit} aria-labelledby="bank-deposit-heading">
-        <div className={styles.depositHead}>
-          <div><span>Strict allowlist</span><h3 id="bank-deposit-heading">Recurring deposits</h3></div>
-          <Toggle label="Enable recurring deposits" value={profile.seller.bankDeposit.enabled} disabled={pending} onChange={value => onChange(setBankDepositEnabled(profile, value))} />
-        </div>
-        <p>Only items selected below may be deposited automatically. An empty list deposits nothing.</p>
-        <Field label="Items allowed into the bank" htmlFor="bank-deposit-items">
-          <ItemMultiSelect id="bank-deposit-items" catalog={catalog} values={profile.seller.bankDeposit.items} disabled={pending} onChange={items => onChange(setBankDepositItems(profile, items))} />
-        </Field>
-        <div className={styles.depositActions}>
-          <Badge variant={profile.seller.bankDeposit.items.length ? 'info' : 'neutral'}>{profile.seller.bankDeposit.items.length} allowed</Badge>
-          <Button size="small" onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button>
-          <Button size="small" variant="ghost" onClick={onDiscard} disabled={pending || !dirty}>Discard</Button>
-          <Button size="small" variant="secondary" onClick={onDeploy} disabled={pending || dirty || conflict || deploymentBusy}>Deploy saved profile</Button>
-        </div>
-      </section>}
-      <section className={styles.sorter} aria-labelledby="bank-sorter-heading">
-        <div>
-          <span>Merchant maintenance</span>
-          <h3 id="bank-sorter-heading">Global bank sorter</h3>
-          <p>{preview.occupied} occupied slots across {preview.packs} packs · category → item name → highest level first.</p>
-          <small>The merchant needs one empty inventory slot. Compatible partial stacks are merged before each floor is sorted.</small>
-        </div>
-        <div className={styles.sortActions}>
-          {sortStatus && <Badge variant={sortStatus.state === 'failed' ? 'danger' : sortStatus.state === 'complete' ? 'success' : sortBusy ? 'info' : 'neutral'}>{sortStatus.phase} · {sortStatus.moved} moved · {sortStatus.merged} merged</Badge>}
-          <Button variant="secondary" disabled={!merchantName || !merchantTelemetry?.live || sortBusy} onClick={requestSort}>
-            {sortBusy ? 'Bank sort in progress…' : 'Sort bank with merchant'}
-          </Button>
-        </div>
-      </section>
-      {sortStatus?.message && <p className={sortStatus.state === 'failed' ? styles.sortError : styles.sortNotice}>{sortStatus.message}</p>}
-      {sortMessage && <p className={styles.sortNotice}>{sortMessage}</p>}
-      {sortError && <p className={styles.sortError} role="alert">{sortError}</p>}
+    <section aria-label="Bank viewer" data-usage-scope="page.bank">
+      <PageIntro title="Bank" eyebrow="EVERYTHING IN ITS PLACE" description="Find your stored items. Open bank actions when you need to deposit, organise or change rules.">
+        <Button variant="secondary" onClick={() => setManage(true)}>Bank actions</Button>
+      </PageIntro>
+      {selected && <p className={styles.capture}>{items.length} occupied slots · {quantity.toLocaleString()} items · {selected.live ? 'Reporter live' : 'Stored snapshot'}</p>}
       {loading && <EmptyState title="Loading bank snapshots…" />}
       {!loading && !catalog && <EmptyState title="Catalog unavailable" description="Use Refresh to retry the server connection." />}
       {!loading && catalog && snapshots.length === 0 && (
@@ -130,6 +97,43 @@ export function BankPage({ profile, catalog, deployments, loading, merchantName,
                 ))}</div>}
         </>
       )}
+      <TaskDialog title="Bank actions & deposit rules" open={manage} onClose={() => setManage(false)}>
+      <BankHubSummary hub={merchantTelemetry?.bankHub} live={!!merchantTelemetry?.live} />
+      <MerchantDepositInventory name={merchantName} telemetry={merchantTelemetry??undefined} catalog={catalog} busy={sortBusy||deploymentBusy}/>
+      {profile && catalog && <section className={styles.deposit} aria-labelledby="bank-deposit-heading">
+        <div className={styles.depositHead}>
+          <div><span>Strict allowlist</span><h3 id="bank-deposit-heading">Recurring deposits</h3></div>
+          <Toggle label="Enable recurring deposits" value={profile.seller.bankDeposit.enabled} disabled={pending} onChange={value => onChange(setBankDepositEnabled(profile, value))} />
+        </div>
+        <p>Only items selected below may be deposited automatically. An empty list deposits nothing.</p>
+        <Field label="Items allowed into the bank" htmlFor="bank-deposit-items">
+          <ItemMultiSelect id="bank-deposit-items" catalog={catalog} values={profile.seller.bankDeposit.items} disabled={pending} onChange={items => onChange(setBankDepositItems(profile, items))} />
+        </Field>
+        <div className={styles.depositActions}>
+          <Badge variant={profile.seller.bankDeposit.items.length ? 'info' : 'neutral'}>{profile.seller.bankDeposit.items.length} allowed</Badge>
+          <Button variant="primary" size="small" data-usage="action.save" onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button>
+          <Button size="small" variant="ghost" data-usage="action.discard" onClick={onDiscard} disabled={pending || !dirty}>Discard</Button>
+          <Button size="small" variant="primary" data-usage="action.deploy" onClick={onDeploy} disabled={pending || dirty || conflict || deploymentBusy}>Deploy saved profile</Button>
+        </div>
+      </section>}
+      <section className={styles.sorter} aria-labelledby="bank-sorter-heading">
+        <div>
+          <span>Merchant maintenance</span>
+          <h3 id="bank-sorter-heading">Global bank sorter</h3>
+          <p>{preview.occupied} occupied slots across {preview.packs} packs · category → item name → highest level first.</p>
+          <small>The merchant needs one empty inventory slot. Compatible partial stacks are merged before each floor is sorted.</small>
+        </div>
+        <div className={styles.sortActions}>
+          {sortStatus && <Badge variant={sortStatus.state === 'failed' ? 'danger' : sortStatus.state === 'complete' ? 'success' : sortBusy ? 'info' : 'neutral'}>{sortStatus.phase} · {sortStatus.moved} moved · {sortStatus.merged} merged</Badge>}
+          <Button variant="secondary" disabled={!merchantName || !merchantTelemetry?.live || sortBusy} data-usage="action.sort" onClick={requestSort}>
+            {sortBusy ? 'Bank sort in progress…' : 'Sort bank with merchant'}
+          </Button>
+        </div>
+      </section>
+      {sortStatus?.message && <p className={sortStatus.state === 'failed' ? styles.sortError : styles.sortNotice}>{sortStatus.message}</p>}
+      {sortMessage && <p className={styles.sortNotice}>{sortMessage}</p>}
+      {sortError && <p className={styles.sortError} role="alert">{sortError}</p>}
+      </TaskDialog>
     </section>
   );
 }

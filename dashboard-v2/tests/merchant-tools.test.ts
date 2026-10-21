@@ -20,7 +20,7 @@ it('clamps stand world coordinates to the existing town schema', () => {
 it('searches all terms and provides deep links for settings', () => {
   const entries = searchEntries();
   expect(filterSearch(entries,'STAND position')[0].panel).toBe('merchant-position');
-  expect(filterSearch(entries,'equipment protection')[0].page).toBe('inventory');
+  expect(filterSearch(entries,'equipment protection')[0]).toMatchObject({page:'team',tool:'inventory',panel:'equipment-protections'});
   expect(filterSearch(entries,'not a known setting')).toEqual([]);
 });
 it('does not infer a runtime decision from saved loadout matches', () => {

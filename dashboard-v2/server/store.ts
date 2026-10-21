@@ -4,12 +4,11 @@ import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 import { desc, eq } from 'drizzle-orm';
 import fs from 'node:fs';
 import path from 'node:path';
-import os from 'node:os';
+import { dataDir } from './config';
 import type { Profile, ScriptInfo } from '../shared/schema';
 import {profileSchema,ensureSellerBoards,ensureFarmingBoards} from '../shared/schema';
 import {scripts,seedWeaponStyles} from './scripts';
 import { cautiousProfile } from '../shared/onboarding';
-export const dataDir=process.env.ALCC_DATA_DIR||path.join(process.env.LOCALAPPDATA||os.homedir(),'AdventureLandDashboard');
 fs.mkdirSync(dataDir,{recursive:true});
 /** Keep one process-local connection; the development watcher recreates it after a restart. */
 const sqlite=new DatabaseSync(path.join(dataDir,'command-center.sqlite'));
@@ -38,7 +37,8 @@ export async function getProfile(seed:Profile){
   /** Persist board migrations (legacy upgrade items→rules, minGold) and the script-id migration without bumping the revision. */
   const scriptsChanged=JSON.stringify((stored.characters||[]).map((c:any)=>c.script))!==JSON.stringify((migrated.characters||[]).map((c:any)=>c.script));
   if(scriptsChanged||JSON.stringify(stored.seller?.upgrade)!==JSON.stringify(migrated.seller.upgrade)||JSON.stringify(stored.seller?.ponty)!==JSON.stringify(migrated.seller.ponty)||JSON.stringify(stored.seller?.consumables)!==JSON.stringify(migrated.seller.consumables)||JSON.stringify(stored.seller?.buy)!==JSON.stringify(migrated.seller.buy)||JSON.stringify(stored.farming?.loadouts)!==JSON.stringify(migrated.farming.loadouts)){
-    sqlite.prepare('UPDATE profiles SET payload=?, updatedAt=? WHERE id=1').run(JSON.stringify(migrated),new Date().toISOString());
+    // Version guard: a save that landed after this read must win over the migrated copy.
+    sqlite.prepare('UPDATE profiles SET payload=?, updatedAt=? WHERE id=1 AND version=?').run(JSON.stringify(migrated),new Date().toISOString(),row.version);
   }
   return {profile:migrated,version:row.version,updatedAt:row.updatedAt};
 }

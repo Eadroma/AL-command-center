@@ -63,7 +63,6 @@ var BankCoordinator = (function () {
     catch (e) { persistenceError = true; }
   }
   function acquire(name) {
-    reconcile();
     if (current || owner && owner !== name) return false;
     if (!owner) { owner = name; since = Date.now(); countedVisit = false; phase = 'travel'; }
     return true;
@@ -107,15 +106,13 @@ var BankCoordinator = (function () {
     var direction=current&&current.kind==='deposit'?-1:1;
     return {packs:packs,levels:levels,actual:actual,expected:current&&current.before?{carried:current.before.carried+direction*current.quantity,bank:current.before.bank-direction*current.quantity}:null};
   }
-  function reserved() { return false; }
+  // Pieces withdrawn for a stand listing belong to that listing: no NPC sale, upgrade or compound.
+  function reserved(it) { return typeof listing_bank_stock_reserved === 'function' && !!listing_bank_stock_reserved(it); }
   function dismissReview(item, level) {
     if(owner || !current || current.state!=='review' || current.item!==item || current.level!==level)return false;
     journal.push(Object.assign({},current,{evidence:'Review dismissed by user; outcome remains unverified'}));journal=journal.slice(-50);
     current=null;phase='idle';persist();
     if(typeof game_log==='function')game_log('Bank hub: review dismissed by user for '+item+' +'+level+'; bank operations unlocked');return true;
-  }
-  function reconcile() {
-    return false;
   }
   async function run(name, work) {
     if (current || owner && owner !== name && owner !== 'deposit') return false;
@@ -125,12 +122,11 @@ var BankCoordinator = (function () {
     finally { if (!borrowed) release(name); }
   }
   function snapshot() {
-    reconcile();
     BankStock.observe();
     return { version: 1, owner: owner, phase: phase, since: since, visits: visits,
       persistenceError: persistenceError, current: current, journal: journal.slice(-10), ledger: BankStock.snapshot() };
   }
   persist();
-  return { acquire: acquire, stage: stage, release: release, releaseNavigation: releaseNavigation, begin: begin, finish: finish, run: run, reconcile: reconcile, inspectionEvidence: inspectionEvidence, reserved: reserved, dismissReview: dismissReview, snapshot: snapshot };
+  return { acquire: acquire, stage: stage, release: release, releaseNavigation: releaseNavigation, begin: begin, finish: finish, run: run, inspectionEvidence: inspectionEvidence, reserved: reserved, dismissReview: dismissReview, snapshot: snapshot };
 })();
 

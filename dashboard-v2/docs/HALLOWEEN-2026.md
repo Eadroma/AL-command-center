@@ -13,7 +13,7 @@ Enable the desired event, choose its combat build and character participation, t
 
 ## Trick or Treat
 
-In **Events & bosses → Trick or Treat · merchant**, enable **Visit Halloween doors daily**. Save the profile, preview it and deploy the merchant v2 script. This is a separate merchant chore; it does not require enabling combat events. New and existing profiles default to disabled.
+In **Merchant → Configure merchant → Overview → Merchant seasonal activities**, enable **Visit Halloween doors daily**. Save the profile, preview it and deploy the merchant v2 script. This is a separate merchant chore; it does not require enabling combat events. New and existing profiles default to disabled.
 
 The route reads `G.events.trickortreat.doors` and `character.trickortreat`, walks within knock range, then calls `knock(index)`. Current rules allow seven doors per character per UTC day and fourteen knocks across the entire account. The merchant never launches another character to consume the remaining quota.
 

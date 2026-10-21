@@ -69,5 +69,12 @@
   text-shadow: 0 0 6px rgba(124, 58, 237, 0.25);
 }
 
-:global(html[data-theme='guild']) { .card { box-shadow: none; } .card.active { border-color: $retro-border; box-shadow: none; } .card.alert { box-shadow: none; } .header { background: $retro-surface; padding: 0.85rem 1rem; } .content { padding: 1rem; } .title { font-size: 1rem; font-weight: 650; text-shadow: none; } }
-:global(html[data-theme='guild']) { .card { box-shadow: 0 2px 8px rgba(0,0,0,.08); } .header { border-radius: 14px 14px 0 0; border-bottom-color: var(--material-border); padding: 1.05rem 1.25rem; } .content { padding: 1.25rem; } .title { font-size: 1.05rem; } }
+:global(html[data-theme='guild']) {
+  .card { border-radius: 12px; border-color: var(--theme-border); background: var(--theme-surface); box-shadow: none; }
+  .card.active { border-color: var(--theme-border-strong); box-shadow: none; }
+  .card.alert { border-color: rgba(var(--theme-red-rgb), .45); box-shadow: none; }
+  .header { background: transparent; border-bottom: 1px solid var(--theme-border); padding: .9rem 1.25rem; border-radius: 12px 12px 0 0; }
+  .title { font-family: inherit; font-size: 1rem; font-weight: 600; letter-spacing: -.01em; text-shadow: none; }
+  .content { padding: 1.25rem; }
+  .content > * + * { margin-top: .85rem; }
+}

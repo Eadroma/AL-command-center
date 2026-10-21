@@ -47,7 +47,8 @@ export async function createServer() {
   // Global error handler
   app.setErrorHandler((err, req, reply) => {
     req.log.error(err);
-    reply.code(400).send({
+    // Routes throw plain Errors for user-facing validation (400); keep Fastify's own codes (413, 415, ...).
+    reply.code((err as { statusCode?: number }).statusCode ?? 400).send({
       error: err instanceof Error ? err.message : 'Request failed',
     });
   });
@@ -115,6 +116,8 @@ export async function createServer() {
 
 // Start server when executed directly
 if (process.argv[1] && import.meta.url.endsWith(path.basename(process.argv[1]))) {
+  // Route signals through process.exit so throttled JSON history is flushed.
+  for (const signal of ['SIGINT', 'SIGTERM'] as const) process.once(signal, () => process.exit(0));
   createServer()
     .then((app) => app.listen({ port, host: '127.0.0.1' }))
     .then((address) => {

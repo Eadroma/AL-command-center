@@ -20,3 +20,7 @@ it('archives legacy review during startup and permits sorting',()=>{
 it('retains stock reservations and compatible listing reserves',()=>{
  const {stock}=fixture();stock.observe();expect(stock.snapshot().stock[0]).toMatchObject({quantity:4,eligible:3,minimum:2,availableForStand:1});
 });
+it('treats pieces withdrawn for a stand listing as reserved',()=>{
+ const {c,hub}=fixture();c.listing_bank_stock_reserved=(it:any)=>it.name==='coat';
+ expect(hub.reserved({name:'coat'})).toBe(true);expect(hub.reserved({name:'pants'})).toBe(false);
+});

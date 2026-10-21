@@ -32,7 +32,7 @@ export const telemetryRoute: FastifyPluginAsync = async (app) => {
     try {
       const accepted = telemetry.ingest(req.body);
       const character = String((req.body as { character?: unknown })?.character ?? '');
-      return { ok: true, commands: accepted ? telemetry.takeCommands(character) : [] };
+      return { ok: true, commands: accepted ? telemetry.takeCommands(character,String((req.body as {ticket?:unknown})?.ticket ?? '')) : [] };
     } catch {
       return reply.code(403).send({ error: 'Telemetry rejected.' });
     }

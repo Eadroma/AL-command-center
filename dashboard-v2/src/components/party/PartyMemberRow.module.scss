@@ -159,13 +159,46 @@
 .summaryStats { grid-column: 2 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: .35rem .9rem; font-size: .8rem; color: v.$text-muted; font-variant-numeric: tabular-nums; }
 .technical { grid-column: 1 / -1; min-width: 0; }
 .technical > summary { color: v.$text-muted; cursor: pointer; font-size: .8rem; }
+.activity { grid-column: 1 / -1; color: v.$text-muted; font-size: .8rem; margin: .25rem 0; }
+
+/* Night: one ledger row per character; the pixel sprite is the only illustration. */
 :global(html[data-theme='guild']) {
-  .row { padding: 1.15rem; border-radius: 12px; border-color: var(--material-border); background: v.$retro-surface; gap: .55rem .9rem; }
-  .name { font-family: inherit; font-size: 1.05rem; letter-spacing: -.015em; }
-  .cls { font-family: inherit; font-size: .8rem; }
-  .portrait { padding: .3rem; border-radius: 12px; background: rgba(255,255,255,.04); }
-  .details { font-size: .78rem; text-transform: none; line-height: 1.7; padding: .25rem 0 .7rem; }
-  .technical { border-top: 1px solid var(--material-border); }
-  .invToggle { min-height: 36px; padding: .4rem .7rem; font-size: .78rem; border-radius: 8px; }
+  .row {
+    grid-template-columns: 44px minmax(8rem, 1fr) minmax(9rem, auto) minmax(7rem, 11rem) minmax(0, 1.4fr);
+    grid-template-rows: auto;
+    grid-template-areas: 'sprite id status bars stats' 'sprite act act act act' 'tech tech tech tech tech' 'drawer drawer drawer drawer drawer';
+    gap: .2rem 1.5rem; padding: 1rem 0; background: transparent; border: 0; border-radius: 0; border-top: 1px solid var(--theme-border);
+  }
+  .row:first-child { border-top: 0; padding-top: .25rem; }
+  /* Disabled characters stay listed for context but recede. */
+  .row[data-status='disabled'] :is(.portrait, .identity, .bars) { opacity: .5; }
+  .portrait { grid-area: sprite; align-self: start; padding: 0; background: none; border-radius: 0; }
+  .identity { grid-area: id; flex-direction: column; gap: 0; }
+  .name { font-family: inherit; font-size: 1rem; font-weight: 600; letter-spacing: -.01em; }
+  .cls { font-family: inherit; font-size: .8rem; color: var(--theme-muted); }
+  .statusActions { grid-area: status; gap: .75rem; flex-wrap: nowrap; }
+  .bars { grid-area: bars; gap: 5px; }
+  .summaryStats { grid-area: stats; justify-content: flex-end; gap: .2rem 1.1rem; font-size: .85rem; margin: 0; line-height: 1.6; }
   .summaryStats .invToggle { margin-left: 0; }
+  .gold { color: var(--theme-accent) !important; font-weight: 500; }
+  .activity { grid-area: act; font-size: .8rem; color: var(--theme-faint); margin: 0; }
+  .technical { grid-area: tech; border-top: 0; }
+  .technical > summary { min-height: 2rem; padding-left: 0; font-size: .8rem; color: var(--theme-faint); }
+  .technical > summary:hover { color: var(--theme-text); }
+  .details { font-size: .8rem; text-transform: none; line-height: 1.7; padding: .25rem 0 .6rem; }
+  .invToggle { min-height: 32px; padding: .25rem .65rem; font-size: .8rem; border-radius: 7px; color: var(--theme-muted); border-color: var(--theme-border-strong); }
+  .invToggle:hover { color: var(--theme-text); background: var(--theme-surface-alt); border-color: var(--theme-muted); }
+  .expandedDrawer { grid-area: drawer; border-top: 1px solid var(--theme-border); }
+  @media (max-width: 1000px) {
+    .row { grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-areas: 'sprite id status' 'sprite bars bars' 'sprite stats stats' 'sprite act act' 'tech tech tech' 'drawer drawer drawer'; gap: .45rem 1rem; }
+    .summaryStats { justify-content: flex-start; }
+  }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 36px minmax(0, 1fr); grid-template-areas: 'sprite id' 'status status' 'bars bars' 'stats stats' 'act act' 'tech tech' 'drawer drawer'; }
+    .statusActions { justify-content: space-between; }
+  }
 }
+
+:global(html[data-theme='guild']) { .row { padding: 1.4rem; background: var(--theme-surface-alt); border: 0; border-radius: 15px; gap: .7rem .85rem; } .portrait { background: rgba(255,255,255,.06); } .summaryStats { grid-column: 1 / -1; margin: .35rem 0; line-height: 1.8; } .technical > summary { min-height: 42px; } .bars { gap: 6px; } }
+
+.activity { grid-column: 1 / -1; color: v.$text-muted; font-size: .8rem; margin: .25rem 0; }

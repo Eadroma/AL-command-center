@@ -1,4 +1,4 @@
 @use '../../styles/variables' as v;
 .selector { display: flex; align-items: center; gap: 0.5rem; color: v.$text-muted; font-size: 0.8rem; }
 .selector select { min-height: 36px; padding: 0.4rem 0.6rem; border: 1px solid v.$retro-border; border-radius: v.$radius-none; color: v.$text-primary; background: v.$retro-surface; font: inherit; }
-:global(html[data-theme='guild']) { .selector select { border-radius: 9px; min-height: 40px; } @media (max-width: 640px) { .selector > span { display: none; } } }
+:global(html[data-theme='guild']) { .selector > span { display: none; } .selector select { border-radius: 9px; min-height: 36px; background: transparent; border-color: var(--theme-border); color: var(--theme-muted); } }

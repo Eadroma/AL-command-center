@@ -183,6 +183,8 @@ export interface BuildItem {
   properties: Record<string, number>;
 }
 export interface CharacterTelemetry {
+  commandQueue?: {id:string;type:string;createdAt:number;state:string}[];
+  commandResults?: {id:string;type:string;state:string;message:string;at:number}[];
   loopGuard?: { task: string; holds: Array<{ task: string; at: number; reason: string }> };
   eventExpedition?: import('../../shared/event-expedition').EventExpeditionStatus;
   compoundProgress?: import('../../shared/compound-progress').CompoundProgress;

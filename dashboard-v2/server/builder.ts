@@ -82,8 +82,9 @@ export function validateProfile(p: Profile, list = scripts()) {
     }
   }
   /** Dashboard upgrade list is the allowlist; catalog must mark the item upgradeable. */
+  // Same lookup as deploymentsPayload so build errors match the dashboard preview.
   const merchant =
-    list.find((s) => s.id === "eadrosell-merchant") ||
+    list.find((s) => s.id === "eadrosell-merchant-v2") ||
     list.find((s) => s.id.startsWith("eadrosell-merchant"));
   const catalog = JSON.parse(
     fs.readFileSync(
@@ -126,9 +127,8 @@ export function merchantPolicy(p: Profile, merchant?: ScriptInfo | null) {
     errors: string[] = [];
   if (!merchant || !merchant.id.startsWith("eadrosell-merchant"))
     return { warnings, errors };
-  const pontyItems = new Set(
-    ((merchant.config.PONTY_ITEMS || []) as string[]).map(String),
-  );
+  // PONTY_ITEMS is builder-managed: the bundle receives the profile list, not the script default.
+  const pontyItems = new Set(p.seller.ponty?.enabled ? p.seller.ponty.items : []);
   const exchange = p.seller.exchange.enabled
     ? new Set(p.seller.exchange.items)
     : new Set<string>();
@@ -457,6 +457,9 @@ export function adaptSource(
         )
         // v2: remove the events_enabled() guard (replaced by __ALCC.eventsEnabled prefix below)
         .replace(/if\s*\(!events_enabled\(\)\)\s*return null;\s*/, "");
+      // The text patches above fail silently if the script is reformatted; never ship an unfiltered picker.
+      if (!body.includes("__ALCC.events.indexOf"))
+        throw Error(`${s.filename}: pick_live_event no longer matches the builder's event filter. Update adaptSource.`);
       replaceFn(node, `if (!__ALCC.eventsEnabled) return null;${body}`);
     } else if (
       !p.farming.hunts &&
@@ -647,7 +650,7 @@ export function adaptSource(
       : "";
   const movementWatchdog =
     (s.kind === "farm" || c.ctype === "merchant") && fs.existsSync(movementWatchdogPath)
-      ? "\n" + fs.readFileSync(movementWatchdogPath, "utf8")
+      ? "\n" + fs.readFileSync(path.join(sourceDir, "owned-navigation.js"), "utf8") + "\n" + fs.readFileSync(movementWatchdogPath, "utf8")
       : "";
   const epilogue =
     (c.ctype === "merchant"

@@ -8,6 +8,8 @@ import { CompoundPanel } from '../merchant/CompoundPanel';
 import { UpgradeReview } from '../merchant/UpgradeReview';
 import { UpgradeTargets } from '../merchant/UpgradeTargets';
 import { UpgradeSimulator } from '../merchant/UpgradeSimulator';
+import { PageIntro } from '../layout/PageIntro';
+import { TaskWorkspace } from '../layout/TaskWorkspace';
 import { WorkspaceSections } from '../layout/WorkspaceSections';
 import { lazy, Suspense, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
@@ -79,7 +81,7 @@ const SLOT_OPTIONS = kitSlots.map(value => ({ value, label: value }));
 const MerchantOperations = lazy(() => import('../merchant/MerchantOperations').then(module => ({ default: module.MerchantOperations })));
 /** Complete merchant logistics editor for equipment handoffs, recurring supplies, NPC auto-sell, Xyn, Upgrades, Ponty, and Stand. */
 export function MerchantPage({
-  profile, catalog, version, loading, dirty, conflict, pending, deploymentBusy,
+  profile, catalog, loading, dirty, conflict, pending, deploymentBusy,
   error, notice, members, deployments, onChange, onSave, onDiscard, onDeploy,
 }: Props) {
   const farmers = profile?.characters.filter(character => character.ctype !== 'merchant') ?? [];
@@ -116,8 +118,8 @@ export function MerchantPage({
 
   const names = useMemo(() => new Map(catalog?.items.map(item => [item.id, item.name]) ?? []), [catalog]);
 
-  if (loading) return <section aria-label="Merchant logistics"><SectionHead eyebrow="Mule and supplies" title="Merchant" /><EmptyState title="Loading merchant rules…" /></section>;
-  if (!profile || !catalog) return <section aria-label="Merchant logistics"><SectionHead eyebrow="Mule and supplies" title="Merchant" /><EmptyState title="Profile unavailable" description="Use Refresh to retry the server connection." /></section>;
+  if (loading) return <section aria-label="Merchant logistics" data-usage-scope="page.merchant"><SectionHead eyebrow="Mule and supplies" title="Merchant" /><EmptyState title="Loading merchant rules…" /></section>;
+  if (!profile || !catalog) return <section aria-label="Merchant logistics" data-usage-scope="page.merchant"><SectionHead eyebrow="Mule and supplies" title="Merchant" /><EmptyState title="Profile unavailable" description="Use Refresh to retry the server connection." /></section>;
 
   const characterOptions = farmers.map(character => ({ value: character.name, label: `${character.name} · ${character.ctype}` }));
   const kitTarget = farmers.some(character => character.name === kitCharacter) ? kitCharacter : farmers[0]?.name ?? '';
@@ -184,17 +186,22 @@ export function MerchantPage({
   };
 
   return (
-    <section aria-label="Merchant logistics">
-      <SectionHead eyebrow="Mule and supplies" title="Merchant logistics">
-        <Badge variant="info">Revision {version}</Badge>
-        <Badge variant={profile.seller.standEnabled ? 'success' : 'neutral'}>{profile.seller.standEnabled ? 'Stand enabled' : 'Stand paused'}</Badge>
-      </SectionHead>
-      <p className={styles.description}>Configure what EadroSell keeps, retrieves, trades, upgrades, and delivers.</p>
-      <WorkspaceSections label="Merchant workspace" sections={[
+    <section aria-label="Merchant logistics" data-usage-scope="page.merchant">
+      <PageIntro title="Merchant" eyebrow="A LITTLE LESS BUSYWORK" description="Supplies, trading and production. See what is happening, then change only what you need.">
+        <Badge variant={profile.characters.some(c => c.enabled && c.ctype === 'merchant') ? 'info' : 'neutral'}>{profile.characters.find(c => c.enabled && c.ctype === 'merchant')?.name ?? 'No merchant selected'}</Badge>
+      </PageIntro>
+      <TaskWorkspace footer={<div className={styles.actions}><Button variant="primary" data-usage="action.save" onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button><Button variant="ghost" data-usage="action.discard" onClick={onDiscard} disabled={pending || !dirty}>Discard edits</Button><Button variant="primary" data-usage="action.deploy" onClick={onDeploy} disabled={!canDeploy}>Deploy saved profile</Button>{error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}</div>} sections={[
         { id: 'follow', label: 'Live overview', description: 'Current activity, next actions and blockers.', content: <Suspense fallback={<EmptyState title="Loading merchant operations…" />}><MerchantOperations profile={profile} catalog={catalog} deployments={deployments} dirty={dirty} /></Suspense> },
         { id: 'settings', label: 'Settings', description: 'Configure trading, production and team rules.', content: <>
       <WorkspaceSections label="Merchant settings" sections={[
         { id: 'overview', label: 'Overview', description: 'Inspect the task planner and configure which farmers the merchant supervises.', content: <>
+      {profile && <section aria-label="Merchant seasonal route">
+        <h3>Merchant seasonal activities</h3>
+        <Toggle label="Visit Halloween doors daily" value={profile.seller.trickOrTreat.enabled} disabled={pending || !profile.characters.some(c => c.enabled && c.ctype === 'merchant')} onChange={enabled => onChange({ ...profile, seller: { ...profile.seller, trickOrTreat: { enabled } } })} />
+        <Toggle label="Brew Witch’s Cipher from available ingredients" value={profile.seller.witchCipher.enabled} disabled={pending || !profile.characters.some(c => c.enabled && c.ctype === 'merchant')} onChange={enabled => onChange({ ...profile, seller: { ...profile.seller, witchCipher: { enabled } } })} />
+        <p>Cipher brewing uses unlocked ingredients already in the merchant’s bag, fits the live clue board, and respects the five-mix account limit. No event join or ingredient purchases.</p>
+        <p>Seven doors per merchant per UTC day, subject to the shared 14-knock account limit. Uses the game’s current door list, skips completed doors, and returns to the stand. Runs only during Halloween, outside expedition assembly and bank work. Save and deploy the merchant to apply.</p>
+      </section>}
         <WorkPriorities profile={profile} pending={pending} onChange={onChange} />
       <TemporaryCharacters profile={profile} deployments={deployments} />
       <CollapsiblePanel id="merchant-team" eyebrow="Runtime control" title="Team supervisor" defaultOpen actions={<Toggle label="Auto-start farmers" value={profile.seller.teamSupervisor.enabled} disabled={pending} onChange={value => onChange(setTeamSupervisorEnabled(profile, value))} />}>
@@ -366,11 +373,11 @@ export function MerchantPage({
       {conflict && <p role="alert" className={styles.alert}>The profile changed in another window. Discard local edits before editing again.</p>}
       {error && <p role="alert" className={styles.alert}>{error}</p>}
       {notice && <p role="status" className={styles.notice}>{notice}</p>}
-      <div className={styles.actions}>
-        <Button onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button>
-        <Button variant="ghost" onClick={onDiscard} disabled={pending || !dirty}>Discard edits</Button>
-        <Button variant="secondary" onClick={onDeploy} disabled={!canDeploy}>{pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}</Button>
-      </div>
+      {dirty && <div className={styles.actions}>
+        <Button variant="primary" data-usage="action.save" onClick={onSave} disabled={pending || !dirty || conflict || deploymentBusy}>Save profile</Button>
+        <Button variant="ghost" data-usage="action.discard" onClick={onDiscard} disabled={pending || !dirty}>Discard edits</Button>
+        <Button variant="primary" data-usage="action.deploy" onClick={onDeploy} disabled={!canDeploy}>{pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}</Button>
+      </div>}
     </section>
   );
 }

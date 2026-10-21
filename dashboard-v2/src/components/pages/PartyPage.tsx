@@ -1,21 +1,14 @@
 import type { Catalog, LogEntry, PartyMember, Profile, DeploymentsResponse } from '../../types';
-import { ControlsPanel, type ControlsPanelProps } from '../controls/ControlsPanel';
-import styles from './PartyPage.module.scss';
+import type { ControlsPanelProps } from '../controls/ControlsPanel';
+import type { TeamTool } from '../../models/navigation';
+import { Users, Swords, Backpack, ChartNoAxesCombined, ArrowUpRight } from 'lucide-react';
 import { PartyPanel } from '../party/PartyPanel';
 import { PartyMap } from '../party/PartyMap';
-import { RuntimeInspector } from '../party/RuntimeInspector';
-import { TelemetryPanel } from '../telemetry/TelemetryPanel';
-
-import { DeploymentPreview } from '../party/DeploymentPreview';
-import { TeamComposition } from '../party/TeamComposition';
 import { OperationalSummary } from '../party/OperationalSummary';
-import { DepartureChecklist } from '../farming/DepartureChecklist';
-import { useState } from 'react';
-import { Button } from '../ui';
-import { PartyStats } from '../party/PartyStats';
-import { FirstRunWizard } from '../onboarding/FirstRunWizard';
-
+import { Disclosure } from '../layout/Disclosure';
+import styles from './PartyPage.module.scss';
 export interface PartyPageProps {
+  onOpenTool?: (tool: TeamTool) => void;
   profile?: Profile;
   deployments?: DeploymentsResponse;
   onChangeProfile: (profile: Profile) => void;
@@ -30,60 +23,23 @@ export interface PartyPageProps {
   onChangeScript?: (characterName: string, scriptId: string) => void;
 }
 
-/** Operational overview combining roster health, safe profile controls and recent telemetry. */
-export function PartyPage({
-  members, catalog, loading, logs, onClearLogs, controls, profile, deployments, onChangeProfile,
-  onDeployCharacter, onStopCharacter, onChangeScript,
-}: PartyPageProps) {
-  const [view, setView] = useState<'overview'|'stats'>('overview');
-  return (
-    <div className={styles.page}>
-      <header className={styles.heading}>
-        <h1>Party overview</h1>
-        <p>Monitor your characters, prepare changes, then inspect their live activity.</p>
-      </header>
-      <nav aria-label="Party views" style={{display:'flex',gap:'.5rem'}}><Button variant={view==='overview'?'secondary':'ghost'} aria-pressed={view==='overview'} onClick={()=>setView('overview')}>Overview</Button><Button variant={view==='stats'?'secondary':'ghost'} aria-pressed={view==='stats'} onClick={()=>setView('stats')}>Stats</Button></nav>
-      {view==='stats'?<PartyStats profile={profile} deployments={deployments} catalog={catalog}/>:<>
-      <section className={styles.live} aria-label="Live team overview">
-        <OperationalSummary profile={profile} deployments={deployments} />
-        <PartyPanel
-        members={members}
-        deployments={deployments}
-        catalog={catalog}
-        loading={loading}
-        onDeployCharacter={onDeployCharacter}
-        onStopCharacter={onStopCharacter}
-        onChangeScript={onChangeScript}
-      />
-      </section>
-      <section aria-labelledby="party-setup-heading">
-        {profile && catalog && <FirstRunWizard profile={profile} catalog={catalog} dirty={controls.dirty} pending={controls.pending || controls.deploymentBusy} onChange={onChangeProfile} />}
-        {profile ? <details className={styles.diagnostics}><summary>Before departure · preparation checklist</summary><DepartureChecklist profile={profile} deployments={deployments} /></details> : null}
-        <div className={styles.sectionHeading}>
-          <h2 id="party-setup-heading">Prepare & deploy</h2>
-          <p>Choose the team, save your changes, and preview the saved deployment.</p>
-        </div>
-        <div className={styles.setup}>
-          <TeamComposition profile={profile} disabled={controls.pending || controls.conflict || controls.deploymentBusy} onChange={onChangeProfile} />
-          <ControlsPanel {...controls} />
-          <DeploymentPreview version={controls.version} disabled={controls.dirty || controls.conflict || controls.pending || controls.deploymentBusy} onDeploy={onDeployCharacter} />
-        </div>
-      </section>
-      <section aria-labelledby="party-map-heading">
-        <div className={styles.sectionHeading}>
-          <h2 id="party-map-heading">Live positions</h2>
-          <p>Follow the team across maps and review recent movement.</p>
-        </div>
-        <PartyMap members={members} catalog={catalog} loading={loading} deployments={deployments} />
-      </section>
-      <details className={styles.diagnostics}>
-        <summary>Runtime diagnostics & activity log</summary>
-        <div className={styles.diagnosticContent}>
-          <RuntimeInspector members={members} />
-          <TelemetryPanel entries={logs} onClear={onClearLogs} />
-        </div>
-      </details>
-      </>}
-    </div>
-  );
+const tools = [
+  { id: 'setup', label: 'Team setup', description: 'Characters, scripts and deployment', icon: Users },
+  { id: 'farming', label: 'Farming & events', description: 'Targets, bosses and combat rules', icon: Swords },
+  { id: 'inventory', label: 'Equipment & bags', description: 'Inspect items and loadouts', icon: Backpack },
+  { id: 'insights', label: 'Activity & insights', description: 'XP, gold, history and diagnostics', icon: ChartNoAxesCombined },
+] as const;
+export function PartyPage({ members, catalog, loading, deployments, profile, onOpenTool,
+  onDeployCharacter, onStopCharacter, onChangeScript }: PartyPageProps) {
+  const enabled = profile?.characters.filter(c => c.enabled).length ?? 0;
+  const live = members?.filter(c => c.status !== 'offline' && c.status !== 'disabled').length ?? 0;
+  return <div className={styles.page} data-usage-scope="page.team">
+    <header className={styles.heading}><div><span className={styles.eyebrow}>YOUR ADVENTURE, AT A GLANCE</span><h1>Team</h1><p>{enabled ? `${live} of ${enabled} enabled characters reporting. Everything else is one click away.` : 'Connect your account and prepare your first team.'}</p></div>
+      <button type="button" className={styles.configure} onClick={() => onOpenTool?.('setup')}>{enabled ? 'Manage team' : 'Set up your team'}<ArrowUpRight size={17}/></button>
+    </header>
+    <PartyPanel members={members} deployments={deployments} catalog={catalog} loading={loading} onDeployCharacter={onDeployCharacter} onStopCharacter={onStopCharacter} onChangeScript={onChangeScript}/>
+    <div className={styles.tools} aria-label="Team tools">{tools.map(tool => { const Icon = tool.icon; return <button key={tool.id} type="button" onClick={() => onOpenTool?.(tool.id)}><Icon size={23} aria-hidden="true"/><strong>{tool.label}</strong><span>{tool.description}</span><ArrowUpRight className={styles.arrow} size={17} aria-hidden="true"/></button>; })}</div>
+    <Disclosure title="Live positions" description="Open the map to follow your team."><PartyMap members={members} catalog={catalog} loading={loading} deployments={deployments}/></Disclosure>
+    <Disclosure title="Needs attention" description="Inspect warnings and operational signals."><OperationalSummary profile={profile} deployments={deployments}/></Disclosure>
+  </div>;
 }

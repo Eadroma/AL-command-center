@@ -17,3 +17,5 @@
   strong { color: v.$text-primary; font-size: 0.85rem; }
   small { color: v.$text-faint; font-size: 0.7rem; margin-top: 0.25rem; }
 }
+
+:global(html[data-theme='guild']) { .card { border-radius: 14px; padding: 1rem; } }

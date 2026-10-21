@@ -1,0 +1,4 @@
+@use '../../styles/variables' as v;
+.tools { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+.footer { position: sticky; bottom: -1.75rem; margin: 1.5rem -1.75rem -1.75rem; padding: .5rem 1.75rem; background: v.$retro-bg; border-top: 1px solid v.$retro-border; z-index: 3; }
+@media(max-width:640px) { .footer { margin: 1rem -1rem -1rem; padding: .5rem 1rem; bottom: -1rem; } }

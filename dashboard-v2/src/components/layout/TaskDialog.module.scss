@@ -1,0 +1,23 @@
+@use '../../styles/variables' as v;
+.dialog { margin: auto; width: min(1120px, calc(100vw - 3rem)); max-width: none; max-height: calc(100dvh - 3rem); padding: 0; border: 1px solid v.$retro-border; border-radius: 20px; background: v.$retro-bg; color: v.$text-primary; box-shadow: 0 24px 100px rgba(0,0,0,.2); }
+.dialog::backdrop { background: rgba(0,0,0,.62); backdrop-filter: blur(5px); }
+.header { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.75rem; background: v.$retro-bg; border-bottom: 1px solid v.$retro-border; }
+.header h2 { margin: 0; font-size: 1.2rem; }
+.header button { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid v.$retro-border; border-radius: 50%; background: v.$retro-surface; color: v.$text-primary; cursor: pointer; }
+.header button:focus-visible { outline: 2px solid v.$retro-accent; }
+.body { padding: 1.75rem; min-width: 0; }
+@media (max-width: 640px) { .dialog { width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); border-radius: 14px; } .body { padding: 1rem; } .header { padding: 1rem; } }
+
+.dialog { overscroll-behavior: contain; }
+
+@media (prefers-reduced-transparency: reduce) { .dialog::backdrop { backdrop-filter: none; background: rgba(0,0,0,.75); } }
+
+:global(html[data-theme='guild']) {
+  .dialog { border-radius: 14px; border-color: var(--theme-border); background: var(--theme-bg); }
+  .header { padding: 1rem 1.5rem; background: var(--material-chrome); backdrop-filter: blur(12px); border-bottom-color: var(--theme-border); }
+  .header h2 { font-size: 1.1rem; font-weight: 600; }
+  .header button { width: 36px; height: 36px; border-radius: 8px; background: transparent; color: var(--theme-muted); }
+  .header button:hover { color: var(--theme-text); border-color: var(--theme-border-strong); }
+  .body { padding: 1.5rem; }
+  .body > * + * { margin-top: 1rem; }
+}

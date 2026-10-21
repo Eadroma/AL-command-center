@@ -111,6 +111,7 @@ var MovementWatchdog = (function () {
 		if (history.length > 24) history.shift();
 	}
 	async function recover() {
+        if(typeof OwnedNavigation!=='undefined')OwnedNavigation.cancel('movement watchdog recovery');
 		status.attempts++;
 		episode_at = now();
 		last_action_at = episode_at;

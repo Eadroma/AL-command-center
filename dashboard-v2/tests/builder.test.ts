@@ -850,3 +850,9 @@ it('matches game stand capacity for merchant levels and the custom stand',()=>{
  const source=fs.readFileSync(path.join(sourceDir,'eadrosell-merchant-v2.js'),'utf8');const character:any={ctype:'merchant',level:70};const capacity=fn(source,'merchant_trade_capacity',{character});
  expect(capacity()).toBe(24);character.level=80;expect(capacity()).toBe(30);character.level=69;expect(capacity()).toBe(16);character.stand='cstand';expect(capacity()).toBe(24);
 });
+
+it('refuses to build when the live event picker no longer matches the filter patch',()=>{
+ const {p,c,s,source}=setup();
+ const reformatted=source.replace(/var name = JOIN_EVENTS\[i\];|for \(name in S\) \{|var name = LIVE_BOSSES\[i\];|if \(S\[JOIN_EVENTS\[i\]\]\)/g,m=>m.replace(/ /g,'  '));
+ expect(()=>adaptSource(reformatted,p,c,s)).toThrow('pick_live_event');
+});
