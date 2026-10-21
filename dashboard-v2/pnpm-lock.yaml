@@ -45,9 +45,6 @@ importers:
       react-dom:
         specifier: ^19.3.1
         version: 19.3.1(react@19.3.1)
-      sass:
-        specifier: ^1.104.1
-        version: 1.104.1
       zod:
         specifier: ^4.6.5
         version: 4.6.5
@@ -70,6 +67,9 @@ importers:
       oxlint:
         specifier: ^1.81.0
         version: 1.83.0
+      sass:
+        specifier: ^1.104.1
+        version: 1.104.1
       tsx:
         specifier: ^4.23.13
         version: 4.23.13

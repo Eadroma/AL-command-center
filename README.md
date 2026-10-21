@@ -103,7 +103,7 @@ Credentials, runtime data, backups, installed dependencies, the full game reposi
 
 ## Continuous integration
 
-GitHub Actions runs three workflows on every push and pull request:
+GitHub Actions runs three workflows on pushes to `main` and on pull requests. Feature branches are validated through their pull request, avoiding duplicate runs for the same change:
 
 - **Build and tests**: frozen dependency installation, publication audit, TypeScript/frontend build, full Vitest suite, script tests, and an API/UI smoke test.
 - **Code quality**: Oxlint checks.
@@ -144,6 +144,8 @@ Further documentation, currently primarily in French: [dashboard reference](dash
 
 [Halloween activities](dashboard-v2/docs/HALLOWEEN-2026.md) explains Headless Horseman, Graveyard Rising, daily Trick or Treat visits and automated Witch’s Cipher brewing.
 
+See the [cleanup report](docs/CLEANUP-2026-10-21.md) for the latest maintenance changes, validation scope and remaining work.
+
 ## Preparing a clean export
 
 ```sh
@@ -151,6 +153,8 @@ pnpm export:public
 ```
 
 This creates `.release/public-candidate/` using an explicit file allowlist and a SHA-256 manifest. It refuses to overwrite an existing export and stops if configured secret patterns are detected. To choose a new destination, run `node tools/prepare-public.mjs .release/another-candidate`. The tool does not create a remote repository or push to GitHub.
+
+The generated `PUBLIC-MANIFEST.json` belongs to its export directory and is not tracked as a permanent repository snapshot. Each new export generates fresh checksums.
 
 ## Credits and licensing
 
