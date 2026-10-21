@@ -96,7 +96,8 @@ var MerchantHalloween = (function () {
                 p.doors.push(index); save();
                 retryAt = Date.now() + 1500;
                 note('door ' + (index + 1) + '/' + doors.length + (result && result.trick ? ': ' + result.trick : ': collected'));
-                if (result && result.trick === 'ghost') { retryAt = Date.now() + 120000; await home(); }
+                // A Ghost result alone does not end the circuit. The normal
+                // threat check retreats only if a monster actually targets us.
             } catch (error) {
                 var why = reason(error);
                 if (why === 'trickortreat_knocked') p.doors.push(index);

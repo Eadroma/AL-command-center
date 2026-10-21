@@ -84,10 +84,11 @@ describe('merchant Trick or Treat', () => {
     const f = fixture(); await f.runtime.tick(); f.context.knock = async () => { throw new Error('network'); };
     await f.runtime.tick(); expect(f.runtime.snapshot().doors).toEqual([]); f.advance(2000); await f.runtime.tick(); expect(f.routes).toHaveLength(1);
   });
-  it('retreats after a Ghost trick and resumes only after the Ghost lifetime', async () => {
+  it('continues to the next door after a Ghost trick without returning to the stand', async () => {
     const f = fixture(); await f.runtime.tick(); f.context.knock = async (door: number) => ({ success: true, door, trick: 'ghost' });
-    await f.runtime.tick(); expect(f.routes.at(-1).map).toBe('main');
-    await f.runtime.tick(); expect(f.routes).toHaveLength(2); f.advance(120001); await f.runtime.tick(); expect(f.routes.at(-1).map).toBe('spookytown');
+    await f.runtime.tick(); expect(f.routes.at(-1).map).toBe('halloween');
+    f.advance(2000); await f.runtime.tick(); expect(f.routes.at(-1).map).toBe('spookytown');
+    expect(f.routes.some(p => p.map === 'main')).toBe(false);
   });
   it('yields to expedition assembly, bank review and ongoing exchanges', async () => {
     const f = fixture(); f.context.EventExpedition = { snapshot: () => ({ phase: 'forming' }) }; await f.runtime.tick();
