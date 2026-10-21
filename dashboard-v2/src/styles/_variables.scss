@@ -20,7 +20,7 @@ $retro-cyan:        var(--theme-cyan, #06b6d4);   // Mana / Daisy / Telemetrie
 
 // --- Typographie ---
 $font-hud:          var(--theme-display-font, 'VT323'), monospace;
-$font-mono:         'JetBrains Mono', monospace;
+$font-mono:         var(--theme-ui-font, 'JetBrains Mono'), monospace;
 
 // --- Textes ---
 $text-primary:      var(--theme-text, #e2e8f0);   // Blanc casse retro

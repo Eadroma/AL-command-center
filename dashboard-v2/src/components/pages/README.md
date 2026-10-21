@@ -1,3 +1,7 @@
+# Page and contextual tool components
+
+Only Team, Merchant and Bank are navigation destinations. Other components listed below are retained as contextual tools inside Team dialogs. Merchant settings and Bank actions also open in focused dialogs. Legacy hash links resolve to their corresponding Team tool. See `docs/DASHBOARD-REDESIGN.md` at the repository root for the new structure.
+
 # Feature pages
 
 - `ActivityPage`: searches recent server history by message/source, severity and source.

@@ -1,0 +1,23 @@
+@use '../../styles/variables' as v;
+.launch,.actions button { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; min-height:40px; border:1px solid v.$retro-border; border-radius:10px; padding:.5rem .8rem; color:v.$text-primary; background:v.$retro-surface; font:inherit; font-size:.85rem; cursor:pointer; }
+.report { min-width:0; }
+.intro { color:v.$text-muted; line-height:1.7; max-width:48rem; }
+.summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin:1.5rem 0; }
+.summary article { display:flex; flex-direction:column; gap:.4rem; padding:1.25rem; background:v.$retro-surface; border:1px solid v.$retro-border; border-radius:14px; }
+.summary strong { font-size:2rem; font-variant-numeric:tabular-nums; }
+.summary strong small { font-size:1rem; color:v.$text-muted; }
+.summary article > span { font-size:.8rem; color:v.$text-muted; }
+.controls { display:flex; flex-wrap:wrap; gap:1rem; margin:1.5rem 0 1rem; }
+.controls label { display:flex; flex-direction:column; gap:.4rem; font-size:.8rem; color:v.$text-muted; }
+.controls select { min-height:44px; padding:.5rem .8rem; color:v.$text-primary; background:v.$retro-surface; border:1px solid v.$retro-border; border-radius:9px; font:inherit; }
+.note { font-size:.8rem; color:v.$text-muted; line-height:1.7; margin:1rem 0; }
+.tableWrap { overflow-x:auto; border:1px solid v.$retro-border; border-radius:12px; background:v.$retro-surface; }
+table { width:100%; border-collapse:collapse; font-size:.85rem; text-align:left; }
+caption { padding:1rem; text-align:left; color:v.$text-muted; font-size:.8rem; }
+th,td { padding:.8rem 1rem; border-top:1px solid v.$retro-border; font-variant-numeric:tabular-nums; }
+thead th { color:v.$text-muted; font-size:.75rem; white-space:nowrap; }
+tbody th { font-weight:550; min-width:12rem; }
+tbody th small { display:block; color:v.$text-muted; font-size:.7rem; font-weight:400; margin-top:.15rem; }
+.actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.5rem; }
+.launch:focus-visible,.actions button:focus-visible { outline:2px solid v.$retro-accent; outline-offset:3px; }
+@media(max-width:600px) { .summary { grid-template-columns:1fr; } .summary article { flex-direction:row; align-items:center; justify-content:space-between; } .controls label { flex:1; min-width:8rem; } }

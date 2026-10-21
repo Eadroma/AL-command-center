@@ -1,4 +1,5 @@
-import { useEffect, useId, useState, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { recordUsage } from '../../models/usage-store';
 import styles from './WorkspaceSections.module.scss';
 
 interface WorkspaceSection {
@@ -11,8 +12,12 @@ interface WorkspaceSection {
 /** Local task navigation. Hidden panels stay mounted to preserve editor drafts. */
 export function WorkspaceSections({ label, sections }: { label: string; sections: WorkspaceSection[] }) {
   const prefix = useId();
+  const recorded = useRef<string | undefined>(undefined);
   const [selected, setSelected] = useState(sections[0]?.id);
   const active = sections.find(section => section.id === selected) ?? sections[0];
+  useEffect(() => {
+    if(label==='Merchant settings' && active && recorded.current!==active.id) {recorded.current=active.id;recordUsage(`merchant.${active.id}`);}
+  }, [label,active]);
   useEffect(() => {
     const reveal = (event: Event) => {
       const target = document.getElementById(`${(event as CustomEvent<string>).detail}-title`);
@@ -31,7 +36,7 @@ export function WorkspaceSections({ label, sections }: { label: string; sections
       </button>)}
     </nav>
     {sections.map(section => <section key={section.id} id={`${prefix}-${section.id}`}
-      hidden={active?.id !== section.id} aria-labelledby={`${prefix}-${section.id}-button`}>
+      data-usage-scope={label==='Merchant settings' ? `merchant.${section.id}` : undefined} hidden={active?.id !== section.id} aria-labelledby={`${prefix}-${section.id}-button`}>
       <p className={styles.description}>{section.description}</p>
       {section.content}
     </section>)}

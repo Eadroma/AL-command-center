@@ -170,7 +170,7 @@ var EventExpedition = (function () {
   function travel(destination) {
     if (travelling || Date.now() < travelRetryAt || (typeof smart !== 'undefined' && smart.moving)) return;
     travelling = true;
-    Promise.resolve().then(function () { return smart_move(destination); }).then(function () {
+    Promise.resolve().then(function () { return typeof OwnedNavigation!=='undefined'?OwnedNavigation.run('expedition:'+String(assignment&&assignment.id||'return'),destination,function(){return smart_move(destination);},60):smart_move(destination); }).then(function () {
       travelRetryAt = 0; lastTravelError = '';
     }).catch(function (e) {
       var reason = String(e && (e.reason || e.message) || e);
@@ -196,7 +196,7 @@ var EventExpedition = (function () {
         if (typeof smart !== 'undefined' && smart.moving) stop();
         travelling = false;
         try {
-          var result = await bounded(town(), 10000);
+          var result = await bounded(typeof OwnedNavigation!=='undefined'?OwnedNavigation.run('expedition-town:'+assignment.id,{map:'main'},function(){return town();}):town(),15000);
           if (result && (result.failed || result.success === false)) throw result;
           // Some clients resolve town before the channel and map update arrive.
           if (inIceArena()) await new Promise(function (resolve) { setTimeout(resolve, 4000); });

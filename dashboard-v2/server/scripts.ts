@@ -71,10 +71,17 @@ export function variables(source: string) {
         }
   return out;
 }
+let catalogue: { signature: string; list: ScriptInfo[] } | undefined;
+/** Dashboards poll this every few seconds; reparse only when a top-level `code/*.js` file changes. */
 export function scripts(): ScriptInfo[] {
-  return fs
-    .readdirSync(sourceDir)
-    .filter((f) => f.endsWith(".js"))
+  const files = fs.readdirSync(sourceDir).filter((f) => f.endsWith(".js"));
+  const signature = files.map((f) => `${f}:${fs.statSync(path.join(sourceDir, f)).mtimeMs}`).join("|");
+  if (catalogue?.signature !== signature) catalogue = { signature, list: readScripts(files) };
+  // Callers may mutate configs (seeding, migrations); never hand out the cached objects.
+  return structuredClone(catalogue.list);
+}
+function readScripts(files: string[]): ScriptInfo[] {
+  return files
     .map((filename) => {
       const source = fs.readFileSync(path.join(sourceDir, filename), "utf8"),
         vars = variables(source);

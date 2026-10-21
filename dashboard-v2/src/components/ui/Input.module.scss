@@ -13,5 +13,8 @@
   &:focus-visible { outline: 2px solid v.$retro-accent; outline-offset: 2px; }
 }
 
-:global(html[data-theme='guild']) { .input { min-height: 42px; border-radius: 4px; background: v.$retro-bg; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 0.95rem; } }
-:global(html[data-theme='guild']) { .input { min-height: 44px; border-radius: 9px; background: rgba(0,0,0,.12); transition: border-color 140ms ease; } .input:hover:not(:disabled) { border-color: v.$retro-border-glow; } }
+:global(html[data-theme='guild']) {
+  .input { min-height: 40px; padding: .5rem .75rem; border-radius: 8px; background: var(--theme-bg); border-color: var(--theme-border-strong); font-size: .92rem; transition: border-color 120ms ease; }
+  .input:hover:not(:disabled) { border-color: var(--theme-muted); }
+  .input:disabled { color: var(--theme-faint); border-color: var(--theme-border); }
+}

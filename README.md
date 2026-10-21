@@ -38,13 +38,13 @@ These steps use **Browser CODE**: the dashboard and game browser must run on the
 
 1. Sign in to [Adventure Land](https://adventure.land), open your characters on the desired server, and keep them open.
 2. Open [Mainframe](https://adventure.land/mainframe), select **Connect an AI**, and retrieve your MCP token using **Reveal token**, or **Create token** if needed. Use the token, never your game password. Rotating an existing token invalidates the previous one.
-3. Open **Team → Party** (`/#party`). In **First farming setup**, paste the token and select **Connect and discover characters**. This verifies the account and lists its characters; it does not start them.
+3. Open **Team → Manage team** (`/#team?tool=setup`). In **First farming setup**, paste the token and select **Connect and discover characters**. This verifies the account and lists its characters; it does not start them.
 4. Choose the **home** region and server matching the game. Select the characters, their v2 scripts, and the leader. For a solo character, use **Independent / leader**. Selecting a server in the dashboard does not move characters in the game.
 5. Choose a target appropriate for their equipment. The specialized crab rogue and crab ranger scripts keep their dedicated target, even if you choose another global target. The rogue requires equipment that grants its specific skills.
 6. In **Review**, check the composition and select **Stage cautious profile**. This prepares an editable draft. Trading features and advanced activities remain disabled in this initial profile; script-specific potions and safety behavior still apply.
 7. Select **Save profile**, then **Deployment preview → Preview saved deployment**. Review the characters, scripts, and CODE differences before proceeding. Preview does not upload or restart anything.
 8. Select **Deploy saved profile** to apply the saved configuration. This writes generated bundles to `CC_<name>` slots and requests a reload. The dashboard backs up replaced slot contents in its local data directory.
-9. Wait for fresh telemetry in Party, then check the character's movement and CODE console. A successful upload alone does not confirm that the script is running correctly. Use **Stop** in the roster when needed.
+9. Wait for fresh telemetry in Team, then check the character's movement and CODE console. A successful upload alone does not confirm that the script is running correctly. Use **Stop** in the roster when needed.
 
 For later changes, follow **edit → Save profile → Preview saved deployment → Deploy saved profile**. Saving alone does not update running scripts. Deployment remains unavailable while edits are unsaved or an operation is in progress.
 
@@ -54,17 +54,23 @@ The [first farming guide](dashboard-v2/docs/FIRST-FARMING.md) provides additiona
 
 | Screen | Purpose |
 | --- | --- |
-| Party (`#party`) | Team composition, account connection, character status, saving, preview, deployment, and stopping characters |
-| Inventory (`#inventory`) | Live inventories, equipment, and build reservations |
-| Combat (`#combat`) | Session performance and failure diagnostics |
-| Operations (`#operations`) | Mission state, movement watchdog, and operation history |
-| Farming (`#farming`) and Events (`#events`) | Targets, hunts, bosses, events, and loadouts |
-| Merchant (`#merchant`) | Consumables, deliveries, purchases, sales, crafting, upgrades, and stand settings; enable gradually with explicit budgets |
-| Bank (`#bank`) | Latest bank snapshot and timestamp; open the bank in-game to refresh it |
-| Simulator (`#simulator`) | XP, gold, and loot estimates to compare with actual measurements |
-| Activity (`#activity`) and Scripts (`#scripts`) | Server logs, script catalogue, and saved script assignments |
+| Team (`#team`) | Character roster and status; open Team setup, Farming & events, Equipment & bags, or Activity & insights when needed |
+| Merchant (`#merchant`) | Current merchant activity and blockers; configuration and planning open in focused dialogs |
+| Bank (`#bank`) | Searchable bank snapshots; Bank actions opens deposits, sorting and recurring deposit rules |
+
+The Studio theme uses a dark palette, spacious layouts and system typography. Retro remains available in the theme selector. The main navigation has exactly three destinations. Setup, inventory, farming, events, performance, deployment history and diagnostics remain available as contextual tools rather than separate pages. Existing links such as `#events`, `#inventory` and `#deployments` open the corresponding Team tool.
+
+Saving and deploying remain separate. You can close a tool without losing changes already made to the profile draft. Merchant seasonal activities are under **Merchant → Configure merchant → Overview**.
 
 XP and gold per hour depend on received telemetry. `Loot Gold/h` tracks loot events; `Balance gains/h` can include transfers. Missing telemetry means the current state is unconfirmed. The WebSocket indicator describes the connection to the dashboard, rather than a character's online status.
+
+## Dashboard usage
+
+Select **Usage** beside Search to review page visits, tool opens, control interactions, active days and last use. Filter by area, used/unused features, and the last 7, 30 or 90 days. Collection starts when this version is first opened; past usage cannot be reconstructed.
+
+Only registered feature identifiers, counters and dates are kept in this browser's local storage. No form values, search text, character names or credentials are collected, and no usage data is sent to the server. Pause/resume, reset and JSON export are available in the report. Opening the report does not count as feature use; background polling and game telemetry do not count. Interactions describe UI activity, not successful game operations or time spent.
+
+The preview, development and live dashboard have separate storage when their browser origin differs (including hostname or port). Clearing browser data removes the history. Counts are decision aids: zero use alone does not establish that a rare, unavailable or automated feature should be removed.
 
 ## Configuration and private data
 

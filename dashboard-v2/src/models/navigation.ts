@@ -1,30 +1,27 @@
+/** Three destinations; supporting tools open in context instead of becoming pages. */
 export const NAV_GROUPS = [
-  { id: 'team', label: 'Team', pages: [
-    { id: 'party', label: 'Party' }, { id: 'inventory', label: 'Inventory' }, { id: 'combat', label: 'Combat' },
-    { id: 'operations', label: 'Operations' }, { id: 'incidents', label: 'Incidents' }, { id: 'performance', label: 'History' },
-  ] },
-  { id: 'farm', label: 'Farming', pages: [
-    { id: 'farming', label: 'Targets' }, { id: 'events', label: 'Events' }, { id: 'cave', label: 'Cave Dreams' }, { id: 'simulator', label: 'Loot Lab' },
-  ] },
-  { id: 'trade', label: 'Commerce', pages: [
-    { id: 'merchant', label: 'Merchant' }, { id: 'bank', label: 'Bank' },
-  ] },
-  { id: 'system', label: 'System', pages: [
-    { id: 'deployments', label: 'Deployments' }, { id: 'activity', label: 'Activity' }, { id: 'scripts', label: 'Scripts' },
-  ] },
+  { id: 'team', label: 'Team', pages: [{ id: 'team', label: 'Team' }] },
+  { id: 'merchant', label: 'Merchant', pages: [{ id: 'merchant', label: 'Merchant' }] },
+  { id: 'bank', label: 'Bank', pages: [{ id: 'bank', label: 'Bank' }] },
 ] as const;
-
 export type NavGroup = (typeof NAV_GROUPS)[number];
 export type PageId = NavGroup['pages'][number]['id'];
-
-const PAGE_IDS = new Set<string>(NAV_GROUPS.flatMap(group => group.pages.map(page => page.id)));
-
-/** Resolve an external hash to a known page without letting navigation and routing drift apart. */
-export function pageFromHash(hash: string): PageId {
-  const candidate = hash.replace(/^#/, '');
-  return PAGE_IDS.has(candidate) ? candidate as PageId : 'party';
+export const TEAM_TOOLS = ['setup', 'farming', 'inventory', 'insights'] as const;
+export type TeamTool = typeof TEAM_TOOLS[number];
+const legacyTools: Record<string, TeamTool> = {
+  farming: 'farming', events: 'farming', cave: 'farming', simulator: 'insights',
+  inventory: 'inventory', combat: 'insights', operations: 'insights', incidents: 'insights',
+  performance: 'insights', deployments: 'setup', activity: 'insights', scripts: 'setup',
+};
+export function routeFromHash(hash: string): { page: PageId; tool?: TeamTool; section?: string } {
+  const [name, query = ''] = hash.replace(/^#/, '').split('?');
+  if (name === 'merchant' || name === 'bank') return { page: name };
+  if (legacyTools[name]) return { page: 'team', tool: legacyTools[name], section: name };
+  const params = new URLSearchParams(query), tool = params.get('tool');
+  return { page: 'team', ...(TEAM_TOOLS.includes(tool as TeamTool) ? { tool: tool as TeamTool, section: params.get('section') ?? undefined } : {}) };
 }
-
-export function groupForPage(page: PageId): NavGroup {
-  return NAV_GROUPS.find(group => group.pages.some(item => item.id === page)) ?? NAV_GROUPS[0];
+export function pageFromHash(hash: string): PageId { return routeFromHash(hash).page; }
+export function groupForPage(page: PageId): NavGroup { return NAV_GROUPS.find(group => group.id === page) ?? NAV_GROUPS[0]; }
+export function teamToolHash(tool: TeamTool, section?: string) {
+  return `team?tool=${tool}${section ? `&section=${encodeURIComponent(section)}` : ''}`;
 }

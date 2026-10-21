@@ -1,0 +1,6 @@
+@use '../../styles/variables' as v;
+.disclosure { border: 1px solid v.$retro-border; border-radius: 14px; background: v.$retro-surface; margin-bottom: 1rem; min-width: 0; }
+.disclosure > summary { padding: 1.25rem; cursor: pointer; font-weight: 600; line-height: 1.5; }
+.disclosure > summary small { display: block; margin-top: .3rem; color: v.$text-muted; font-weight: 400; font-size: .85rem; }
+.disclosure > summary:focus-visible { outline: 2px solid v.$retro-accent; border-radius: 14px; }
+.content { padding: 0 1.25rem 1.25rem; min-width: 0; }

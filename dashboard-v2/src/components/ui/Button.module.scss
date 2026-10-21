@@ -100,5 +100,15 @@
   transform: translateY(1px);
 }
 
-:global(html[data-theme='guild']) { .button { font-family: 'Segoe UI', system-ui, sans-serif; text-transform: none; letter-spacing: 0; min-height: 40px; font-size: 0.9rem; } .button.small { min-height: 34px; font-size: 0.8rem; } .button.primary { color: #151020; font-weight: 650; } .button:hover:not(:disabled) { box-shadow: none; } .button:focus-visible { outline: 2px solid $retro-accent; outline-offset: 3px; } }
-:global(html[data-theme='guild']) { .button { border-radius: 9px; min-height: 44px; padding: .55rem 1rem; transition: background-color 140ms ease, transform 160ms var(--motion-ease); } .button.small { min-height: 36px; padding: .35rem .7rem; } .button.primary { color: #111c2b; } .button:active:not(:disabled) { transform: scale(.97); transition-duration: 50ms; } }
+:global(html[data-theme='guild']) {
+  .button { font-family: inherit; text-transform: none; letter-spacing: 0; font-weight: 500; font-size: .9rem; min-height: 40px; padding: .5rem 1rem; border-radius: 8px; }
+  .button.small { min-height: 34px; padding: .3rem .7rem; font-size: .82rem; }
+  .button.primary { background: var(--theme-button-bg); border-color: var(--theme-button-bg); color: var(--theme-on-accent); font-weight: 600; }
+  .button.primary:hover:not(:disabled) { background: var(--theme-accent-adjust-10); border-color: var(--theme-accent-adjust-10); box-shadow: none; }
+  .button.secondary { background: transparent; border-color: var(--theme-border-strong); }
+  .button.secondary:hover:not(:disabled) { background: var(--theme-surface-alt); border-color: var(--theme-muted); }
+  .button.danger:hover:not(:disabled), .button.ghost:hover:not(:disabled) { box-shadow: none; }
+  .button:disabled { opacity: 1; color: var(--theme-faint); background: transparent; border-color: var(--theme-border); }
+  .button:active:not(:disabled) { transform: translateY(1px); }
+  .button:focus-visible { outline: 2px solid var(--theme-accent); outline-offset: 2px; }
+}

@@ -9,4 +9,10 @@
 .description { color: v.$text-muted; font-size: 0.8rem; line-height: 1.6; margin: 1rem 0; }
 @media (max-width: 600px) { .navigation { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .navigation button { overflow-wrap: anywhere; } }
 
-:global(html[data-theme='guild']) { .navigation { border-radius: 4px; } .navigation button { border-radius: 4px; font-size: 0.9rem; } .navigation button[aria-pressed='true'] { border-color: v.$retro-accent; } }
+:global(html[data-theme='guild']) {
+  .navigation { gap: .25rem; padding: 0; background: transparent; border: 0; border-bottom: 1px solid var(--theme-border); border-radius: 0; }
+  .navigation button { position: relative; min-height: 40px; padding: .5rem .8rem; border: 0; border-radius: 8px 8px 0 0; font-size: .88rem; }
+  .navigation button[aria-pressed='true'] { background: transparent; color: var(--theme-text); }
+  .navigation button[aria-pressed='true']::after { content: ''; position: absolute; left: .8rem; right: .8rem; bottom: -1px; height: 2px; background: var(--theme-accent); border-radius: 2px; }
+  .description { color: var(--theme-faint); font-size: .85rem; }
+}

@@ -55,6 +55,9 @@
 .actions { flex-wrap: wrap; min-width: 0; }
 .title { overflow-wrap: anywhere; }
 
-:global(html[data-theme='guild']) { .sectionHead { border-bottom-style: solid; } .title { font-size: 1.65rem; font-weight: 650; text-shadow: none; } .eyebrow { color: $text-muted; font-size: 0.7rem; text-shadow: none; letter-spacing: 0.07em; } }
-:global(html[data-theme='guild']) { .sectionHead { border-bottom: 0; margin-bottom: .3rem; padding-bottom: .8rem; } .title { font-size: 1.5rem; line-height: 1.2; letter-spacing: -.035em; } .eyebrow { font-size: .68rem; letter-spacing: .09em; } .actions { gap: .75rem; } }
-:global(html[data-theme='guild']) { @media (max-width: 640px) { .actions { gap: .5rem; } } }
+:global(html[data-theme='guild']) {
+  .sectionHead { border-bottom: 0; margin-bottom: .75rem; padding-bottom: .25rem; }
+  .eyebrow { display: none; }
+  .title { font-family: inherit; font-size: 1.35rem; font-weight: 600; line-height: 1.25; letter-spacing: -.015em; text-shadow: none; }
+  .actions { gap: .6rem; }
+}

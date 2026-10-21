@@ -1,20 +1,13 @@
 import { useEffect, useState } from 'react';
-import { pageFromHash } from '../models/navigation';
-import type { PageId } from '../models/navigation';
-
+import { routeFromHash } from '../models/navigation';
 export type { PageId } from '../models/navigation';
-
-/** Whitelist hash routes so links and browser history work without a router dependency. */
-function currentPage(): PageId {
-  return pageFromHash(window.location.hash);
-}
-
-export function usePage() {
-  const [page, setPage] = useState<PageId>(currentPage);
+export function useRoute() {
+  const [route, setRoute] = useState(() => routeFromHash(window.location.hash));
   useEffect(() => {
-    const update = () => setPage(currentPage());
+    const update = () => setRoute(routeFromHash(window.location.hash));
     window.addEventListener('hashchange', update);
     return () => window.removeEventListener('hashchange', update);
   }, []);
-  return page;
+  return route;
 }
+export function usePage() { return useRoute().page; }

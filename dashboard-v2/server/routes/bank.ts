@@ -20,12 +20,6 @@ export const bankRoute: FastifyPluginAsync = async (app) => {
     try{const command=telemetry.enqueueDeposit(merchant.name,selection);await log('Manual bank deposit queued: '+selection.name,merchant.name);return {ok:true,command};}
     catch(e){return reply.code(409).send({error:(e as Error).message});}
   });
-  app.post('/api/bank/reconcile',async(_req,reply)=>{
-    const current=await getProfile(initialProfile(scripts()));
-    const merchant=current.profile.characters.find(c=>c.enabled&&c.ctype==='merchant');
-    if(!merchant)return reply.code(400).send({error:'An enabled merchant is required.'});
-    return reply.code(410).send({error:'Bank evidence inspection has been removed.'});
-  });
   app.post<{Body:{item:string;paused:boolean}}>('/api/merchant/upgrade/pause',async(req,reply)=>{
     const current=await getProfile(initialProfile(scripts()));
     const merchant=current.profile.characters.find(c=>c.enabled&&c.ctype==='merchant');

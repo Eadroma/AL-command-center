@@ -27,7 +27,7 @@ export function CharacterInventoryCard({ member, catalog }: CharacterInventoryCa
           <div className={styles.nameGroup}>
             <span className={styles.name}>{name}</span>
             <span className={styles.subtitle}>
-              <span>{cls.toUpperCase()}</span>
+              <span>{cls.charAt(0).toUpperCase() + cls.slice(1)}</span>
               {level !== null && <span>Level {level}</span>}
               {map && <span>· {map}</span>}
             </span>
@@ -42,7 +42,7 @@ export function CharacterInventoryCard({ member, catalog }: CharacterInventoryCa
             </div>
           )}
           <Badge variant={status === 'online' || status === 'farming' || status === 'support' ? 'success' : status === 'dead' ? 'danger' : 'neutral'}>
-            {status.toUpperCase()}
+            {status.charAt(0).toUpperCase() + status.slice(1)}
           </Badge>
         </div>
       </header>

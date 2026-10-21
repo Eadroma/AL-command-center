@@ -8,3 +8,7 @@
   color: v.$text-muted;
   font-size: 0.85rem;
 }
+
+:global(html[data-theme='guild']) {
+  .field { gap: .35rem; font-size: .82rem; font-weight: 500; }
+}

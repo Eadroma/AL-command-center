@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Catalog, Profile } from '../../types';
 import { filterSearch, searchEntries, type SearchEntry } from '../../models/global-search';
+import { recordUsage } from '../../models/usage-store';
+import { teamToolHash } from '../../models/navigation';
 import { openMerchantRule } from '../../models/rule-navigation';
 import styles from './GlobalSearch.module.scss';
 /** Native modal provides focus trapping, Escape handling and inert background. */
@@ -13,7 +15,7 @@ export function GlobalSearch({ profile, catalog }: { profile?: Profile; catalog?
   const rows = filterSearch(searchEntries(profile, catalog), query);
   const active = Math.min(index, Math.max(0, rows.length-1));
   useEffect(() => { dialog.current?.querySelector(`[data-search-index="${active}"]`)?.scrollIntoView({ block: 'nearest' }); }, [active]);
-  function open() { previousFocus.current = document.activeElement as HTMLElement; setQuery('');setIndex(0);dialog.current?.showModal();input.current?.focus(); }
+  function open() { recordUsage('search');previousFocus.current = document.activeElement as HTMLElement; setQuery('');setIndex(0);dialog.current?.showModal();input.current?.focus(); }
   function close() { dialog.current?.close();previousFocus.current?.focus(); }
   useEffect(() => {
     const shortcut = (event: KeyboardEvent) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {event.preventDefault(); if(dialog.current?.open) close();else open();} };
@@ -22,9 +24,10 @@ export function GlobalSearch({ profile, catalog }: { profile?: Profile; catalog?
   function navigate(row: SearchEntry) {
     close();
     if(row.id.startsWith('item:')) { try { sessionStorage.setItem('alcc:inventory-query', row.id.slice(5)); } catch {} }
-    window.location.hash = row.page;
+    const hash = row.tool ? teamToolHash(row.tool, row.section) : row.page;
+    window.location.hash = hash;
     // Route mount precedes the rule reveal; cancel if the user navigates elsewhere.
-    if(row.panel) { const panel = row.panel; window.setTimeout(() => {if(window.location.hash === `#${row.page}`) openMerchantRule(panel);},100); }
+    if(row.panel) { const panel = row.panel; window.setTimeout(() => {if(window.location.hash === `#${hash}`) openMerchantRule(panel);},100); }
     if(row.id.startsWith('item:')) window.dispatchEvent(new CustomEvent('alcc:inventory-search',{detail:row.detail.replace('Item · ','')}));
   }
   return <>

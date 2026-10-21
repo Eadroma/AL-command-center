@@ -14,4 +14,13 @@
 .content { padding: 0 1rem 1rem; border-top: 1px solid color-mix(in srgb, v.$retro-border 65%, transparent); }
 @media (max-width: 700px) { .head { align-items: flex-start; flex-direction: column; } .actions { width: 100%; justify-content: flex-start; } }
 
-:global(html[data-theme='guild']) { .panel { border-radius: 4px; } }
+:global(html[data-theme='guild']) {
+  .panel { border-radius: 12px; border-color: var(--theme-border); }
+  .head { min-height: 3.75rem; padding: .7rem 1.25rem; }
+  /* Panel subtitles carry real context, so they read as a quiet second line, not a label. */
+  .trigger > span { display: flex; flex-direction: column-reverse; }
+  .trigger small { color: var(--theme-faint); font-size: .8rem; text-transform: none; margin-top: .1rem; }
+  .trigger strong { margin-top: 0; font-size: 1rem; font-weight: 600; }
+  .chevron, .chevronOpen { color: var(--theme-muted); }
+  .content { padding: 0 1.25rem 1.25rem; border-top-color: var(--theme-border); }
+}

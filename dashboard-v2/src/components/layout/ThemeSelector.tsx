@@ -11,8 +11,8 @@ export function ThemeSelector() {
       applyTheme(next);
       setTheme(next);
     }}>
-      <option value="guild">Guild · Clean</option>
-      <option value="retro">Retro · Original</option>
+      <option value="guild">Night</option>
+      <option value="retro">Retro</option>
     </select>
   </label>;
 }

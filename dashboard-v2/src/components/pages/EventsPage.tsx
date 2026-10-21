@@ -53,13 +53,6 @@ export function EventsPage({
         <Badge variant={allowedCount ? 'info' : 'neutral'}>{allowedCount}/{EVENT_DEFINITIONS.length} allowed</Badge>
       </SectionHead>
       <p className={styles.description}>Configure world events and follow the team’s current expedition.</p>
-      {profile && <section className={styles.participation} aria-label="Merchant seasonal route">
-        <h3>Merchant seasonal activities</h3>
-        <Toggle label="Visit Halloween doors daily" value={profile.seller.trickOrTreat.enabled} disabled={pending || !profile.characters.some(c => c.enabled && c.ctype === 'merchant')} onChange={enabled => onChange({ ...profile, seller: { ...profile.seller, trickOrTreat: { enabled } } })} />
-        <Toggle label="Brew Witch’s Cipher from available ingredients" value={profile.seller.witchCipher.enabled} disabled={pending || !profile.characters.some(c => c.enabled && c.ctype === 'merchant')} onChange={enabled => onChange({ ...profile, seller: { ...profile.seller, witchCipher: { enabled } } })} />
-        <p>Cipher brewing uses unlocked ingredients already in the merchant’s bag, fits the live clue board, and respects the five-mix account limit. No event join or ingredient purchases.</p>
-        <p>Seven doors per merchant per UTC day, subject to the shared 14-knock account limit. Uses the game’s current door list, skips completed doors, and returns to the stand. Runs only during Halloween, outside expedition assembly and bank work. Save and deploy the merchant to apply.</p>
-      </section>}
       {profile && <EventExpeditionPanel profile={profile} deployments={deployments} dirty={dirty} pending={pending || deploymentBusy} version={version} onChange={onChange} />}
       <section className={styles.dragoldIntel} aria-labelledby="dragold-intel-heading">
         <div className={styles.intelHead}>
@@ -138,9 +131,9 @@ export function EventsPage({
           {error && <p role="alert" className={styles.alert}>{error}</p>}
           {notice && <p role="status" className={styles.notice}>{notice}</p>}
           <div className={styles.actions}>
-            <Button onClick={onSave} disabled={disabled || !dirty || conflict || deploymentBusy}>Save profile</Button>
-            <Button variant="ghost" onClick={onDiscard} disabled={disabled || !dirty}>Discard edits</Button>
-            <Button variant="secondary" onClick={onDeploy} disabled={!canDeploy}>{pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}</Button>
+            <Button variant="primary" data-usage="action.save" onClick={onSave} disabled={disabled || !dirty || conflict || deploymentBusy}>Save profile</Button>
+            <Button variant="ghost" data-usage="action.discard" onClick={onDiscard} disabled={disabled || !dirty}>Discard edits</Button>
+            <Button variant="primary" data-usage="action.deploy" onClick={onDeploy} disabled={!canDeploy}>{pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}</Button>
           </div>
           <p className={styles.note}>Rare camp visits and the Cave of Many Dreams remain controlled under Farming.</p>
         </>

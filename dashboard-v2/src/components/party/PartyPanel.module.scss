@@ -8,8 +8,8 @@
 // Unstyled list — PartyMemberRow handles its own row styling
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr));
-  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 1.15rem;
   align-items: start;
   margin: 0;
   padding: 0;
@@ -37,4 +37,9 @@
 
 .emptyIcon {
   opacity: 0.4;
+}
+
+:global(html[data-theme='guild']) {
+  .list { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .hint, .empty { font-family: inherit; }
 }

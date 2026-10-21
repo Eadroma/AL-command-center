@@ -57,7 +57,7 @@ export function PartyPanel({ members, deployments, loading = false, catalog, onD
 
   return (
     <Card
-      title="Party Status"
+      title="Your characters"
       headerActions={
         members !== null && (
           <Badge variant={onlineCount > 0 ? 'success' : 'neutral'}>

@@ -83,17 +83,17 @@ export function ControlsPanel({
       {error && <p role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
       <div className={styles.footer}>
-        <Button onClick={onSave} disabled={disabled || !dirty || conflict || deploymentBusy}>
+        <Button variant="primary" data-usage="action.save" onClick={onSave} disabled={disabled || !dirty || conflict || deploymentBusy}>
           Save profile
         </Button>
-        <Button variant="ghost" onClick={onDiscard} disabled={disabled || !dirty}>
+        <Button variant="ghost" data-usage="action.discard" onClick={onDiscard} disabled={disabled || !dirty}>
           Discard edits
         </Button>
-        <Button variant="secondary" onClick={onDeploy} disabled={!canDeploy}>
+        <Button variant="primary" data-usage="action.deploy" onClick={onDeploy} disabled={!canDeploy}>
           {pending || deploymentBusy ? 'Operation in progress…' : 'Deploy saved profile'}
         </Button>
         {onStopParty && (
-          <Button variant="ghost" onClick={onStopParty} disabled={disabled || deploymentBusy}>
+          <Button variant="ghost" data-usage="action.stop" onClick={onStopParty} disabled={disabled || deploymentBusy}>
             Stop Party CODE
           </Button>
         )}

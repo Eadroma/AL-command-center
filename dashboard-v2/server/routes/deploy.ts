@@ -99,6 +99,7 @@ async function deployOne(characterName: string, profileVersion: number, prepareO
       updatedAt: new Date().toISOString(),
     };
 
+    telemetry.retire(character.name, session.id);
     await log(`${character.runtime}: deployment requested; waiting for telemetry.`, character.name);
     persistDeployments();
     wsManager.broadcastRefresh();

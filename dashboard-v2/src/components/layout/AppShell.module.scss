@@ -37,8 +37,11 @@
 .header { background: linear-gradient(180deg, #141428 0%, v.$retro-bg 100%); box-shadow: 0 1px 0 v.$retro-border, 0 6px 18px rgba(0, 0, 0, 0.35); }
 
 :global(html[data-theme='guild']) {
-  .shell { max-width: 1360px; padding: 0 clamp(1rem, 4vw, 3rem); }
-  .header { background: var(--material-chrome); backdrop-filter: blur(24px) saturate(140%); border: 1px solid var(--material-border); border-top: 0; border-radius: 0 0 18px 18px; padding: 1rem 1.4rem .15rem; box-shadow: 0 8px 32px rgba(0,0,0,.12); }
-  .main { padding-top: 1.4rem; }
-  @media (max-width: 640px) { .header { padding: .9rem 1rem .1rem; } }
+  .shell { max-width: 1240px; padding: 0 clamp(1rem, 4vw, 2.5rem); }
+  .header { margin: 0 calc(-1 * clamp(1rem, 4vw, 2.5rem)); padding: .7rem clamp(1rem, 4vw, 2.5rem); background: var(--material-chrome); backdrop-filter: blur(16px); border-bottom: 1px solid var(--theme-border); box-shadow: none; }
+  .main { padding: 2rem 0 3rem; }
+  .footer { border-top: 1px solid var(--theme-border); padding: 1.25rem 0 2rem; font-size: .75rem; color: var(--theme-faint); }
+  .footer a { color: var(--theme-muted); }
 }
+
+:global(html[data-theme='guild']) { .shell { max-width: 1280px; padding: 0 clamp(1rem,4vw,3rem); } .header { padding: 1.5rem 0; border: 0; border-radius: 0; background: var(--material-chrome); backdrop-filter: blur(24px); box-shadow: none; } .main { padding-top: 1.4rem; } .footer { padding-top: 2rem; font-size: .75rem; color: var(--theme-muted); } }

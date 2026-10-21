@@ -15,4 +15,4 @@
 
 .hp .fill { background: v.$retro-green; }
 .mp .fill { background: v.$retro-cyan; }
-:global(html[data-theme='guild']) { .bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,.08); } .fill { border-radius: inherit; } }
+:global(html[data-theme='guild']) { .bar { height: 5px; border-radius: 3px; background: rgba(30,35,45,.1); } .fill { border-radius: inherit; } }

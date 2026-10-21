@@ -20,7 +20,7 @@ export function DeploymentPreview({ version, disabled, onDeploy }: { version?: n
       <p>{character.error || `${character.script} · ${character.runtime} · ${character.comparison}`}</p>
       {character.changes?.map(change => <div key={change.key}><strong>{change.key}</strong><p style={{ overflowWrap: 'anywhere' }}>{value(change.before)} → {value(change.after)}</p></div>)}
       {character.warnings?.map(warning => <p key={warning}>{warning}</p>)}
-      {onDeploy && <Button disabled={!current || busy || !!character.error} onClick={() => onDeploy(character.name)}>Deploy {character.name}</Button>}
+      {onDeploy && <Button variant="primary" disabled={!current || busy || !!character.error} onClick={() => onDeploy(character.name)}>Deploy {character.name}</Button>}
     </details>)}
   </Card>;
 }

@@ -87,13 +87,13 @@ export function PartyMemberRow({ member, telemetry, catalog, onDeploy, onStop, o
 
 
   return (
-    <li className={styles.row}>
+    <li className={styles.row} data-status={status}>
       <div className={styles.portrait}>
         <Sprite id={spriteId} catalog={catalog} label={`${name} character sprite`} size={48} />
       </div>
       <div className={styles.identity}>
         <span className={styles.name}>{name}</span>
-        <span className={styles.cls}>({cls})</span>
+        <span className={styles.cls}>{cls}</span>
       </div>
       <div className={styles.statusActions}>
         <Badge variant={STATUS_VARIANT[status]}>{STATUS_LABEL[status]}</Badge>
@@ -101,7 +101,7 @@ export function PartyMemberRow({ member, telemetry, catalog, onDeploy, onStop, o
           <button
             type="button"
             className={styles.invToggle}
-            title={`Stop CODE on ${name}`}
+            data-usage="action.stop" title={`Stop CODE on ${name}`}
             onClick={() => onStop(name)}
           >
             Stop
@@ -111,7 +111,7 @@ export function PartyMemberRow({ member, telemetry, catalog, onDeploy, onStop, o
           <button
             type="button"
             className={styles.invToggle}
-            title={`Deploy CODE on ${name}`}
+            data-usage="action.deploy" title={`Deploy CODE on ${name}`}
             onClick={() => onDeploy(name)}
           >
             Deploy
@@ -125,12 +125,13 @@ export function PartyMemberRow({ member, telemetry, catalog, onDeploy, onStop, o
       <div className={styles.summaryStats}>
         {member.level !== null && <span>Level {member.level}</span>}
         {member.map && <span>{member.map}</span>}
-        {gold !== null && <span>{gold.toLocaleString()} gold</span>}
+        {gold !== null && <span className={styles.gold}>{gold.toLocaleString()} gold</span>}
         {freeSlots !== null && <span>{freeSlots} free slots</span>}
         {hasInventoryData && <button type="button" className={styles.invToggle} aria-expanded={showInventory} onClick={() => setShowInventory(!showInventory)}>{showInventory ? 'Hide inventory' : 'Inventory'}</button>}
       </div>
+      {member.intent?.state && <p className={styles.activity}>{member.intent.state}</p>}
       <details className={styles.technical}>
-      <summary>Stats & assigned script</summary>
+      <summary>Details & controls</summary>
       <p className={styles.details}>
         <span>{member.runtime}</span>
         {compatibleScripts.length > 0 && onChangeScript ? (
@@ -158,9 +159,8 @@ export function PartyMemberRow({ member, telemetry, catalog, onDeploy, onStop, o
         {member.target && <span>Target: {member.target}</span>}
         {member.deploymentStage && <span>{member.deploymentStage}</span>}
       </p>
-      </details>
-
       <DecisionExplanation character={member.name} enabled={status !== 'disabled'} telemetry={telemetry} />
+      </details>
 
       {showInventory && (
         <div className={styles.expandedDrawer}>

@@ -140,3 +140,13 @@ it('queues only an unchanged unprotected merchant inventory selection',()=>{
  expect(()=>t.enqueueDeposit('Merchant',{...selection,name:'pants'})).toThrow();
  expect(t.enqueueDeposit('Merchant',selection).deposit).toEqual(selection);expect(()=>t.enqueueDeposit('Merchant',selection)).toThrow('already queued');expect(t.takeCommands('Merchant')[0].type).toBe('deposit_bank');
 });
+
+describe('telemetry session cleanup',()=>{
+ it('retires silent sessions of a redeployed character and keeps live ones',()=>{
+  let now=10000;const t=new Telemetry(undefined,()=>now);
+  const silent=t.create('A','old'),live=t.create('A','running'),other=t.create('B','hash');
+  t.ingest({ticket:live.ticket,character:'A',sequence:1,stats,logs:[]});
+  const next=t.create('A','next');t.retire('A',next.id);
+  expect(t.view(silent.id)).toBeNull();expect(t.view(live.id)).not.toBeNull();expect(t.view(other.id)).not.toBeNull();expect(t.view(next.id)).not.toBeNull();
+ });
+});
