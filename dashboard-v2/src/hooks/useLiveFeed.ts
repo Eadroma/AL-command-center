@@ -39,6 +39,9 @@ export function useLiveFeed() {
               // Invalidate both bootstrap and deployments to re-fetch freshest state
               queryClient.invalidateQueries({ queryKey: ['bootstrap'] });
               queryClient.invalidateQueries({ queryKey: ['deployments'] });
+            } else if (data.type === 'telemetry') {
+              // New game telemetry only changes live runtime state, which lives in deployments.
+              queryClient.invalidateQueries({ queryKey: ['deployments'] });
             }
           } catch {
             // Ignore non-json messages

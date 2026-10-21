@@ -21,6 +21,14 @@ describe('party statistics history', () => {
     expect(history.view().receipts).toMatchObject([{activity:'events',quantity:1,at:0},{activity:'farming',quantity:2,at:0}]);
     expect(history.view().items[0].quantity).toBe(3);
   });
+  it('drops receipts older than seven days once a newer bucket opens, and keeps counting into indexed rows', () => {
+    const history = new PartyStatisticsHistory(), day = 86400000;
+    const sample = { sessionId: 'one', character: 'A', at: 10000, stats: { gold: 0 }, loot: { items: [{ name: 'coat', level: 0, quantity: 1 }] } };
+    history.record(sample);
+    history.record({ ...sample, at: 8 * day, loot: { items: [{ name: 'coat', level: 0, quantity: 2 }] } });
+    history.record({ ...sample, at: 8 * day + 1000, loot: { items: [{ name: 'coat', level: 0, quantity: 4 }] } });
+    expect(history.view().receipts).toMatchObject([{ at: 8 * day, quantity: 3 }]);
+  });
   it('never treats wallet changes as item loot', () => {
     const history = new PartyStatisticsHistory();
     history.record({ sessionId: 'one', character: 'A', at: 10000, stats: { gold: 100 } });

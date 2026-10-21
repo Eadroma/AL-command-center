@@ -235,6 +235,7 @@ describe('generated code behavior',()=>{
   expect(cfg.FARMERS).toContain('Dromas');
   expect(profileSchema.safeParse(p).success).toBe(true);
  });
+ it('keeps standalone CODE joining every live event when no dashboard config is injected',()=>{const {source}=setup();const choose=fn(source,'pick_live_event',{events_enabled:()=>true,JOIN_EVENTS:['franky','icegolem'],server_status:()=>({franky:{live:true}})});expect(choose().name).toBe('franky');});
  it('filters out disallowed live events before choosing one',()=>{const {p,c,s,source}=setup();p.events.allowed=['icegolem'];const {code}=adaptSource(source,p,c,s);const choose=fn(code,'pick_live_event',{__ALCC:{eventsEnabled:true,events:['icegolem']},JOIN_EVENTS:["franky","icegolem"],server_status:()=>({franky:{live:true},icegolem:{live:true}}),status_is_live:()=>true,event_def:()=>({join:true}),event_has_instance:()=>true});expect(choose().name).toBe('icegolem');});
  it('maps an individual follow target and preserves source override values',()=>{const {p,c,s}=setup('Aedroma');c.follow='Droma';c.overrides={HEAL_HP_RATIO:.65};const cfg=effectiveConfig(p,c,s);expect(cfg.PARTNER).toBe('Droma');expect(cfg.HEAL_HP_RATIO).toBe(.65);});
  it('dumps excess priest keep-list copies while preserving the equipped quota',()=>{
@@ -851,8 +852,3 @@ it('matches game stand capacity for merchant levels and the custom stand',()=>{
  expect(capacity()).toBe(24);character.level=80;expect(capacity()).toBe(30);character.level=69;expect(capacity()).toBe(16);character.stand='cstand';expect(capacity()).toBe(24);
 });
 
-it('refuses to build when the live event picker no longer matches the filter patch',()=>{
- const {p,c,s,source}=setup();
- const reformatted=source.replace(/var name = JOIN_EVENTS\[i\];|for \(name in S\) \{|var name = LIVE_BOSSES\[i\];|if \(S\[JOIN_EVENTS\[i\]\]\)/g,m=>m.replace(/ /g,'  '));
- expect(()=>adaptSource(reformatted,p,c,s)).toThrow('pick_live_event');
-});

@@ -166,11 +166,13 @@ function server_status() {
 }
 
 function pick_live_event() {
-	if (!events_enabled()) return null;
+	// Dashboard bundles use the profile switches; standalone CODE keeps its own events_enabled().
+	if (typeof __ALCC !== "undefined" ? !__ALCC.eventsEnabled : !events_enabled()) return null;
 	var S = server_status();
 	if (!S || typeof S !== "object") return null;
 	for (var i = 0; i < JOIN_EVENTS.length; i++) {
 		var name = JOIN_EVENTS[i];
+		if (typeof __ALCC !== "undefined" && __ALCC.events.indexOf(name) < 0) continue;
 		var st = S[name];
 		if (!st) continue;
 		var isLive = st === true || st.live || (st.hp && st.hp > 0);

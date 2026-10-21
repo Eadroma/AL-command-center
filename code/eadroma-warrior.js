@@ -341,6 +341,8 @@ function in_event_instance(name) {
  * a bare {end} must not soft-lock us on join() forever.
  */
 function pick_live_event() {
+	// Dashboard bundles join only events allowed in the profile; standalone CODE joins all.
+	if (typeof __ALCC !== "undefined" && !__ALCC.eventsEnabled) return null;
 	var S = server_status();
 	if (!S || typeof S !== "object") return null;
 	var name;
@@ -350,6 +352,7 @@ function pick_live_event() {
 	var boss_pick = null;
 	for (name in S) {
 		if (name === "schedule") continue;
+		if (typeof __ALCC !== "undefined" && __ALCC.events.indexOf(name) < 0) continue;
 		st = S[name];
 		if (!status_is_live(st)) continue;
 		def = event_def(name);
@@ -3672,7 +3675,7 @@ var ALCombat = (function () {
 		function bounds(p) {
 			if (dist(p, state.origin) > (CONFIG.KITE_LEASH || 240)) return false;
 			if (target.mtype === "stoneworm" && character.map === "spookytown") {
-				if (p.y < 37 || p.y > 221) return false;
+				if (p.x > 500 || p.y < 37 || p.y > 221) return false;
 			}
 			if (target.mtype === "booboo" && character.map === "spookytown" && p.x > 340) return false;
 			if (healer && dist(p, healer) > Math.max(healReach, dist(character, healer)) + 1) return false;

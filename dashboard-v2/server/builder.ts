@@ -435,33 +435,8 @@ export function adaptSource(
       if (!s.id.startsWith("eadrosell-merchant")) replaceFn(node, "return false;");
     } else if (name === "events_enabled")
       replaceFn(node, `return ${p.events.enabled && c.events};`);
-    else if (name === "pick_live_event") {
-      const body = source
-        .slice(node.body.start + 1, node.body.end - 1)
-        .replace(
-          "for (name in S) {",
-          "for (name in S) { if (__ALCC.events.indexOf(name) < 0) continue;",
-        )
-        .replace(
-          "if (S[JOIN_EVENTS[i]])",
-          "if (__ALCC.events.indexOf(JOIN_EVENTS[i]) >= 0 && S[JOIN_EVENTS[i]])",
-        )
-        .replace(
-          "var name = LIVE_BOSSES[i];",
-          "var name = LIVE_BOSSES[i]; if (__ALCC.events.indexOf(name) < 0) continue;",
-        )
-        // v2: indexed JOIN_EVENTS with isLive check
-        .replace(
-          "var name = JOIN_EVENTS[i];",
-          "var name = JOIN_EVENTS[i]; if (__ALCC.events.indexOf(name) < 0) continue;",
-        )
-        // v2: remove the events_enabled() guard (replaced by __ALCC.eventsEnabled prefix below)
-        .replace(/if\s*\(!events_enabled\(\)\)\s*return null;\s*/, "");
-      // The text patches above fail silently if the script is reformatted; never ship an unfiltered picker.
-      if (!body.includes("__ALCC.events.indexOf"))
-        throw Error(`${s.filename}: pick_live_event no longer matches the builder's event filter. Update adaptSource.`);
-      replaceFn(node, `if (!__ALCC.eventsEnabled) return null;${body}`);
-    } else if (
+    // pick_live_event filters allowed events itself through __ALCC (see the farm scripts).
+    else if (
       !p.farming.hunts &&
       [
         "maybe_daisy",
