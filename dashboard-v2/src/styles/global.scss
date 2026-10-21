@@ -24,6 +24,17 @@ html, body {
   flex-direction: column;
 }
 
+/* Native popup menus do not consistently inherit the select's dark surface. */
+select {
+  color-scheme: dark;
+}
+
+select option,
+select optgroup {
+  color: $text-primary;
+  background-color: $retro-surface;
+}
+
 /* Scrollbar retro pixel */
 ::-webkit-scrollbar {
   width: 8px;
