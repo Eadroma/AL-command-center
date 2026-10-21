@@ -620,6 +620,47 @@
       "width": 256,
       "height": 2048,
       "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/main/images/tiles/items/pack_1a.png"
+    },
+    {
+      "file": "monster-horseman.png",
+      "width": 156,
+      "height": 212,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7/images/misc/horseman_c_1.png"
+    },
+    {
+      "file": "monster-gargoyle.png",
+      "width": 144,
+      "height": 192,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7/images/tiles/monsters/gargoyle_1.png"
+    },
+    {
+      "file": "monster-jackowalker.png",
+      "width": 78,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7/images/tiles/monsters/jacko_a_1.png"
+    },
+    {
+      "file": "monster-zombies.png",
+      "width": 312,
+      "height": 288,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7/images/tiles/monsters/mzombies_1.png"
+    },
+    {
+      "file": "monster-ghoul.png",
+      "width": 78,
+      "height": 144,
+      "url": "https://raw.githubusercontent.com/kaansoral/adventureland_mongodb/43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7/images/tiles/monsters/mghoulA_1.png"
     }
-  ]
+  ],
+  "halloweenSnapshot": {
+    "commit": "43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7",
+    "monsters": [
+      "horseman",
+      "gargoyle",
+      "jackowalker",
+      "zombie",
+      "ghoul"
+    ],
+    "source": "https://github.com/kaansoral/adventureland_mongodb/commit/43b2c8fcf039b880e2a78eda8e5f4d48aa53dbf7"
+  }
 }

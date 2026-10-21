@@ -105,7 +105,7 @@ export function scripts(): ScriptInfo[] {
             .map(file => fs.readFileSync(file, "utf8"))
             .join("\n")
         : ctype === "merchant"
-          ? ["event-expedition.js", "bank-sorter.js", "movement-watchdog.js", "runtime-policy.js"].map(name => path.join(sourceDir, name)).filter(file => fs.existsSync(file)).map(file => fs.readFileSync(file, "utf8")).join("\n")
+          ? ["event-expedition.js", "merchant-halloween.js", "merchant-witch-cipher.js", "bank-sorter.js", "movement-watchdog.js", "runtime-policy.js"].map(name => path.join(sourceDir, name)).filter(file => fs.existsSync(file)).map(file => fs.readFileSync(file, "utf8")).join("\n")
           : "";
       return {
         id: filename.slice(0, -3),
@@ -250,6 +250,8 @@ export function initialProfile(list: ScriptInfo[]): Profile {
     },
     events: { enabled: true, allowed: events, style: styleOf(events), expedition: { enabled: false, allowed: ['mrgreen', 'mrpumpkin'], maxMinutes: 20, maxDeaths: 3 } },
     seller: {
+      trickOrTreat: { enabled: false },
+      witchCipher: { enabled: false },
       workOrder: [...merchantWorkOrder],
       buy: {
         managed: false,

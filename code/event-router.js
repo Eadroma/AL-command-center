@@ -9,12 +9,14 @@
  * The dashboard allowlist and the per-character switch remain authoritative.
  */
 var EventRouter = (function () {
-	var FALLBACK_JOINABLE = ["abtesting", "goobrawl", "crabxx", "franky", "icegolem"];
+	var FALLBACK_JOINABLE = ["abtesting", "goobrawl", "crabxx", "franky", "icegolem", "horseman", "graveyard"];
 	var EVENT_MONSTERS = {
 		goobrawl: ["goo", "rgoo", "bgoo"],
 		crabxx: ["crabxx"],
 		franky: ["franky"],
-		icegolem: ["icegolem"]
+		icegolem: ["icegolem"],
+		horseman: ["horseman", "jackowalker"],
+		graveyard: ["gargoyle", "ghoul", "zombie"]
 	};
 	var lastActionAt = 0;
 	var lastActionId = "";
@@ -180,7 +182,7 @@ var EventRouter = (function () {
 				y: coordinate(value.y)
 			};
 			if (ranger_boss(candidate)) {
-				var visible = typeof get_nearest_monster === "function" ? get_nearest_monster({ type: id }) : null;
+				var visible = visible_objective(candidate);
 				var target = visible ? visible.target : candidate.target;
 				// Prioritise actionable bosses. An idle high-priority boss must not
 				// suppress attacks on a lower-priority boss already being tanked.
@@ -199,6 +201,16 @@ var EventRouter = (function () {
 		return route ? route.id : null;
 	}
 
+	function visible_objective(route) {
+		if (typeof get_nearest_monster !== 'function') return null;
+		var ids = EVENT_MONSTERS[route.id] || [route.id];
+		for (var i = 0; i < ids.length; i++) {
+			var monster = get_nearest_monster({ type: ids[i] });
+			if (monster) return monster;
+		}
+		return null;
+	}
+
 	function accepts(entity) {
 		var route = next();
 		if (!route || !entity || entity.type !== "monster" || entity.dead || entity.rip || !entity.visible) return false;
@@ -211,6 +223,7 @@ var EventRouter = (function () {
 			if (route.id === "abtesting" && String(entity.mtype || "").indexOf("target_") === 0) return true;
 			var aliases = EVENT_MONSTERS[route.id] || [];
 			if (aliases.indexOf(entity.mtype) >= 0) return true;
+			if (route.id === "graveyard" || route.id === "horseman") return false;
 			return !!route.map && character.map === route.map;
 		}
 		return entity.mtype === route.id;
@@ -234,6 +247,10 @@ var EventRouter = (function () {
 	// A boss targeting another player is evidence of engagement. Selecting the
 	// boss in a player's UI alone is not enough. Recheck after every death/reset.
 	function ranger_boss(route) {
+		if (route && route.id === 'graveyard') {
+			var data = status_table().graveyard;
+			return character.ctype === 'ranger' && !!(data && data.gargoyle);
+		}
 		return !!route && character.ctype === "ranger" && route.id !== "goobrawl" && route.id !== "abtesting";
 	}
 
@@ -258,7 +275,7 @@ var EventRouter = (function () {
 		}
 		remember(route);
 		if (ranger_boss(route)) {
-			var boss = typeof get_nearest_monster === "function" ? get_nearest_monster({ type: route.id }) : null;
+			var boss = visible_objective(route);
 			// Visible state overrides the slower server announcement, including a
 			// boss that has become idle or switched its aggro to this ranger.
 			if (!engaged_by_other(boss ? boss.target : route.target) && !(boss && boss.target === character.name)) {

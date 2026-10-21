@@ -6,9 +6,12 @@ export interface EventDefinition {
   label: string;
   kind: 'event' | 'boss';
   defaultStyle: FarmStyle;
+  monsterId?: string;
 }
 
 export const EVENT_DEFINITIONS: readonly EventDefinition[] = [
+  { id: 'horseman', label: 'Headless Horseman', kind: 'event', defaultStyle: 'mono' },
+  { id: 'graveyard', label: 'Graveyard Rising · Gargoyle', monsterId: 'gargoyle', kind: 'event', defaultStyle: 'aoe' },
   { id: 'crabxx', label: 'Giga Crab', kind: 'event', defaultStyle: 'mono' },
   { id: 'goobrawl', label: 'Goo Brawl', kind: 'event', defaultStyle: 'aoe' },
   { id: 'franky', label: 'Franky', kind: 'event', defaultStyle: 'aoe' },

@@ -514,6 +514,8 @@ export const profileSchema = z
       style: z.record(key, key).default({}),
     }),
     seller: z.object({
+      trickOrTreat: z.object({ enabled: z.boolean().default(false) }).default({ enabled: false }),
+      witchCipher: z.object({ enabled: z.boolean().default(false) }).default({ enabled: false }),
       workOrder: z.array(z.enum(merchantWorkOrder)).length(merchantWorkOrder.length).refine(order => new Set(order).size === merchantWorkOrder.length, "Each task must appear once").default([...merchantWorkOrder]),
       buy: z
         .object({

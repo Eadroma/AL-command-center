@@ -1972,6 +1972,17 @@ async function townChoresLoop() {
 				await go_to(cc_stand_spot(), "event duo unloading", 60); await sleep(1000); continue;
 			}
 			refresh_production_trip();
+            // Daily seasonal route shares navigation ownership with all merchant chores.
+            if (!chores_in_progress && !bank_dump_active && !production_trip && typeof MerchantHalloween !== 'undefined') {
+                chores_in_progress = true;
+                var halloweenHandled = false;
+                try {
+                    if (typeof MerchantWitchCipher !== 'undefined') halloweenHandled = await MerchantWitchCipher.tick();
+                    if (!halloweenHandled) halloweenHandled = await MerchantHalloween.tick();
+                }
+                finally { chores_in_progress = false; }
+                if (halloweenHandled) { await sleep(500); continue; }
+            }
             if (production_trip === "exchange" && character.q && character.q.exchange) { await sleep(500); continue; }
 			// The dashboard bank allowlist is an explicit queue. Once one matching
 			// item exists, defer Gabriel/Xyn/craft until it has been deposited.
