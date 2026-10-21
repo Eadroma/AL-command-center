@@ -127,6 +127,7 @@ export function FarmingPage({
           <Toggle label="Enable recurring boss checks" value={profile.farming.bossChecks.enabled} disabled={disabled} onChange={value => onChange(setBossChecksEnabled(profile, value))} />
         </div>
         <p className={styles.help}>The party checks each selected camp on its own interval and returns to {defaultName}. Live server announcements remain controlled under Events.</p>
+        <p className={styles.help}>Headless Horseman and Gargoyle (Graveyard Rising) are seasonal event bosses without camp respawns. Configure them under <a href="#events">Events &amp; bosses</a>.</p>
         <div className={styles.bossGrid}>{worldBosses.map(boss => {
           const rule = profile.farming.bossChecks.rules.find(entry => entry.boss === boss.id);
           return <article key={boss.id} className={rule ? styles.active : undefined}>

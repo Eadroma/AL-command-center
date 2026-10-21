@@ -7,6 +7,7 @@ var MerchantEventsGUI=(function(){
   if(!server)return null;
   return Object.keys(server).filter(function(id){var event=server[id];return event&&typeof event==='object'&&(event.live===true||event.active===true||Number(event.hp)>0||event.spawn!=null);}).map(function(id){
    var event=server[id],def=typeof G!=='undefined'&&G.monsters&&G.monsters[id];
+   if(id==='graveyard')def={name:'Graveyard Rising · Gargoyle'};
    var active=event.live===true||event.active===true||(event.live!==false&&event.active!==false&&Number(event.hp)>0);
    var spawn=null;
    if(!active&&event.spawn!=null){var parsed=typeof event.spawn==='number'?event.spawn:Date.parse(event.spawn);if(isFinite(parsed)&&parsed>100000000000)spawn=Math.max(0,parsed-now);}
@@ -18,8 +19,9 @@ var MerchantEventsGUI=(function(){
   if(icons[row.id])return icons[row.id];
   var frame=el('div');frame.style.cssText='position:relative;flex:0 0 48px;width:48px;height:52px;overflow:hidden;image-rendering:pixelated';frame.setAttribute('role','img');frame.setAttribute('aria-label',row.name+' sprite');
   try{
-   if(typeof parent.sprite==='function'&&typeof G!=='undefined'&&G.monsters&&G.monsters[row.id]){
-    var html=parent.sprite(row.id,{full:true,scale:1});
+   var spriteId=row.id==='graveyard'?'gargoyle':row.id;
+   if(typeof parent.sprite==='function'&&typeof G!=='undefined'&&G.monsters&&G.monsters[spriteId]){
+    var html=parent.sprite(spriteId,{full:true,scale:1});
     if(typeof html==='string'&&html.indexOf('<div')>=0){
      frame.innerHTML=html;var sprite=frame.firstElementChild;
      var width=parseFloat(sprite.style.width)||48,height=parseFloat(sprite.style.height)||52,scale=Math.min(1,48/width,52/height);

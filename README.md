@@ -142,6 +142,8 @@ Character names in source files are historical examples. The dashboard builder i
 
 Further documentation, currently primarily in French: [dashboard reference](dashboard-v2/README.md), [first farming](dashboard-v2/docs/FIRST-FARMING.md), and [scripts and in-game interfaces](code/README.md).
 
+[Halloween activities](dashboard-v2/docs/HALLOWEEN-2026.md) explains Headless Horseman, Graveyard Rising, daily Trick or Treat visits and automated Witch’s Cipher brewing.
+
 ## Preparing a clean export
 
 ```sh

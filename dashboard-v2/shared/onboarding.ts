@@ -12,6 +12,8 @@ export function cautiousProfile(base: Profile): Profile {
   p.farming.bossChecks = { enabled: false, rules: [] };
   p.events = { enabled: false, allowed: [], style: {}, expedition: { enabled: false, allowed: ['mrgreen', 'mrpumpkin'], maxMinutes: 20, maxDeaths: 3 } };
   p.seller.buy = { ...p.seller.buy, managed: true, enabled: false, orders: [] };
+  p.seller.trickOrTreat = { enabled: false };
+  p.seller.witchCipher = { enabled: false };
   p.seller.npcEnabled = false; p.seller.npcItems = []; p.seller.standEnabled = false; p.seller.listings = [];
   p.seller.exchange = { ...p.seller.exchange, enabled: false, items: [] };
   p.seller.upgrade = { ...p.seller.upgrade, enabled: false, rules: [] };

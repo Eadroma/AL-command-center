@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export const expeditionBosses = ['mrgreen', 'mrpumpkin', 'crabxx', 'franky', 'icegolem', 'snowman', 'dragold', 'grinch', 'wabbit', 'pinkgoo', 'slenderman', 'tiger', 'phoenix', 'jr', 'greenjr'] as const;
+export const expeditionBosses = ['mrgreen', 'mrpumpkin', 'horseman', 'graveyard', 'crabxx', 'franky', 'icegolem', 'snowman', 'dragold', 'grinch', 'wabbit', 'pinkgoo', 'slenderman', 'tiger', 'phoenix', 'jr', 'greenjr'] as const;
 export const eventExpeditionSchema = z.object({
   enabled: z.boolean().default(false),
   allowed: z.array(z.enum(expeditionBosses)).max(expeditionBosses.length).default(['mrgreen', 'mrpumpkin']),

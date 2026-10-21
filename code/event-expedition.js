@@ -63,7 +63,8 @@ var EventExpedition = (function () {
   function canCombat(target) {
     if (!worker()) return true;
     if (!combatEvent()) return false;
-    if (target && target.mtype !== assignment.event && target.target !== character.name) return false;
+    var objectives = assignment.event === 'graveyard' ? ['gargoyle', 'ghoul', 'zombie'] : assignment.event === 'horseman' ? ['horseman', 'jackowalker'] : [assignment.event];
+    if (target && objectives.indexOf(target.mtype) < 0 && target.target !== character.name) return false;
     {
       var priest = get_player(character.name === board.warrior ? board.priest : board.warrior);
       if (!priest || priest.rip || priest.hp <= 0 || (priest.map && priest.map !== character.map) || distance(character, priest) > 280) return false;
@@ -268,7 +269,8 @@ var EventExpedition = (function () {
     if (board.enabled && worker()) try { if (parent.socket && parent.socket.on) parent.socket.on('hit', function(data) {
       if (!assignment || assignment.phase !== 'engaging' || Date.now() - leaseAt >= 20000 || data.hid !== character.name) return;
       var target = parent.entities && parent.entities[data.id];
-      if (target && target.mtype === assignment.event && Number(data.damage) > 0) { bossDamage += Number(data.damage); bossHits++; }
+      var bossType = assignment.event === 'graveyard' ? 'gargoyle' : assignment.event;
+      if (target && target.mtype === bossType && Number(data.damage) > 0) { bossDamage += Number(data.damage); bossHits++; }
     }); } catch (e) {}
     if (board.enabled && typeof setInterval === 'function') setInterval(function () { try { report(); } catch (e) { log('report failed'); } }, 4000); }
   return { recall: recall, observeMetrics: observeMetrics, worker: worker, onCm: onCm, combatEvent: combatEvent, canCombat: canCombat, merchantTick: merchantTick, actorTick: actorTick, snapshot: snapshot, needsReturnService: needsReturnService, install: install, report: report };
