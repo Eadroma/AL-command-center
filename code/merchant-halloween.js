@@ -3,7 +3,7 @@
  * Caller owns chores_in_progress throughout tick(), including awaited travel. */
 var MerchantHalloween = (function () {
     var key = 'alcc:trickortreat:' + character.name;
-    var journal = null, busy = false, returnHome = false, retryAt = 0, message = '';
+    var journal = null, busy = false, routeRunning = false, returnHome = false, retryAt = 0, message = '';
     function today() { return new Date().toISOString().slice(0, 10); }
     function progress() {
         if (!journal || journal.day !== today()) {
@@ -108,5 +108,20 @@ var MerchantHalloween = (function () {
             return true;
         } finally { busy = false; }
     }
-    return { tick: tick, blocked: otherWork, threatened: threatened, snapshot: function () { var p = progress(); return { day: p.day, doors: p.doors.slice(), limited: p.limited, returning: returnHome, message: message }; } };
+    async function runRoute() {
+        if (routeRunning) return false;
+        routeRunning = true;
+        var previousChores = chores_in_progress, handled = false;
+        chores_in_progress = true;
+        try {
+            // Keep navigation ownership across every door and its cooldown.
+            // Releasing it between ticks lets stand/restock loops pull us home.
+            while (await tick()) {
+                handled = true;
+                await sleep(500);
+            }
+            return handled;
+        } finally { chores_in_progress = previousChores; routeRunning = false; }
+    }
+    return { tick: tick, runRoute: runRoute, blocked: otherWork, threatened: threatened, snapshot: function () { var p = progress(); return { day: p.day, doors: p.doors.slice(), limited: p.limited, returning: returnHome, message: message }; } };
 })();

@@ -26,6 +26,33 @@ function fixture() {
 }
 
 describe('merchant Trick or Treat', () => {
+  it('keeps navigation through all seven doors and returns to the stand only once', async () => {
+    const f = fixture();
+    f.context.chores_in_progress = false;
+    f.context.G.events.trickortreat.doors = Array.from({ length: 7 }, (_, i) => ['halloween', i * 100, -210]);
+    let competingStandVisits = 0;
+    f.context.sleep = async (ms: number) => {
+      f.advance(ms);
+      if (!f.context.chores_in_progress) competingStandVisits++;
+    };
+    expect(await f.runtime.runRoute()).toBe(true);
+    expect(f.knocks).toEqual([0, 1, 2, 3, 4, 5, 6]);
+    expect(f.routes.filter(p => p.map === 'main')).toHaveLength(1);
+    expect(f.routes.at(-1)).toEqual(f.context.__ALCC.standSpot);
+    expect(competingStandVisits).toBe(0);
+    expect(f.context.chores_in_progress).toBe(false);
+  });
+  it('releases route ownership when an expedition needs the merchant', async () => {
+    const f = fixture(); f.context.chores_in_progress = false;
+    f.context.sleep = async (ms: number) => {
+      f.advance(ms);
+      f.context.EventExpedition = { snapshot: () => ({ phase: 'forming' }) };
+    };
+    await f.runtime.runRoute();
+    expect(f.knocks).toEqual([]);
+    expect(f.routes).toHaveLength(1);
+    expect(f.context.chores_in_progress).toBe(false);
+  });
   it('does nothing outside the season or without the explicit merchant switch', async () => {
     const f = fixture(); f.context.server.status.halloween = false; await f.runtime.tick();
     f.context.server.status.halloween = true; f.context.__ALCC.trickOrTreat.enabled = false; await f.runtime.tick();

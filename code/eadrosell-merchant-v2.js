@@ -1977,8 +1977,8 @@ async function townChoresLoop() {
                 chores_in_progress = true;
                 var halloweenHandled = false;
                 try {
-                    if (typeof MerchantWitchCipher !== 'undefined') halloweenHandled = await MerchantWitchCipher.tick();
-                    if (!halloweenHandled) halloweenHandled = await MerchantHalloween.tick();
+                    halloweenHandled = await MerchantHalloween.runRoute();
+                    if (!halloweenHandled && typeof MerchantWitchCipher !== 'undefined') halloweenHandled = await MerchantWitchCipher.tick();
                 }
                 finally { chores_in_progress = false; }
                 if (halloweenHandled) { await sleep(500); continue; }
