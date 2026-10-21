@@ -198,7 +198,3 @@
     .statusActions { justify-content: space-between; }
   }
 }
-
-:global(html[data-theme='guild']) { .row { padding: 1.4rem; background: var(--theme-surface-alt); border: 0; border-radius: 15px; gap: .7rem .85rem; } .portrait { background: rgba(255,255,255,.06); } .summaryStats { grid-column: 1 / -1; margin: .35rem 0; line-height: 1.8; } .technical > summary { min-height: 42px; } .bars { gap: 6px; } }
-
-.activity { grid-column: 1 / -1; color: v.$text-muted; font-size: .8rem; margin: .25rem 0; }
