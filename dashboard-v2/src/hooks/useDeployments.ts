@@ -11,7 +11,8 @@ export function useDeployments() {
   return useQuery({
     queryKey: ['deployments'],
     queryFn: ({ signal }) => api<DeploymentsResponse>('/api/deployments', undefined, 'GET', signal),
-    refetchInterval: 3000, // Poll every 3 seconds
+    // The /live socket pushes refreshes on telemetry and changes; polling is only a fallback (e.g. liveness expiry).
+    refetchInterval: 15_000,
   });
 }
 

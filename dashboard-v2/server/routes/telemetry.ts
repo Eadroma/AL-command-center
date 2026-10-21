@@ -10,6 +10,7 @@ import { Telemetry } from '../telemetry';
 import { PerformanceHistory } from '../performance-history';
 import { OperationsHistory } from '../operations-history';
 import { PartyStatisticsHistory } from '../party-statistics';
+import { wsManager } from '../ws';
 
 export const performanceHistory = new PerformanceHistory(path.join(dataDir, 'performance-history.json'));
 export const operationsHistory = new OperationsHistory(path.join(dataDir, 'operations-history.json'));
@@ -20,6 +21,7 @@ export const telemetry = new Telemetry(path.join(dataDir, 'telemetry.json'), Dat
   partyStatistics.record(sample);
 });
 
+let lastLivePush = 0;
 export const telemetryRoute: FastifyPluginAsync = async (app) => {
   app.get('/api/party-statistics', async () => partyStatistics.view());
   app.options('/api/telemetry', async (_req, reply) => {
@@ -31,6 +33,8 @@ export const telemetryRoute: FastifyPluginAsync = async (app) => {
   app.post('/api/telemetry', { bodyLimit: 1000000 }, async (req, reply) => {
     try {
       const accepted = telemetry.ingest(req.body);
+      // Dashboards refetch deployments on this push; data cannot be fresher than the 5 s game pulse.
+      if (accepted && Date.now() - lastLivePush >= 5000) { lastLivePush = Date.now(); wsManager.broadcast({ type: 'telemetry', data: null }); }
       const character = String((req.body as { character?: unknown })?.character ?? '');
       return { ok: true, commands: accepted ? telemetry.takeCommands(character,String((req.body as {ticket?:unknown})?.ticket ?? '')) : [] };
     } catch {

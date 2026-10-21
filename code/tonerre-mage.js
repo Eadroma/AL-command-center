@@ -149,13 +149,17 @@ function server_status() {
 }
 
 function pick_live_event() {
+	// Dashboard bundles join only events allowed in the profile; standalone CODE joins all.
+	if (typeof __ALCC !== "undefined" && !__ALCC.eventsEnabled) return null;
+	var allowed = function (name) { return typeof __ALCC === "undefined" || __ALCC.events.indexOf(name) >= 0; };
 	var S = server_status();
 	var i;
 	for (i = 0; i < JOIN_EVENTS.length; i++) {
-		if (S[JOIN_EVENTS[i]]) return { name: JOIN_EVENTS[i], join: true };
+		if (allowed(JOIN_EVENTS[i]) && S[JOIN_EVENTS[i]]) return { name: JOIN_EVENTS[i], join: true };
 	}
 	for (i = 0; i < LIVE_BOSSES.length; i++) {
 		var name = LIVE_BOSSES[i];
+		if (!allowed(name)) continue;
 		var st = S[name];
 		if (get_nearest_monster({ type: name })) return { name: name, join: false, map: st && st.map, x: st && st.x, y: st && st.y };
 		if (st && (st.live || st.hp > 0)) return { name: name, join: false, map: st.map, x: st.x, y: st.y };
