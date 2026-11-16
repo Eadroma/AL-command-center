@@ -38,8 +38,8 @@
     "label": "Aedroma · Priest · V2",
     "ctype": "priest",
     "kind": "farm",
-    "bytes": 55156,
-    "hash": "a10470e67dcd25af7b41f9a218d410e6055ccb77a51fa4aadcbbe1e1b99fa931",
+    "bytes": 56942,
+    "hash": "7b8517d5b21e510e85a12a009f578aa292aab4842089abce14fcad2e78c4c410",
     "config": {
       "NAME": "Aedroma",
       "WARRIOR": "Eadroma",
@@ -163,7 +163,7 @@
     "ctype": "priest",
     "kind": "farm",
     "bytes": 104804,
-    "hash": "1a35bf6f133b0db543cdc43d64be2c2afb3b7ecf84b443a92301794725811894",
+    "hash": "f44fe6f6a49e813f3d3718b4082b21b632176326e065b8859c2919b459f080ce",
     "config": {
       "KITE_ENABLED": true,
       "KITE_LEASH": 240,
@@ -277,7 +277,7 @@
     "ctype": "ranger",
     "kind": "farm",
     "bytes": 38746,
-    "hash": "9039b959101d26640f5b8f46efbbadd156f844eaa73e1c3187eb3a313cc4e4e3",
+    "hash": "4175c5e87076b0885344ba06fc86d7ff56aed329b7efcaaddf9116add653724f",
     "config": {
       "NAME": "Droma",
       "WARRIOR": "Eadroma",
@@ -387,7 +387,7 @@
     "ctype": "ranger",
     "kind": "farm",
     "bytes": 40830,
-    "hash": "ce2981c784b43d757dc537f7d980f0d4eae058bc9c7bcd336d198e5180163791",
+    "hash": "3eb4c81cb3dde883cc508b0843832244d0c9159f0fbc9035c4380b76d0cd09c6",
     "config": {
       "NAME": "Droma",
       "WARRIOR": "Eadroma",
@@ -486,7 +486,7 @@
     "ctype": "ranger",
     "kind": "farm",
     "bytes": 99987,
-    "hash": "865da171330e2335fd84992e95f7c55a113c1d7e655b4913161db9b4b118e438",
+    "hash": "45ae59b615718364924be2e7dfe4df166de12aa42ba6b5970e376986e70d959a",
     "config": {
       "KITE_ENABLED": true,
       "KITE_LEASH": 240,
@@ -563,8 +563,8 @@
     "label": "Dromas · Rogue · Party · V2",
     "ctype": "rogue",
     "kind": "farm",
-    "bytes": 24426,
-    "hash": "0957691a8e8db040c3bc6872d95016377cd199b9d379c32491900ce167170280",
+    "bytes": 25882,
+    "hash": "f449b121ee69ac3b890d0743f70c03008a0e1c9f208fe98fc77c56c4055b5f2a",
     "config": {
       "NAME": "Dromas",
       "WARRIOR": "Eadroma",
@@ -602,7 +602,7 @@
       },
       "potions": {
         "hpThreshold": 0.45,
-        "mpThreshold": 0.3,
+        "mpThreshold": 0.6,
         "hpot": "hpot1",
         "mpot": "mpot1",
         "needH": 200,
@@ -630,7 +630,7 @@
     "ctype": "rogue",
     "kind": "farm",
     "bytes": 13711,
-    "hash": "1818dcb49adbd003dc79ad8e594604dc20a1513096ef21f249054ffc1f289d7b",
+    "hash": "1161cbc5fc06a80eb05f37f3f602a9994192949afbbedf627d42e2cadbc884c7",
     "config": {
       "FIXED_FARM": true,
       "NAME": "Dromas",
@@ -740,8 +740,8 @@
     "label": "Eadroma · Warrior · V2",
     "ctype": "warrior",
     "kind": "farm",
-    "bytes": 68067,
-    "hash": "5209f88a936baaea59454b556cd741145270a0982ce8778261592007e8b3bb16",
+    "bytes": 72467,
+    "hash": "fa58cb62aca704308605ae0c29653fc25489f965d5a3163615feaf6680c04ae4",
     "config": {
       "NAME": "Eadroma",
       "PRIEST": "Aedroma",
@@ -762,6 +762,8 @@
       "FARM_INDEPENDENT": false,
       "DAILY_DUNGEON": false,
       "RARE_VISITS": true,
+      "CRYPT_BILL": true,
+      "CRYPT_MARCELINE": false,
       "TEAM_SLOTS": {
         "Aedroma": "CH_EiXQ8dHoXlqTOtyTH5IzbbafFAif9",
         "Droma": "CH_TWNS1mcRp22XMAehvezNnJTPc2VBB"
@@ -953,7 +955,7 @@
     "ctype": "warrior",
     "kind": "farm",
     "bytes": 135056,
-    "hash": "53a495b473d6447c3799b4106ffe90c1012464414d3d29990b19f6ad8cb3ae49",
+    "hash": "bcf695feaee669f46bab719d30d3759f341c432652214e51faae6b1f32b4d725",
     "config": {
       "KITE_ENABLED": true,
       "KITE_LEASH": 240,
@@ -1197,8 +1199,8 @@
     "label": "Eadrosell · Merchant · V2",
     "ctype": "merchant",
     "kind": "farm",
-    "bytes": 130594,
-    "hash": "5daaaf0c88bf7c62611bb67a40868d2343f2beb835edaeac312ec73dc6950455",
+    "bytes": 131238,
+    "hash": "57980d3a66a7a4869b6269197505cd7c98d135cfe3b5afe213b68902c057e1fe",
     "config": {
       "NAME": "EadroSell",
       "FARMERS": [
@@ -1363,7 +1365,7 @@
     "ctype": "merchant",
     "kind": "farm",
     "bytes": 154688,
-    "hash": "a0e3c6a363bad0607dc731c19b6d2cd662a5411d00d37cb743565cf3d6f89f95",
+    "hash": "8398d19ca4a7b0fd3784db2fe18a16f502943895e0219f96b352474ef771000a",
     "config": {
       "NAME": "EadroSell",
       "FARMERS": [
@@ -1525,7 +1527,7 @@
     "ctype": "mage",
     "kind": "farm",
     "bytes": 87190,
-    "hash": "2951ae0f49cde7c0acafb417173c87a05d753268fa26e64659d086fd55f69ff0",
+    "hash": "113f2a6be98515f1ebaa5ae6ff3c476c7f2f638680c6b654fb21ad865e5f51c4",
     "config": {
       "KITE_ENABLED": true,
       "KITE_LEASH": 240,

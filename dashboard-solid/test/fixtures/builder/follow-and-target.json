@@ -1,6 +1,6 @@
 {
   "variant": "follow-and-target",
-  "v2Revision": 237,
+  "v2Revision": 258,
   "validation": null,
   "profile": {
     "name": "Main party",
@@ -58,7 +58,9 @@
         "events": true,
         "job": "hunt",
         "farmMonster": "",
-        "overrides": {}
+        "overrides": {
+          "CRYPT_MARCELINE": false
+        }
       },
       {
         "name": "Healer",
@@ -122,7 +124,7 @@
       }
     ],
     "farming": {
-      "defaultMonster": "bscorpion",
+      "defaultMonster": "mummy",
       "hunts": false,
       "allowedHunts": [
         "goo",
@@ -206,7 +208,7 @@
         "mole": "mono",
         "wolfie": "mono",
         "ghost": "mono",
-        "booboo": "mono",
+        "booboo": "aoe",
         "fireroamer": "tank",
         "mummy": "aoe",
         "nerfedmummy": "aoe",
@@ -417,8 +419,8 @@
               },
               {
                 "slot": "orb",
-                "item": "cave_loaded_die",
-                "minLevel": 2
+                "item": "jacko",
+                "minLevel": 0
               }
             ],
             "skills": [
@@ -732,6 +734,157 @@
             "gear": [],
             "skills": []
           }
+        },
+        "Blade": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "knifebelt",
+                "minLevel": 0
+              },
+              {
+                "slot": "earring1",
+                "item": "mummyhex",
+                "minLevel": 0
+              }
+            ],
+            "skills": []
+          },
+          "mono": {
+            "base": "mono",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "mbelt",
+                "minLevel": 3
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "mummyhex",
+                "minLevel": 0
+              }
+            ],
+            "skills": []
+          },
+          "tank": {
+            "base": "tank",
+            "gear": [],
+            "skills": []
+          },
+          "crypt": {
+            "base": "mono",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "mbelt",
+                "minLevel": 3
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 1
+              },
+              {
+                "slot": "offhand",
+                "item": "snowflakes",
+                "minLevel": 8
+              },
+              {
+                "slot": "earring1",
+                "item": "mummyhex",
+                "minLevel": 0
+              }
+            ],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 3
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 3
+              },
+              {
+                "slot": "earring1",
+                "item": "dexearring",
+                "minLevel": 3
+              },
+              {
+                "slot": "earring2",
+                "item": "dexearring",
+                "minLevel": 3
+              },
+              {
+                "slot": "belt",
+                "item": "knifebelt",
+                "minLevel": 0
+              },
+              {
+                "slot": "mainhand",
+                "item": "firestars",
+                "minLevel": 7
+              },
+              {
+                "slot": "offhand",
+                "item": "snowflakes",
+                "minLevel": 8
+              },
+              {
+                "slot": "helmet",
+                "item": "oxhelmet",
+                "minLevel": 0
+              },
+              {
+                "slot": "chest",
+                "item": "coat",
+                "minLevel": 9
+              },
+              {
+                "slot": "pants",
+                "item": "pants",
+                "minLevel": 9
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "gloves",
+                "item": "gloves",
+                "minLevel": 9
+              },
+              {
+                "slot": "amulet",
+                "item": "dexamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "cape",
+                "item": "horsecapeg",
+                "minLevel": 3
+              }
+            ],
+            "skills": []
+          }
         }
       },
       "bossChecks": {
@@ -857,22 +1010,16 @@
             "quantity": 10
           },
           {
-            "item": "supermittens",
-            "level": 0,
-            "price": 100000000,
-            "quantity": 10
-          },
-          {
             "item": "firebow",
             "level": 0,
             "price": 1000000,
             "quantity": 10
           },
           {
-            "item": "strbelt",
-            "level": 4,
-            "price": 500000000,
-            "quantity": 1
+            "item": "cryptkey",
+            "level": 0,
+            "price": 5000000,
+            "quantity": 10
           }
         ]
       },
@@ -945,7 +1092,6 @@
         "xmassweater",
         "xmaspants",
         "carrot",
-        "jacko",
         "staffofthedead",
         "swordofthedead",
         "maceofthedead",
@@ -1075,14 +1221,14 @@
           "price": 5000000
         },
         {
-          "item": "witchparcel",
-          "level": 0,
-          "price": 10000000
-        },
-        {
           "item": "warpvest",
           "level": 0,
           "price": 2000000000
+        },
+        {
+          "item": "witchparcel",
+          "level": 0,
+          "price": 7000000
         }
       ],
       "standSpot": {
@@ -1312,6 +1458,14 @@
           {
             "item": "broom",
             "maxLevel": 8
+          },
+          {
+            "item": "bataxe",
+            "maxLevel": 7
+          },
+          {
+            "item": "snowflakes",
+            "maxLevel": 7
           }
         ]
       },
@@ -1370,6 +1524,10 @@
           {
             "item": "cave_loaded_die",
             "maxLevel": 3
+          },
+          {
+            "item": "jacko",
+            "maxLevel": 3
           }
         ]
       },
@@ -1385,6 +1543,11 @@
           {
             "item": "cave_loaded_die",
             "useBank": true
+          },
+          {
+            "item": "snowflakes",
+            "useBank": true,
+            "batchSize": 5
           }
         ]
       },
@@ -1500,7 +1663,10 @@
           "intamulet",
           "intbelt",
           "seashell",
-          "reefglass"
+          "reefglass",
+          "throwingstars",
+          "cearring",
+          "cring"
         ]
       },
       "teamSupervisor": {
@@ -1532,10 +1698,12 @@
           "region": "EU",
           "name": "IV"
         },
-        "DEFAULT_FARM": "bscorpion",
+        "DEFAULT_FARM": "mummy",
         "FARM_INDEPENDENT": false,
         "DAILY_DUNGEON": false,
         "RARE_VISITS": false,
+        "CRYPT_BILL": true,
+        "CRYPT_MARCELINE": false,
         "TEAM_SLOTS": {},
         "hunts": {
           "enabled": false,
@@ -1607,7 +1775,7 @@
             "scorpion": "fireblade",
             "stoneworm": "fireblade",
             "bigbird": "lolipop",
-            "booboo": "fireblade",
+            "booboo": "lolipop",
             "phoenix": "fireblade",
             "jr": "fireblade",
             "greenjr": "fireblade",
@@ -1741,7 +1909,7 @@
           "mole": "mono",
           "wolfie": "mono",
           "ghost": "mono",
-          "booboo": "mono",
+          "booboo": "aoe",
           "fireroamer": "tank",
           "mummy": "aoe",
           "nerfedmummy": "aoe",
@@ -1938,8 +2106,8 @@
               },
               {
                 "slot": "orb",
-                "item": "cave_loaded_die",
-                "minLevel": 2
+                "item": "jacko",
+                "minLevel": 0
               }
             ],
             "skills": [
@@ -1985,16 +2153,20 @@
           {
             "item": "candleward",
             "minLevel": 5
+          },
+          {
+            "item": "jacko",
+            "minLevel": 0
           }
         ]
       },
-      "codeSha256": "788b8df36531094e41c55f17e81412701cb3e2e97e49b2e1bb100ca5c7446c2f",
+      "codeSha256": "2f110b2c9507d08fec6bb99ffd66127bfaab304090b947b885cb79dcaac0e8ed",
       "warnings": [
         "Generated only; not uploaded or started.",
         "Profile edits require rebuilding and restarting CODE.",
         "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
       ],
-      "bundleSha256": "1e7c560900a412e01e427b499489543ccc238d1013824464600bcc852820e3ac"
+      "bundleSha256": "da70eedbdf2745586099e7a45405fe214199a6bba61ea018149c8a412862bfe8"
     },
     "Healer": {
       "config": {
@@ -2146,7 +2318,7 @@
           "mole": "mono",
           "wolfie": "mono",
           "ghost": "mono",
-          "booboo": "mono",
+          "booboo": "aoe",
           "fireroamer": "tank",
           "mummy": "aoe",
           "nerfedmummy": "aoe",
@@ -2406,13 +2578,13 @@
           }
         ]
       },
-      "codeSha256": "a26f6a9df7f9bd401effb7b07221b5cafa0bc6d5571a9840b56971bf692673ac",
+      "codeSha256": "48888b318f88ed10752192ab4524dc233fb74ec9ecacc7ff45c2833ea0f9f478",
       "warnings": [
         "Generated only; not uploaded or started.",
         "Profile edits require rebuilding and restarting CODE.",
         "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
       ],
-      "bundleSha256": "deced8b44d00945d7fb2304074b3a2d01e9fa159c114e35da1744d75da323811"
+      "bundleSha256": "d2b989c8b42e359039b8bca2cc03c07b704c92ae6de9085fe2eb17bcb3169181"
     },
     "Archer": {
       "config": {
@@ -2428,7 +2600,7 @@
         "PARTY_GUESTS": [
           "EadroSell"
         ],
-        "DEFAULT_FARM": "bscorpion",
+        "DEFAULT_FARM": "mummy",
         "FARM_INDEPENDENT": false,
         "DAILY_DUNGEON": false,
         "RARE_VISITS": false,
@@ -2541,7 +2713,7 @@
           "mole": "mono",
           "wolfie": "mono",
           "ghost": "mono",
-          "booboo": "mono",
+          "booboo": "aoe",
           "fireroamer": "tank",
           "mummy": "aoe",
           "nerfedmummy": "aoe",
@@ -2664,13 +2836,13 @@
           "elixirluck"
         ]
       },
-      "codeSha256": "8dccaabacb92a18d0be2e37b80fd0b2341c4eff4cebde1571b671e4845282d4d",
+      "codeSha256": "3d40dea8de8cda3b236c08dc59eabc82c0b877cc9083d46e14f9d3707303fcbd",
       "warnings": [
         "Generated only; not uploaded or started.",
         "Profile edits require rebuilding and restarting CODE.",
         "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
       ],
-      "bundleSha256": "f4fd3f5b827685c1a1173812cbe566e9891111c4fbb9008ce385e2b63bf50403"
+      "bundleSha256": "c1bf9761bffeaeb397277c2c632f905ce71bebd2cd6ddb2f4e1e45060e8aba40"
     },
     "Trader": {
       "config": {
@@ -2803,7 +2975,6 @@
           "xmassweater",
           "xmaspants",
           "carrot",
-          "jacko",
           "staffofthedead",
           "swordofthedead",
           "maceofthedead",
@@ -2881,7 +3052,7 @@
           "region": "EU",
           "name": "IV"
         },
-        "DEFAULT_FARM": "bscorpion",
+        "DEFAULT_FARM": "mummy",
         "FARM_INDEPENDENT": false,
         "DAILY_DUNGEON": false,
         "RARE_VISITS": false,
@@ -2935,7 +3106,7 @@
           "mole": "mono",
           "wolfie": "mono",
           "ghost": "mono",
-          "booboo": "mono",
+          "booboo": "aoe",
           "fireroamer": "tank",
           "mummy": "aoe",
           "nerfedmummy": "aoe",
@@ -2970,7 +3141,7 @@
         ],
         "PONTY_GOLD_KEEP": 200000
       },
-      "codeSha256": "b953691f3f1ad4edae482ee49f59ee78c8de2ea1bf88e9da6e5acfb85821a9da",
+      "codeSha256": "67a65068bd7953e08a3bdc68ba023b5ecd48e37eaf531a604baebf8ddc885c64",
       "warnings": [
         "Generated only; not uploaded or started.",
         "Profile edits require rebuilding and restarting CODE.",
@@ -2986,7 +3157,7 @@
         "Stand rules apply when the merchant reaches its idle-shop phase. Restocking, safety and gathering keep their existing priority. Existing sell listings outside the allowlist are removed when there is bag space; configured buy orders use the last eight slots of the available stand. Dashboard listings are never auto-unlisted by keep-gear.",
         "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
       ],
-      "bundleSha256": "6e53e10fb0cecd536de206ec1f1a2ee4f7b9c626cce1e6e16f5be49484d80228"
+      "bundleSha256": "5913183a4818471e4d95a78d4f81de9ade47e4a884c5b5231290d3dbb8358558"
     },
     "Wizard": {
       "config": {
@@ -3044,7 +3215,7 @@
         "UPGRADE_TRIP_GOLD": 15000,
         "SCROLL_KEEP": 6,
         "CSCROLL_KEEP": 4,
-        "DEFAULT_FARM": "bscorpion",
+        "DEFAULT_FARM": "mummy",
         "FARM_INDEPENDENT": false,
         "DAILY_DUNGEON": false,
         "RARE_VISITS": false,
@@ -3098,7 +3269,7 @@
           "mole": "mono",
           "wolfie": "mono",
           "ghost": "mono",
-          "booboo": "mono",
+          "booboo": "aoe",
           "fireroamer": "tank",
           "mummy": "aoe",
           "nerfedmummy": "aoe",
@@ -3132,13 +3303,13 @@
           }
         }
       },
-      "codeSha256": "1e8b430749c9108c22c2a415bc06fc23f945c58e4c4137856b76d92cb885fc22",
+      "codeSha256": "62b716f53d52f6ff1d2c07cf27445bd6e0e7400adf50da917457b7cd2b132153",
       "warnings": [
         "Generated only; not uploaded or started.",
         "Profile edits require rebuilding and restarting CODE.",
         "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
       ],
-      "bundleSha256": "609a35f694c3f72830085025a0ed4f825b9e15704531d52ea09494bcf1eedde6"
+      "bundleSha256": "4fc99864cfd2020ba170f02d5653bf9d4ed74471eb96c346b29125f2f6329b9f"
     },
     "Blade": {
       "config": {
@@ -3153,7 +3324,7 @@
         "PARTY_GUESTS": [
           "EadroSell"
         ],
-        "DEFAULT_FARM": "bscorpion",
+        "DEFAULT_FARM": "mummy",
         "FARM_INDEPENDENT": false,
         "DAILY_DUNGEON": false,
         "RARE_VISITS": false,
@@ -3178,7 +3349,7 @@
         },
         "potions": {
           "hpThreshold": 0.45,
-          "mpThreshold": 0.3,
+          "mpThreshold": 0.6,
           "hpot": "hpot1",
           "mpot": "mpot1",
           "needH": 200,
@@ -3247,7 +3418,7 @@
           "mole": "mono",
           "wolfie": "mono",
           "ghost": "mono",
-          "booboo": "mono",
+          "booboo": "aoe",
           "fireroamer": "tank",
           "mummy": "aoe",
           "nerfedmummy": "aoe",
@@ -3263,15 +3434,152 @@
         },
         "STYLE_LOADOUTS": {
           "aoe": {
-            "gear": [],
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "knifebelt",
+                "minLevel": 0
+              },
+              {
+                "slot": "earring1",
+                "item": "mummyhex",
+                "minLevel": 0
+              }
+            ],
             "skills": []
           },
           "mono": {
-            "gear": [],
+            "base": "mono",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "mbelt",
+                "minLevel": 3
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "mummyhex",
+                "minLevel": 0
+              }
+            ],
             "skills": []
           },
           "tank": {
+            "base": "tank",
             "gear": [],
+            "skills": []
+          },
+          "crypt": {
+            "base": "mono",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "mbelt",
+                "minLevel": 3
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 1
+              },
+              {
+                "slot": "offhand",
+                "item": "snowflakes",
+                "minLevel": 8
+              },
+              {
+                "slot": "earring1",
+                "item": "mummyhex",
+                "minLevel": 0
+              }
+            ],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 3
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 3
+              },
+              {
+                "slot": "earring1",
+                "item": "dexearring",
+                "minLevel": 3
+              },
+              {
+                "slot": "earring2",
+                "item": "dexearring",
+                "minLevel": 3
+              },
+              {
+                "slot": "belt",
+                "item": "knifebelt",
+                "minLevel": 0
+              },
+              {
+                "slot": "mainhand",
+                "item": "firestars",
+                "minLevel": 7
+              },
+              {
+                "slot": "offhand",
+                "item": "snowflakes",
+                "minLevel": 8
+              },
+              {
+                "slot": "helmet",
+                "item": "oxhelmet",
+                "minLevel": 0
+              },
+              {
+                "slot": "chest",
+                "item": "coat",
+                "minLevel": 9
+              },
+              {
+                "slot": "pants",
+                "item": "pants",
+                "minLevel": 9
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "gloves",
+                "item": "gloves",
+                "minLevel": 9
+              },
+              {
+                "slot": "amulet",
+                "item": "dexamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "cape",
+                "item": "horsecapeg",
+                "minLevel": 3
+              }
+            ],
             "skills": []
           }
         },
@@ -3283,19 +3591,83 @@
           {
             "item": "gloves",
             "minLevel": 0
+          },
+          {
+            "item": "knifebelt",
+            "minLevel": 0
+          },
+          {
+            "item": "mummyhex",
+            "minLevel": 0
+          },
+          {
+            "item": "mbelt",
+            "minLevel": 3
+          },
+          {
+            "item": "cave_loaded_die",
+            "minLevel": 1
+          },
+          {
+            "item": "snowflakes",
+            "minLevel": 8
+          },
+          {
+            "item": "cring",
+            "minLevel": 3
+          },
+          {
+            "item": "dexearring",
+            "minLevel": 3
+          },
+          {
+            "item": "firestars",
+            "minLevel": 7
+          },
+          {
+            "item": "oxhelmet",
+            "minLevel": 0
+          },
+          {
+            "item": "coat",
+            "minLevel": 9
+          },
+          {
+            "item": "pants",
+            "minLevel": 9
+          },
+          {
+            "item": "wingedboots",
+            "minLevel": 8
+          },
+          {
+            "item": "gloves",
+            "minLevel": 9
+          },
+          {
+            "item": "dexamulet",
+            "minLevel": 2
+          },
+          {
+            "item": "rabbitsfoot",
+            "minLevel": 1
+          },
+          {
+            "item": "horsecapeg",
+            "minLevel": 3
           }
         ],
         "KEEP_ITEMS": [
           "elixirluck"
         ]
       },
-      "codeSha256": "2b1d310e301a2fc8a04cbfbfdb1a3dbb79e5b3617653a6df43b254a77054aed9",
+      "codeSha256": "08dff9322ad22b0b8d300af7a032d5c46a28c2223aed537e2b0c0d750389ba6b",
       "warnings": [
         "Generated only; not uploaded or started.",
         "Profile edits require rebuilding and restarting CODE.",
         "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
       ],
-      "bundleSha256": "dcc170b18f2c9492457542bf934aa85771dda1f8b395876a06a44310d690e883"
+      "bundleSha256": "0692d692fcecbf89a4b52056f1b484b505ed7cd3e6907a1a68edf10b2da460e7"
     }
   }
 }
