@@ -1,0 +1,33 @@
+.team { display: grid; gap: 20px; }
+.team-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.team-head h2 { font: 600 1.75rem/1.2 var(--pixel); }
+.team-head .server { color: var(--text-dim); font-weight: 700; }
+.team .lead { margin: 0; color: var(--text-dim); max-width: 60ch; }
+
+.team .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 14px; }
+
+.character-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: 'sprite identity' 'vitals vitals' 'activity activity' 'map open';
+  gap: 10px 14px;
+  padding: 14px;
+  background: var(--stone);
+}
+.character-card.stale { opacity: .62; }
+.character-card .character-sprite { grid-area: sprite; display: block; background: var(--slot); border: 2px solid var(--edge); padding: 4px; box-sizing: content-box; }
+.character-card .identity { grid-area: identity; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-content: start; }
+.character-card h3 { font-size: 1.15rem; font-weight: 700; overflow-wrap: anywhere; }
+.character-card .class { color: var(--text-dim); grid-column: 1; }
+.character-card .level { color: var(--gold); font: 600 1rem/1.2 var(--pixel); grid-column: 2; grid-row: 1; justify-self: end; }
+.character-card .fresh { grid-column: 2; grid-row: 2; justify-self: end; font-size: .8rem; white-space: nowrap; }
+.character-card .fresh.live { color: var(--herb); font-weight: 700; }
+.character-card .fresh.live::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 6px; background: var(--herb); }
+.character-card .fresh.stale { color: var(--text-dim); }
+.character-card .vitals { grid-area: vitals; display: grid; gap: 6px; }
+.character-card .activity { grid-area: activity; margin: 0; overflow-wrap: anywhere; }
+.character-card .map { grid-area: map; margin: 0; color: var(--text-dim); font-size: .875rem; align-self: center; }
+.character-card .open { grid-area: open; justify-self: end; min-height: 36px; padding: 6px 10px; color: var(--gold); }
+
+.team .silent summary { cursor: pointer; color: var(--text-dim); min-height: 32px; }
+.team .silent .help { margin: 8px 0 14px; color: var(--text-dim); max-width: 70ch; font-size: .9rem; }

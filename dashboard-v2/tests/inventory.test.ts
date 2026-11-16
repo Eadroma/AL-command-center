@@ -27,6 +27,17 @@ describe('inventory categorization and models', () => {
     expect(categorizeItem('unknown_junk', catalog)).toBe('Other');
   });
 
+  it('prefers the imported game type over name heuristics', () => {
+    const typed: Catalog = { ...catalog, items: [
+      { id: 'crookedkey', name: 'Crooked Key Earring', type: 'earring' },
+      { id: 'laughingbook', name: 'Laughing Grimoire', type: 'source' },
+      { id: 'embercoal', name: 'Ember Coal', type: 'material' },
+    ] };
+    expect(categorizeItem('crookedkey', typed)).toBe('Accessories');
+    expect(categorizeItem('laughingbook', typed)).toBe('Armor');
+    expect(categorizeItem('embercoal', typed)).toBe('Materials');
+  });
+
   it('filters inventory items by search query and category', () => {
     const items: InventoryItem[] = [
       { slot: 0, name: 'fireblade', level: 8, quantity: 1, locked: false, bound: false, upgradeable: true, sellable: true },

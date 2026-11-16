@@ -17,6 +17,8 @@ var CONFIG = {
   pullHpPercent: 70,
   hpPotionPercent: 75,
   mpPotionPercent: 80,
+  needHpot: 200,
+  needMpot: 300,
   dumpFreeSlots: 4,
   keepGold: 50000
 };
@@ -78,6 +80,26 @@ var CrabRogue = (function () {
     if (Date.now() - lastErrorAt < 30000) return;
     lastErrorAt = Date.now();
     game_log('Crab rogue: ' + String(error && (error.reason || error.message) || error));
+  }
+  var lastSupplyAt = 0;
+  function potionCount(prefix) {
+    return character.items.reduce(function (n, item) { return n + (item && item.name.indexOf(prefix) === 0 ? item.q || 1 : 0); }, 0);
+  }
+  function potionStock(type) {
+    var hpot = potionCount('hpot'), mpot = potionCount('mpot');
+    return { t: type, hpot: hpot, mpot: mpot, need_h: hpot < CONFIG.needHpot, need_m: mpot < CONFIG.needMpot,
+      map: character.map, x: Math.round(character.x), y: Math.round(character.y), gold: character.gold || 0 };
+  }
+  // Same "mux"/"supply" protocol as the other farmers, so the merchant restocks potions.
+  function onCm(name, data) {
+    if (name !== CONFIG.MERCHANT || !data || data.t !== 'mux') return;
+    try { send_cm(name, potionStock('pots')); } catch (e) { logError(e); }
+  }
+  function requestSupply() {
+    var stock = potionStock('supply');
+    if (!stock.need_h && !stock.need_m || Date.now() - lastSupplyAt < 30000) return;
+    lastSupplyAt = Date.now();
+    send_cm(CONFIG.MERCHANT, stock);
   }
   function targets() {
     return Object.keys(parent.entities || {}).map(function (id) { return parent.entities[id]; }).filter(function (e) {
@@ -189,6 +211,7 @@ var CrabRogue = (function () {
     })) await gloves(false);
     if (character.hp / character.max_hp * 100 < CONFIG.hpPotionPercent && !is_on_cooldown('use_hp')) await use_skill('use_hp');
     else if (character.mp / character.max_mp * 100 < CONFIG.mpPotionPercent && !is_on_cooldown('use_mp')) await use_skill('use_mp');
+    requestSupply();
     loot();
     set_message(servicing ? 'Go merchant' : 'Crabs / Fan of Knives');
   }
@@ -208,6 +231,7 @@ var CrabRogue = (function () {
     loop(liquidLuck, 1000); loop(swiftness, 250); loop(combat, 100); loop(movement, 500); loop(sustain, 500);
     game_log('Dromas: independent crab farming; Fan of Knives priority.');
   }
-  return { install: install, combat: combat, movement: movement, targets: targets, protectedItem: protectedItem, gloves: gloves, swiftness: swiftness, liquidLuck: liquidLuck };
+  return { install: install, combat: combat, movement: movement, targets: targets, protectedItem: protectedItem, gloves: gloves, swiftness: swiftness, liquidLuck: liquidLuck, onCm: onCm, requestSupply: requestSupply };
 })();
+function on_cm(name, data) { CrabRogue.onCm(name, data); }
 CrabRogue.install();

@@ -262,6 +262,9 @@ function craft_item_reserved(name, level) {
 			if (rows[i][1] !== name) continue;
 			var requiredLevel = Number(rows[i][2]) || 0;
 			if (level !== undefined && (Number(level) || 0) !== requiredLevel) continue;
+			var def = typeof G !== "undefined" && G.items && G.items[name];
+			// Unstackable drops (throwingstars) take a slot each: keep one craft's worth, extras are sellable.
+			if (def && !def.s && item_count_level(name, requiredLevel) > (Number(rows[i][0]) || 1)) continue;
 			if (requiredLevel !== 0 || !craft_shop_for(name)) return true;
 			var materialsReady = rows.every(function(row) {
 				var materialLevel = Number(row[2]) || 0;
@@ -509,6 +512,10 @@ function team_child_state(name) {
 
 function team_child_running(name) {
 	if (fresh_farmer_report(name)) return true;
+	// A farmer in its own browser window only shows through its reports. Starting it here logs it in a second time,
+	// which disconnects the window: in the crypt the server then drops it at the Cave door (Dromas, run 5).
+	var report = farmer_reports[name];
+	if (report && Date.now() - report.at < 300000 && !team_child_state(name)) return true;
 	var state = team_child_state(name);
 	if (state === "starting" || state === "loading" || state === "active" || state === "code") return true;
 	if (typeof parent !== "undefined" && parent.active_characters && parent.active_characters[name]) return true;
@@ -519,6 +526,21 @@ function get_start_character_fn() {
 	if (typeof start_character === "function") return start_character;
 	if (typeof parent !== "undefined" && typeof parent.start_character === "function") return parent.start_character;
 	return null;
+}
+
+/** Arrete un personnage lance par ce client mais absent de l'equipe, pour liberer une place avant un demarrage. */
+function stop_unlisted_team_character() {
+	var live = typeof get_active_characters === "function" ? get_active_characters() : null;
+	var halt = typeof stop_character === "function" ? stop_character : (typeof parent !== "undefined" ? parent.stop_character : null);
+	if (!live || typeof halt !== "function") return false;
+	var names = CONFIG.FARMERS || [];
+	for (var name in live) {
+		if (!live[name] || name === character.name || names.indexOf(name) >= 0) continue;
+		game_log("team supervisor: stopping " + name + " (not in team)", "#E5A663");
+		try { var pending = halt(name); if (pending && typeof pending.catch === "function") pending.catch(function () {}); } catch (e) {}
+		return true;
+	}
+	return false;
 }
 
 /** Démarre au maximum un farmer par passage pour respecter les limites du client. */
@@ -538,6 +560,8 @@ function maybe_start_team() {
 		if (!name || name === character.name || !slot || team_child_running(name)) continue;
 		if (team_start_retry_at[name] && Date.now() < team_start_retry_at[name]) continue;
 		last_team_start = Date.now();
+		// Limite de personnages du compte : liberer la place avant de demarrer, sinon deconnexions en boucle.
+		if (stop_unlisted_team_character()) return true;
 		team_start_busy = true;
 		set_message("start " + name);
 		game_log("team supervisor: starting " + name + " with " + slot, "#469ECF");
@@ -570,7 +594,7 @@ function maybe_start_team() {
 
 async function teamStartLoop() {
 	while (true) {
-		try { if (!character.rip) { merchant_guard_tick(); if (typeof UpgradeProduction !== "undefined" && UpgradeProduction.reconcile) UpgradeProduction.reconcile(); if (typeof EventExpedition !== "undefined") await EventExpedition.merchantTick(); maybe_start_team(); } } catch (e) {}
+		try { if (!character.rip) { merchant_guard_tick(); if (typeof UpgradeProduction !== "undefined" && UpgradeProduction.reconcile) UpgradeProduction.reconcile(); if (typeof EventExpedition !== "undefined") await EventExpedition.merchantTick(); if (typeof CryptSupply !== "undefined") CryptSupply.watch(); await ping_farmers(); maybe_start_team(); } } catch (e) {}
 		await sleep(3000);
 	}
 }
@@ -610,6 +634,8 @@ function merchant_work_next() {
         production_trip = null;
         if (cc_npc_enabled() && locate_sell_item() >= 0 && merchant_task_allowed("sell")) return "sell";
         if (!bankReview && character.items && character.items.some(should_bank_item) && merchant_task_allowed("bank") && !(bankable_signature() === last_bank_failure_signature && Date.now() - last_bank_failure_at < (CONFIG.BANK_COOLDOWN_MS || 45000))) return "bank";
+        // A compound turns three carried items into one: it frees space.
+        if (find_compound_set() && merchant_task_allowed("compound")) return "compound";
         if (cc_upgrade_enabled() && locate_upgrade_item(false) >= 0 && merchant_task_allowed("upgrade")) return "upgrade";
         set_message("exchange blocked: inventory space");
         return null;
@@ -724,6 +750,7 @@ function supply_farmer_names() {
 }
 function on_cm(name, data) {
 	if (typeof EventExpedition !== "undefined") EventExpedition.onCm(name, data);
+	if (typeof CryptSupply !== "undefined") CryptSupply.onCm(name, data);
 	if (!data || typeof data !== "object") return;
 	if (supply_farmer_names().indexOf(name) < 0) return;
 	// Rapport status (potions, or, dump, position)
@@ -928,7 +955,8 @@ function listing_bank_stock_reserved(it) {
     if(!lease)return false;
     // A posted copy fulfils this rule. The carried copy is surplus, but reading
     // this policy must not delete its lease while snapshots are transitioning.
-    if(stand_listing_posted(it))return false;
+    // A stackable top-up stays reserved until standLoop republishes the merged stack.
+    if(stand_listing_posted(it)&&!(G.items[it.name]&&G.items[it.name].s))return false;
     // Reading inventory policy must not mutate reservations. A matching trade
     // slot can be a different copy or a transient snapshot while opening the
     // stand; only successful publication releases the withdrawn piece.
@@ -939,6 +967,18 @@ function stand_inventory_allowed(it) {
     if(listing_bank_stock_reserved(it))return true;
     var rule=cc_listings().find(function(r){return r.item===it.name&&(r.level||0)===(it.level||0);});
     return !upgrade_target_complete(it) && !(rule&&rule.bankReserve>0);
+}
+
+/** Annonce empilable deja en vente sans reserve en inventaire : completer depuis la banque. */
+function listing_topup_wanted(rule) {
+	if (!G.items[rule.item] || !G.items[rule.item].s) return false;
+	var items = character.items || [], slots = character.slots || {}, listed = false;
+	for (var i = 0; i < items.length; i++) if (items[i] && items[i].name === rule.item && (items[i].level || 0) === (rule.level || 0)) return false;
+	for (var n = 1; n <= merchant_trade_capacity(); n++) {
+		var ts = slots["trade" + n];
+		if (ts && !ts.b && ts.name === rule.item && (ts.level || 0) === (rule.level || 0)) listed = true;
+	}
+	return listed || !!(typeof remembered_stand_listings !== "undefined" && remembered_stand_listings && remembered_stand_listings[rule.item + ":" + (rule.level || 0)]);
 }
 
 function listing_present(rule) {
@@ -968,12 +1008,14 @@ async function maybe_restock_listing_from_bank(options) {
 async function restock_listing_bank_stock(options) {
     var stayInBank=!!(options&&options.stayInBank);
 	if (!cc_stand_enabled() || !cc_listings().length || character.esize < 1) return false;
-    var reserveBuys=typeof __ALCC!=='undefined'&&__ALCC.buy&&__ALCC.buy.enabled&&__ALCC.buy.orders&&__ALCC.buy.orders.length>0;
-    var sellMax=merchant_trade_capacity()-(reserveBuys?8:0),tradeSpace=false;
+    // The stand manager publishes how many slots remain for sales after funded buy orders.
+    var sellMax=typeof __ALCC!=='undefined'&&__ALCC&&__ALCC._sellSlotMax>=0?__ALCC._sellSlotMax:merchant_trade_capacity(),tradeSpace=false;
     for(var tradeIndex=1;tradeIndex<=sellMax;tradeIndex++)if(!(character.slots||{})['trade'+tradeIndex])tradeSpace=true;
     if(!tradeSpace)return false;
 	var missing = null, rules = cc_listings(), missingRules = [];
-	for (var i = 0; i < rules.length; i++) if (!listing_present(rules[i])) missingRules.push(rules[i]);
+	var inBankNow = character.map && character.map.indexOf("bank") === 0;
+	// Les completements d'empilables ne declenchent pas de trajet : seulement pendant une visite banque.
+	for (var i = 0; i < rules.length; i++) if (!listing_present(rules[i]) || (inBankNow && listing_topup_wanted(rules[i]))) missingRules.push(rules[i]);
 	missing = missingRules[0] || null;
 	if (!missing) return false;
 
@@ -1020,7 +1062,8 @@ async function restock_listing_bank_stock(options) {
         if(character.map!==floor)return false;
 	}
 	try {
-        var takeQuantity=missing.bankReserve>0?1:found.quantity;
+        // Tout l'excedent au-dessus de la reserve banque, pas un seul exemplaire.
+        var takeQuantity=Math.min(found.quantity,(totals[missing.item+':'+(missing.level||0)]||0)-(missing.bankReserve||0));
         var empty=character.items.findIndex(function(it){return !it;});
         if(empty<0 || (found.quantity>takeQuantity && (free_slots()<2 || typeof split!=='function')))return false;
         if(typeof BankCoordinator!=='undefined'&&!BankCoordinator.begin('withdraw',missing.item,missing.level,takeQuantity,found.pack))return false;
@@ -1063,6 +1106,9 @@ async function reach_farmer(name, state) {
 	if (typeof EventExpedition !== "undefined" && EventExpedition.needsReturnService()) return null;
 	var report = state && state.report;
 	if (!report || !report.map || report.x == null || report.y == null) return null;
+	// Instanced maps (Cave Dreams zone_*, crypts) are not pathable: smart_move loops into watchdog town recoveries.
+	var mapDef = G.maps[report.map];
+	if (!mapDef || mapDef.instance) return null;
 	await walk_to({ map: report.map, x: report.x, y: report.y }, "supply " + name);
 	player = get_player(name);
 	return player && distance(character, player) <= CONFIG.REACH ? player : null;
@@ -1390,6 +1436,13 @@ async function standLoop() {
 				await sleep(750);
 				continue;
 			}
+			// Built by the Command Center: the injected manager owns the stand and false means
+			// "leave it alone" (bank/town work first). The fallback used to walk back to the stand
+			// and fight those trips, so it only runs in the standalone script.
+			if (typeof __ALCC !== "undefined" && __ALCC && Array.isArray(__ALCC.listings)) {
+				await sleep(750);
+				continue;
+			}
 
 			var stand_enabled = cc_stand_enabled();
 			var listings = cc_listings();
@@ -1493,8 +1546,12 @@ async function standLoop() {
 						var slots = character.slots || {};
 						for (var ti = 1; ti <= merchant_trade_capacity(); ti++) {
 							var ts = slots["trade" + ti];
-							if (ts && ts.name === rule.item && (ts.level || 0) === (rule.level || 0)) {
+							if (ts && !ts.b && ts.name === rule.item && (ts.level || 0) === (rule.level || 0)) {
 								already_listed = true;
+								// Empilable : retirer l'annonce, le serveur fusionne la pile, le prochain passage reliste le total.
+								if (G.items[rule.item] && G.items[rule.item].s) {
+									try { await unequip("trade" + ti); game_log("regroup " + rule.item + " x" + ((ts.q || 1) + (it.q || 1))); } catch (e) {}
+								}
 								break;
 							}
 						}
@@ -1666,12 +1723,14 @@ function upgrade_target_complete(it) {
 }
 function should_bank_item(it) {
     if (!it || it.l || it.b) return false;
+    if (typeof CryptSupply !== "undefined" && CryptSupply.keeps(it)) return false; // key reserved for the running crypt
     if (typeof listing_bank_stock_reserved === "function" && listing_bank_stock_reserved(it)) return false;
     // An active compound trio owns its inputs before stand-surplus deposit rules.
     // Otherwise an existing +1 listing sends freshly withdrawn +1 trios straight back.
     if (typeof CompoundProduction !== "undefined" && CompoundProduction.eligible(it) && !CompoundProduction.depositEligible(it)) return false;
     var listingRule=(typeof cc_listings === "function" ? cc_listings() : []).find(function(r){return r.item===it.name&&(r.level||0)===(it.level||0);});
-    if(listingRule&&stand_listing_posted(it)&&(!it.oo||it.oo===character.name))return true;
+    // Stackable copies join the posted listing (standLoop regroup); only unique items are surplus.
+    if(listingRule&&stand_listing_posted(it)&&!(G.items[it.name]&&G.items[it.name].s)&&(!it.oo||it.oo===character.name))return true;
     if(listingRule&&listingRule.bankReserve>0&&(!it.oo||it.oo===character.name))return true;
     if (typeof CompoundProduction !== "undefined" && CompoundProduction.depositEligible(it)) return true;
     if (upgrade_target_complete(it)) return true;
@@ -1763,20 +1822,24 @@ function find_empty_bank_slot(item) {
 	var packs = get_available_bank_packs();
 	if (packs.length === 0) packs = Object.keys(character.bank).filter(function(k) { return k !== "gold"; });
 
-	// 1. Chercher si l'item peut stacker dans un pack existant
+	// 1. Chercher si l'item peut stacker dans un pack existant. Une pile presque pleine
+	// est completee jusqu'au max (room) : le depot est alors divise, le reste fera une nouvelle pile.
+	var partial = null;
 	if (item && item.q && G.items[item.name] && G.items[item.name].s) {
-		var max_s = G.items[item.name].s;
+		var max_s = G.items[item.name].s === true ? 9999 : G.items[item.name].s;
 		for (var p1 = 0; p1 < packs.length; p1++) {
 			var list1 = character.bank[packs[p1]];
 			if (!list1) continue;
 			for (var i = 0; i < 42; i++) {
 				var bit = list1[i];
-				if (bit && bit.name === item.name && (bit.level || 0) === (item.level || 0) && (bit.q || 1) < max_s) {
-					return { pack: packs[p1], slot: i, merge: true };
-				}
+				if (!bit || bit.name !== item.name || (bit.level || 0) !== (item.level || 0)) continue;
+				var room = max_s - (bit.q || 1);
+				if (room >= (item.q || 1)) return { pack: packs[p1], slot: i, merge: true };
+				if (room > 0 && !partial) partial = { pack: packs[p1], slot: i, merge: true, room: room };
 			}
 		}
 	}
+	if (partial) return partial;
 	// 2. Chercher le premier slot vide parmi tous les packs disponibles
 	for (var p2 = 0; p2 < packs.length; p2++) {
 		var list2 = character.bank[packs[p2]];
@@ -1811,6 +1874,17 @@ function craft_shop_for(name) {
 }
 var craft_batch = null;
 var craft_bank_retry = {};
+// A refused craft waits before the next attempt instead of retrying (and logging) every tick.
+var craft_fail_until = {};
+/** The server crafts from one stack per ingredient: merge split stacks (seashell 1 + 7) before crafting. */
+async function merge_craft_stacks(recipe) {
+    for (var i = 0; i < recipe.items.length; i++) {
+        var qty = Number(recipe.items[i][0]) || 1, name = recipe.items[i][1], level = Number(recipe.items[i][2]) || 0, slots = [];
+        (character.items || []).forEach(function (it, slot) { if (it && it.name === name && (it.level || 0) === level && !it.l) slots.push(slot); });
+        if (slots.length < 2 || slots.some(function (slot) { return (character.items[slot].q || 1) >= qty; })) continue;
+        for (var k = 1; k < slots.length; k++) { try { await swap(slots[k], slots[0]); } catch (e) {} await sleep(250); }
+    }
+}
 /** Withdraw into an empty slot, split the required quantity, return excess to its original empty slot. */
 async function stock_craft_bank(job) {
     craft_bank_retry[job.item] = Date.now() + 60000;
@@ -1825,7 +1899,12 @@ async function stock_craft_bank(job) {
             each_bank_item(function(it, pack, slot) {
                 if (!found && !it.l && !it.b && (!it.oo || it.oo === character.name) && it.name === part.item && (it.level || 0) === part.level) found = { pack: pack, slot: slot };
             });
-            if (!found) break;
+            if (!found) {
+                // The bank lacks this ingredient: retrying every minute made a bank round trip per minute.
+                craft_bank_retry[job.item] = Date.now() + 15 * 60000;
+                game_log("craft bank: " + part.item + " +" + part.level + " absent, " + job.item + " retried in 15 min");
+                break;
+            }
             var floor = bank_pack_floor(found.pack);
             if (character.map !== floor) await smart_move(floor);
             var empty = character.items.findIndex(function(it) { return !it; });
@@ -1861,6 +1940,7 @@ function next_craft_job() {
 	for (var r = 0; r < rules.length; r++) {
 		var name = rules[r] && rules[r].item;
         if (!rules[r] || (typeof craft_rule_paused === 'function' ? craft_rule_paused(rules[r]) : rules[r].paused)) continue;
+        if (typeof craft_fail_until !== 'undefined' && Date.now() < (craft_fail_until[name] || 0)) continue;
 		if (typeof RuntimePolicy !== "undefined" && !RuntimePolicy.commercialAllowed(name)) continue;
 		var recipe = name && G.craft[name];
 		if (!recipe || !Array.isArray(recipe.items)) continue;
@@ -1936,6 +2016,7 @@ async function run_next_craft() {
 	await ensure_mass_buff("produce");
 	job = next_craft_job();
 	if (!job || job.missing.length) return true;
+	if (typeof merge_craft_stacks === 'function') await merge_craft_stacks(job.recipe);
 	try {
 		if (typeof RuntimePolicy !== "undefined") RuntimePolicy.reserve(job.item, Number(job.recipe.cost || 0));
 		var crafted = await auto_craft(job.item);
@@ -1945,6 +2026,7 @@ async function run_next_craft() {
         if (craft_batch && --craft_batch.remaining <= 0) { craft_batch = null; if (production_trip === "craft") production_trip = null; }
 	} catch(e) {
 		game_log("craft " + job.item + ": " + (e.reason || e.message || e));
+		if (typeof craft_fail_until !== 'undefined') craft_fail_until[job.item] = Date.now() + 60000;
 	}
 	return true;
 }
@@ -1966,6 +2048,12 @@ async function townChoresLoop() {
                 finally { chores_in_progress=false;BankCoordinator.releaseNavigation('deposit'); }
                 await sleep(1000);continue;
             }
+			// Crypt run: fetch one key at the bank, then walk it to the warrior at the Cave door.
+			if (!chores_in_progress && !bank_dump_active && typeof CryptSupply !== "undefined" && CryptSupply.needsMerchant()) {
+				chores_in_progress = true;
+				try { await CryptSupply.tick(); } finally { chores_in_progress = false; }
+				await sleep(500); continue;
+			}
 			// Returning workers need room to unload: never block remote sales or
             // inventory-pressure cleanup while waiting for their transfer.
 			if (!chores_in_progress && !bank_dump_active && !exchange_space_paused() && merchant_work_next() !== "sell" && typeof EventExpedition !== "undefined" && EventExpedition.needsReturnService()) {
@@ -2167,8 +2255,29 @@ async function townChoresLoop() {
 						// bank_store(inv, pack, slot) as an explicit swap, even for compatible
 						// stacks. Omitting the slot invokes the server's normal store path,
 						// which merges compatible stacks before consuming a free slot.
-                        if(typeof BankCoordinator!=='undefined'&&!BankCoordinator.begin('deposit',bit.name,bit.level,bit.q||1,bslot.pack)){bank_failed=true;break;}
-						await bank_store(best_i, bslot.pack);
+						var store_i = best_i, store_q = bit.q || 1;
+						if (bslot.room && bslot.room < store_q) {
+							// Top the bank stack up to its cap; the remainder gets its own stack on the next pass.
+							try {
+								var parts = await split(best_i, bslot.room);
+								await sleep(250);
+								var to = parts && parts.to != null && parts.to !== best_i ? parts.to : -1;
+								for (var si = 0; to < 0 && si < character.items.length; si++) {
+									var sp = character.items[si];
+									if (si !== best_i && sp && sp.name === bit.name && (sp.level || 0) === (bit.level || 0) && sp.q === bslot.room) to = si;
+								}
+								var piece = character.items[to];
+								if (!piece || piece.name !== bit.name || piece.q !== bslot.room) throw { reason: "split_unconfirmed" };
+								store_i = to; store_q = bslot.room;
+							} catch (se) {
+								if (tx_id) MerchantTransactions.fail(tx_id, "split " + (se.reason || se.message || se));
+								game_log("bank split failed: " + bit.name + " " + (se.reason || se.message || se));
+								bank_failed = true;
+								break;
+							}
+						}
+                        if(typeof BankCoordinator!=='undefined'&&!BankCoordinator.begin('deposit',bit.name,bit.level,store_q,bslot.pack)){bank_failed=true;break;}
+						await bank_store(store_i, bslot.pack);
 						await sleep(400);
 						var after_count = item_count_level(bit.name, bit.level || 0);
 						if (after_count >= before_count) {

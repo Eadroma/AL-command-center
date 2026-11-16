@@ -1,0 +1,8 @@
+/* Screen tabs: plain words, the current one in gold over a gold rule, like the step bar's current step. */
+.screens { display: flex; gap: 4px; margin: -12px 0 24px; border-bottom: 2px solid var(--edge); }
+.screens a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; margin-bottom: -2px;
+  color: var(--text-dim); text-decoration: none; border-bottom: 2px solid transparent;
+}
+.screens a:hover { color: var(--text); }
+.screens a[aria-current='page'] { color: var(--gold); border-bottom-color: var(--gold); font-weight: 700; }

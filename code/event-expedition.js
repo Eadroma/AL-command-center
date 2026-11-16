@@ -92,7 +92,7 @@ var EventExpedition = (function () {
       if (character.rip && !wasDead) { deaths++; if (assignment && typeof set === 'function') set(deathKey, { id: assignment.id, deaths: deaths }); }
       wasDead = !!character.rip;
       var destination = assignment && assignment.assembly || point();
-      var readinessReason = character.rip ? 'Dead: waiting for revival' : !near(destination, 100) ? 'Travelling to assembly' : dumpCount() > 0 ? 'Unloading carried loot before departure' : character.esize < departureFreeSlots ? 'Needs '+departureFreeSlots+' free inventory slots before departure' : character.hp < character.max_hp * .7 ? 'HP ' + Math.round(100 * character.hp / character.max_hp) + '%; needs 70%' : character.mp < character.max_mp * .2 ? 'MP below 20%' : pots('hpot') < 20 ? 'Needs 20 HP potions' : pots('mpot') < 20 ? 'Needs 20 MP potions' : 'Ready';
+      var readinessReason = character.cave ? 'In Cave Dreams' : character.rip ? 'Dead: waiting for revival' : !near(destination, 100) ? 'Travelling to assembly' : dumpCount() > 0 ? 'Unloading carried loot before departure' : character.esize < departureFreeSlots ? 'Needs '+departureFreeSlots+' free inventory slots before departure' : character.hp < character.max_hp * .7 ? 'HP ' + Math.round(100 * character.hp / character.max_hp) + '%; needs 70%' : character.mp < character.max_mp * .2 ? 'MP below 20%' : pots('hpot') < 20 ? 'Needs 20 HP potions' : pots('mpot') < 20 ? 'Needs 20 MP potions' : 'Ready';
       var ready = !character.rip && near(destination, 100) && dumpCount() === 0 && character.esize >= departureFreeSlots && character.hp >= character.max_hp * .7 && character.mp >= character.max_mp * .2 && pots('hpot') >= 20 && pots('mpot') >= 20;
       send_cm(board.merchant, { t: 'event_expedition_report', id: assignment && assignment.id || '', ready: ready, readinessReason: readinessReason, returned: !!assignment && ['returning', 'blocked'].indexOf(assignment.phase) >= 0 && !character.rip && near(destination, 100) && dumpCount() === 0, deaths: deaths, free: character.esize, metrics: workerMetrics() });
     } else if (!merchant() && character.ctype === 'ranger') {
@@ -184,6 +184,9 @@ var EventExpedition = (function () {
   }
   async function actorTickUnsafe() {
     if (!worker()) return false;
+    // town() and smart_move are refused inside a Cave Dreams run; hand the loop to
+    // the cave runner. The mission times out to returning and finishes after the run.
+    if (character.cave) return false;
     if (assignment && Date.now() - leaseAt >= 20000 && assignment.phase !== 'returning') { assignment.phase = 'returning'; townDone = false; log('Coordinator lease expired; returning'); }
     if (!assignment) { if (typeof smart !== 'undefined' && smart.moving) stop(); return true; }
     if (assignment.phase === 'engaging') return false;
@@ -196,7 +199,9 @@ var EventExpedition = (function () {
         if (typeof smart !== 'undefined' && smart.moving) stop();
         travelling = false;
         try {
-          var result = await bounded(typeof OwnedNavigation!=='undefined'?OwnedNavigation.run('expedition-town:'+assignment.id,{map:'main'},function(){return town();}):town(),15000);
+          // town() lands on the current map's spawn, not on main.
+          var spawn = typeof G !== 'undefined' && G.maps[character.map] && G.maps[character.map].spawns && G.maps[character.map].spawns[0] || [];
+          var result = await bounded(typeof OwnedNavigation!=='undefined'?OwnedNavigation.run('expedition-town:'+assignment.id,{map:character.map,in:character.in,x:spawn[0],y:spawn[1]},function(){return town();},100):town(),15000);
           if (result && (result.failed || result.success === false)) throw result;
           // Some clients resolve town before the channel and map update arrive.
           if (inIceArena()) await new Promise(function (resolve) { setTimeout(resolve, 4000); });

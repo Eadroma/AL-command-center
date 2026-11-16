@@ -114,4 +114,14 @@ describe.each(['dromas-rogue.js', 'dromas-rogue-v2.js'])('Dromas crab farmer: %s
     for (const item of [{ name: 'knifebelt' }, { name: 'hpot1' }, { name: 'coat', level: 1 }, { name: 'coat', l: true }]) expect(f.runtime.protectedItem(item)).toBe(true);
     expect(f.runtime.protectedItem({ name: 'crabclaw' })).toBe(false);
   });
+  it('reports potion stock to the merchant and requests supply when low, throttled', () => {
+    const f = fixture(), sent: any[] = [];
+    f.context.send_cm = (to: string, data: any) => sent.push([to, data]);
+    f.character.items = [{ name: 'hpot1', q: 500 }, { name: 'mpot1', q: 40 }];
+    f.runtime.onCm('Someone', { t: 'mux' }); expect(sent).toEqual([]);
+    f.runtime.onCm('EadroSell', { t: 'mux' });
+    expect(sent[0]).toMatchObject(['EadroSell', { t: 'pots', hpot: 500, mpot: 40, need_h: false, need_m: true }]);
+    f.runtime.requestSupply(); f.runtime.requestSupply();
+    expect(sent.slice(1)).toMatchObject([['EadroSell', { t: 'supply', need_m: true }]]);
+  });
 });

@@ -40,7 +40,7 @@ export function RuntimeInspector({ members }: { members: PartyMember[] | null })
                 <div><dt>Destination</dt><dd>{intent?.destination ? `${intent.destination.map} · ${Math.round(intent.destination.x)}, ${Math.round(intent.destination.y)}` : '—'}</dd></div>
               </dl>
               {member.activeEffects.length ? <div className={styles.effects} aria-label={`${member.name} active effects`}>
-                {member.activeEffects.map(effect => <Badge key={effect.id} variant={effect.id.toLowerCase().includes('lone') ? 'success' : 'info'}>{effectLabel(effect.id)}{remaining(effect.ms)}</Badge>)}
+                {member.activeEffects.map(effect => <Badge key={effect.id} variant={effect.id.toLowerCase().includes('lone') ? 'success' : 'info'}>{effectLabel(effect.id)}{effect.points !== undefined ? ` ${Math.round(effect.points).toLocaleString()} pts` : ''}{remaining(effect.ms)}</Badge>)}
               </div> : null}
               {movement ? (
                 <div className={`${styles.watchdog} ${movementWarning ? styles.watchdogWarning : ''}`}>

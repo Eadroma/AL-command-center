@@ -237,5 +237,20 @@ var MovementWatchdog = (function () {
 	}
 	install_route_guard();
 	setInterval(function () { tick().catch(function () {}); }, 1000);
+	// Two players on the same spot take each other's hits with a growing combo
+	// multiplier (server hit.stacked). Step aside unless a route is running; the
+	// merchant never moves off its stand.
+	var last_unstack_at = 0;
+	try {
+		if (character.ctype !== "merchant" && parent.socket && parent.socket.on) parent.socket.on("hit", function (data) {
+			if (!data || !data.stacked || data.stacked.indexOf(character.id) < 0) return;
+			if (character.rip || character.moving || (typeof smart !== "undefined" && smart.moving)) return;
+			if (Date.now() - last_unstack_at < 1500) return;
+			last_unstack_at = Date.now();
+			var x = character.x - 25 + Math.round(50 * Math.random());
+			var y = character.y - 25 + Math.round(50 * Math.random());
+			if (typeof can_move_to !== "function" || can_move_to(x, y)) move(x, y);
+		});
+	} catch (e) {}
 	return { tick: tick, snapshot: snapshot, safeToTown: town_is_safe };
 })();

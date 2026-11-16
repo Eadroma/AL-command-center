@@ -50,7 +50,7 @@ export function FirstRunWizard({ profile, catalog, dirty, pending, onChange }: {
       {step === 2 && <>
         <div className={styles.grid}>
           <Field label="Home region" htmlFor="setup-region"><SelectInput id="setup-region" value={server.region} onChange={v=>setServer({...server,region:v as Profile['server']['region']})} options={['EU','US','ASIA'].map(v=>({value:v,label:v}))} /></Field>
-          <Field label="Home server" htmlFor="setup-server"><SelectInput id="setup-server" value={server.name} onChange={v=>setServer({...server,name:v as Profile['server']['name']})} options={['I','II','III'].map(v=>({value:v,label:v}))} /></Field>
+          <Field label="Home server" htmlFor="setup-server"><SelectInput id="setup-server" value={server.name} onChange={v=>setServer({...server,name:v as Profile['server']['name']})} options={['I','II','III','IV','V'].map(v=>({value:v,label:v}))} /></Field>
           <Field label="First farming monster" htmlFor="setup-monster"><SelectInput id="setup-monster" value={monster} onChange={setMonster} options={catalog.monsters.filter(m => ['goo','crab','bee'].includes(m.id)).map(m=>({value:m.id,label:m.name}))} /></Field>
         </div>
         <p>Select only characters you want to deploy. Roles follow their actual game classes. Open them manually on this server before deployment. Dedicated crab scripts keep their own target; select a general v2 script to use the monster above.</p>

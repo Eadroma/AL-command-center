@@ -1,0 +1,39 @@
+.loadouts-dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 20px;
+  border: 2px solid var(--edge);
+  background: var(--stone);
+  color: var(--text);
+  overflow-y: auto;
+}
+.loadouts-dialog::backdrop { background: rgb(0 0 0 / .55); }
+.loadouts-dialog p { margin: 0; overflow-wrap: anywhere; }
+.loadouts-dialog section { display: grid; gap: 8px; padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--edge); }
+.loadouts-dialog h4 { font-size: 1rem; font-weight: 700; color: var(--text-dim); }
+.loadouts-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.loadouts-head h2 { font: 600 1.4rem/1.2 var(--pixel); }
+
+.loadout-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.loadout-tabs button { min-height: 40px; border-color: var(--edge); }
+.loadout-tabs button[aria-pressed='true'] { color: var(--gold); border-color: var(--gold); }
+
+.loadout-gear-body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px 24px; }
+/* The character sheet: notched slots, the game's inventory look; the one being edited outlined in gold. */
+.gear-grid { display: grid; grid-template-columns: repeat(4, 56px); gap: 6px; }
+.gear-slot { position: relative; display: grid; place-items: center; width: 56px; height: 56px; padding: 0; background: var(--slot); border: 2px solid var(--edge); }
+.gear-slot.filled { background: var(--ground); }
+.gear-slot[aria-pressed='true'] { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+.gear-slot-name { font-size: .62rem; line-height: 1.1; color: var(--text-dim); text-align: center; padding: 2px; overflow-wrap: anywhere; }
+.gear-level { position: absolute; right: 2px; bottom: 1px; font: 600 .7rem/1 var(--pixel); color: var(--gold); text-shadow: 0 1px 0 var(--ground); }
+.gear-gap { width: 56px; height: 56px; }
+
+.slot-editor { flex: 1 1 260px; border-top: 0 !important; margin-top: 0 !important; padding-top: 0 !important; }
+.slot-editor-row { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 12px; }
+.slot-level { display: grid; gap: 4px; font-weight: 700; }
+.slot-level input { width: 96px; min-height: 40px; }
+
+.loadout-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.loadout-skills button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; border-color: var(--edge); color: var(--text-dim); }
+.loadout-skills button[aria-pressed='true'] { color: var(--text); border-color: var(--gold); }
+.loadout-skills button[aria-pressed='false'] .frame-image { opacity: .45; }

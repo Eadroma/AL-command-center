@@ -77,6 +77,23 @@ describe('generated code behavior',()=>{
   expect(movement.indexOf('recurring_boss_waiting_for_priest(target)')).toBeLessThan(movement.indexOf('if (smart.moving)'));
   expect(movement).toContain('if (smart.moving || character.moving) stop()');
  });
+ it('lets a fear-slowed priest town out instead of walking at speed 5 toward a leader on another map',async()=>{
+  const {source}=setup('Aedroma');
+  const calls:string[]=[];
+  const ctx:any={
+   state:{escaping:false,lastEscape:0,dumpInProgress:false,huntInProgress:false},FEAR_ESCAPE_SPEED:20,CONFIG:{},cache:{target:null},
+   character:{name:'Aedroma',map:'spookytown',speed:5},smart:{moving:true},
+   is_disabled:()=>false,updateCache:()=>{},tanked_monster:()=>null,get_leader_target:()=>({map:'desertland',x:0,y:0}),
+   stop:()=>calls.push('stop'),smart_move:()=>{calls.push('smart_move');return Promise.resolve();},town:()=>{calls.push('town');expect(ctx.state.escaping).toBe(true);return Promise.resolve();},
+   set_message:()=>{},game_log:()=>{},setTimeout:()=>0,clearTimeout:()=>{},Promise,Date,
+  };
+  await fn(source,'movementLoop',ctx)();
+  expect(calls).toEqual(['stop','town']);
+  expect(ctx.state.escaping).toBe(false);
+  ctx.character.speed=55; ctx.smart.moving=false; calls.length=0;
+  await fn(source,'movementLoop',ctx)();
+  expect(calls).toEqual(['smart_move']);
+ });
  it('banks only items explicitly present in the dashboard allowlist',()=>{
   const {source}=setup('EadroSell');
   const context:any={__ALCC:{bankDeposit:{enabled:true,items:['seashell']}},CONFIG:{BANK_NEVER:{}},upgrade_target_complete:()=>false,is_protected_item:()=>false,cc_upgrade_enabled:()=>false};
@@ -112,8 +129,8 @@ describe('generated code behavior',()=>{
   context.character.bank={items0:[{name:'leather',level:0,q:120}]};
   context.G.items.leather={s:9999};
   expect(findSlot({name:'leather',level:0,q:3})).toEqual({pack:'items0',slot:0,merge:true});
-  expect(source).toContain('await bank_store(best_i, bslot.pack);');
-  expect(source).not.toContain('await bank_store(best_i, bslot.pack, bslot.slot);');
+  expect(source).toContain('await bank_store(store_i, bslot.pack);');
+  expect(source).not.toContain('await bank_store(store_i, bslot.pack, bslot.slot);');
   context.character.bank={items0:full,items8:full};
   expect(hasSpace()).toBe(false);
  });
@@ -166,7 +183,7 @@ describe('generated code behavior',()=>{
    character:{name:'Eadroma'},CONFIG:{PRIEST:'Aedroma'},
    cache:{target:null,priestEntity:null,alliesUnderAttack:[],monstersInCleaveRange:[],mobCount:0,partyMembers:[],lastUpdate:0,ttl:0},
    G:{skills:{cleave:{range:160}}},Date:{now:()=>100},get_player:()=>null,get_party:()=>({Eadroma:{}}),
-   farm_monster:()=> 'crab',abandoned_hunt_id:()=> 'booboo',distance:(_:any,e:any)=>e.distance,
+   farm_monster:()=> 'crab',abandoned_hunt_id:()=> 'booboo',distance:(_:any,e:any)=>e.distance,invite_contesters:()=>{},
    parent:{entities:{danger:{type:'monster',mtype:'booboo',visible:true,dead:false,target:'Eadroma',distance:5},safe:{type:'monster',mtype:'crab',visible:true,dead:false,target:null,distance:20}}},
   };
   const update=fn(code,'updateCache',ctx);
@@ -177,6 +194,27 @@ describe('generated code behavior',()=>{
   const fallback=fn(code,'hunt_fallback_monster',{CONFIG:{DEFAULT_FARM:'crab'}});
   expect(fallback('crab')).toBe('goo');
   expect(fallback('booboo')).toBe('crab');
+ });
+ it('targets the event boss over its closer summons unless one hits the priest',()=>{
+  const {p,c,s,source}=setup('Eadroma');
+  const {code}=adaptSource(source,p,c,s);
+  const mob=(mtype:string,distance:number,target:string|null=null)=>({type:'monster',mtype,visible:true,dead:false,target,distance});
+  const entities:any={add:mob('crabx',10,'Eadroma'),crab:mob('crab',5),boss:mob('crabxx',120,'Stranger')};
+  const ctx:any={
+   character:{name:'Eadroma'},CONFIG:{PRIEST:'Aedroma'},
+   cache:{target:null,priestEntity:null,alliesUnderAttack:[],monstersInCleaveRange:[],mobCount:0,partyMembers:[],lastUpdate:0,ttl:0},
+   G:{skills:{cleave:{range:160}},conditions:{}},Date:{now:()=>100},get_player:()=>null,get_party:()=>({Eadroma:{}}),
+   farm_monster:()=> 'crabxx',abandoned_hunt_id:()=> '',distance:(_:any,e:any)=>e.distance,invite_contesters:()=>{},
+   EventRouter:{activeMonster:()=> 'crabxx',accepts:(e:any)=>e.mtype==='crabxx'||e.mtype==='crabx',canEngage:()=>true},
+   parent:{entities},
+  };
+  const update=fn(code,'updateCache',ctx);
+  update();
+  expect(ctx.cache.target.mtype).toBe('crabxx');
+  expect(ctx.cache.monstersInCleaveRange.map((m:any)=>m.mtype).sort()).toEqual(['crab','crabx','crabxx']);
+  entities.add.target='Aedroma';
+  update();
+  expect(ctx.cache.target.mtype).toBe('crabx');
  });
  it('changes hunt/default settings and disables old control polling without modifying source',async()=>{const {p,c,s,source}=setup();p.farming.defaultMonster='crab';p.farming.allowedHunts=['crab'];p.farming.hunts=false;p.farming.rareVisits=false;const {code}=adaptSource(source,p,c,s);const vars=variables(code);expect((vars.CONFIG as any).DEFAULT_FARM).toBe('crab');expect(vars.HUNT_ALLOW).toEqual({crab:1});const huntFnName = code.includes("function hunt_should_try") ? "hunt_should_try" : "maybe_daisy"; expect(fn(code, huntFnName)()).toBe(false);expect(fn(code,'pick_party_hunt')()).toBe(null);expect(fn(code,'poll_board')()).toBeUndefined();expect(fs.readFileSync(path.join(sourceDir,s.filename),'utf8')).toBe(source);});
  it('uses a character farm target independently from the party hunt',()=>{const {p,c,s}=setup('Droma');p.farming.defaultMonster='stoneworm';c.farmMonster='cgoo';const config=effectiveConfig(p,c,s) as any;expect(config.DEFAULT_FARM).toBe('cgoo');expect(config.FARM_INDEPENDENT).toBe(true);const warrior=p.characters.find(x=>x.name==='Eadroma')!;const warriorScript=list.find(x=>x.id===warrior.script)!;expect((effectiveConfig(p,warrior,warriorScript) as any).DEFAULT_FARM).toBe('stoneworm');});
@@ -357,9 +395,9 @@ describe('merchant stand adapter',()=>{
   const {run,calls}=stand({merchant_trade_capacity:()=>24,upgrade_target_complete:()=>true,listing_bank_stock_reserved:()=>true,stand_inventory_allowed:()=>true,__ALCC:{standEnabled:true,listings,buy:{managed:true,enabled:true,budget:0,reserveGold:0,orders:[{item:'seashell',level:0,price:100,quantity:1}]}},character:{gold:1000,slots,items:[{name:'coat',level:9}],map:'main',esize:4,stand:true}});
   await run();expect(calls).toContainEqual([0,9,150000000,1]);
  });
- it('places buys in the last eight slots of an expanded stand',async()=>{
+ it('places a funded buy in the last slot of an expanded stand',async()=>{
   const wishes:any[]=[];const {run}=stand({merchant_trade_capacity:()=>24,__ALCC:{standEnabled:false,listings:[],buy:{enabled:true,budget:100,reserveGold:0,orders:[{item:'seashell',level:0,price:100,quantity:1}]}},character:{gold:100,slots:{},items:[],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
-  await run();expect(wishes).toEqual([[17,'seashell',100,0,1]]);
+  await run();expect(wishes).toEqual([[24,'seashell',100,0,1]]);
  });
  it('posts eight orders in the last two rows without using sale slots',async()=>{
   const wishes:any[]=[];const slots:any={};
@@ -372,8 +410,8 @@ describe('merchant stand adapter',()=>{
  it('preserves a server-capped equipment order and posts the next wishlist',async()=>{
   const wishes:any[]=[];const removed:string[]=[];
   const orders=[{item:'ololipop',level:0,price:100,quantity:100},{item:'froststaff',level:0,price:100,quantity:10}];
-  const {run}=stand({G:{items:{ololipop:{upgrade:true},froststaff:{upgrade:true}}},__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:20000,reserveGold:0,orders}},character:{gold:20000,slots:{trade9:{name:'ololipop',level:0,price:100,q:99,b:true}},items:[],map:'main',esize:4,stand:true},unequip:async(s:string)=>removed.push(s),wishlist:async(...a:any[])=>wishes.push(a)});
-  await run();expect(removed).toEqual([]);expect(wishes).toEqual([[10,'froststaff',100,0,10]]);
+  const {run}=stand({G:{items:{ololipop:{upgrade:true},froststaff:{upgrade:true}}},__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:20000,reserveGold:0,orders}},character:{gold:20000,slots:{trade15:{name:'ololipop',level:0,price:100,q:99,b:true}},items:[],map:'main',esize:4,stand:true},unequip:async(s:string)=>removed.push(s),wishlist:async(...a:any[])=>wishes.push(a)});
+  await run();expect(removed).toEqual([]);expect(wishes).toEqual([[16,'froststaff',100,0,10]]);
  });
  it('lists only a matching unlocked item at the configured price',async()=>{const {run,calls}=stand();await run();expect(calls).toContainEqual([0,1,1234,3]);});
  it('lists items when an explicit stand rule matches',async()=>{
@@ -399,11 +437,11 @@ describe('merchant stand adapter',()=>{
  it('caps buy quantities by owned stock, budget and gold reserve',async()=>{
   const wishes:any[]=[];
   const {run}=stand({__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:500,reserveGold:800,orders:[{item:'seashell',level:0,price:100,quantity:10}]}},character:{gold:1100,slots:{},items:[{name:'seashell',q:8}],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
-    await run();expect(wishes).toEqual([[9,'seashell',100,0,2]]);
+    await run();expect(wishes).toEqual([[16,'seashell',100,0,2]]);
  });
  it('does not count the managed buy slot against its own budget',async()=>{
   const wishes:any[]=[];
-  const {run}=stand({__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:1000,reserveGold:0,orders:[{item:'seashell',level:0,price:100,quantity:10}]}},character:{gold:1000,slots:{trade9:{b:true,name:'seashell',price:100,q:10}},items:[],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
+  const {run}=stand({__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:1000,reserveGold:0,orders:[{item:'seashell',level:0,price:100,quantity:10}]}},character:{gold:1000,slots:{trade16:{b:true,name:'seashell',price:100,q:10}},items:[],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
   await run();expect(wishes).toEqual([]);
  });
  it('does not cancel a buy order during the post grace window',async()=>{
@@ -414,13 +452,29 @@ describe('merchant stand adapter',()=>{
  it('does not repost while the game is still updating the buy slot',async()=>{
   const wishes:any[]=[];
   const {run}=stand({__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:500,reserveGold:800,orders:[{item:'seashell',level:0,price:100,quantity:2}]}},character:{gold:1100,slots:{},items:[],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
-    await run();await run();expect(wishes).toEqual([[9,'seashell',100,0,2]]);
+    await run();await run();expect(wishes).toEqual([[16,'seashell',100,0,2]]);
  });
   it('passes buy level before quantity to the Browser CODE wishlist helper',async()=>{
    const wishes:any[]=[];
    const {run}=stand({__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:150000000,reserveGold:0,orders:[{item:'tshirt9',level:0,price:15000000,quantity:10}]}},character:{gold:150000000,slots:{},items:[],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
-   await run();expect(wishes).toEqual([[9,'tshirt9',15000000,0,10]]);
+   await run();expect(wishes).toEqual([[16,'tshirt9',15000000,0,10]]);
   });
+ it('lets sales use slots of buy orders the budget cannot fund',async()=>{
+  const slots:any={},listings:any[]=[];for(let i=1;i<=15;i++){slots['trade'+i]={name:'stock'+i,level:0,price:100};listings.push({item:'stock'+i,level:0,price:100});}
+  listings.push({item:'seashell',level:0,price:1234});
+  const orders=[{item:'a',level:0,price:100,quantity:1},{item:'b',level:0,price:100000,quantity:1}];
+  const {run,calls}=stand({__ALCC:{standEnabled:true,listings,buy:{managed:true,enabled:true,budget:1000,reserveGold:0,orders}},character:{gold:1000,slots,items:[{name:'seashell',q:3}],map:'main',esize:4,stand:true},wishlist:async()=>{}});
+  slots.trade16={b:true,name:'a',level:0,price:100,q:1};
+  await run();expect(calls).toEqual([]); // 15 sells + 1 funded buy: stand full
+  delete slots.trade16;delete slots.trade15; // no funded buy: all 16 slots sell
+  const cfg2=stand({__ALCC:{standEnabled:true,listings,buy:{managed:true,enabled:true,budget:0,reserveGold:0,orders}},character:{gold:1000,slots,items:[{name:'seashell',q:3}],map:'main',esize:4,stand:true}});
+  await cfg2.run();expect(cfg2.calls).toContainEqual([0,15,1234,3]);
+ });
+ it('unlists a sale sitting in a slot a funded buy now needs',async()=>{
+  const removed:string[]=[];const slots:any={trade16:{name:'seashell',level:0,price:1234}};
+  const {run}=stand({__ALCC:{standEnabled:true,listings:[{item:'seashell',level:0,price:1234}],buy:{managed:true,enabled:true,budget:1000,reserveGold:0,orders:[{item:'a',level:0,price:100,quantity:1}]}},character:{gold:1000,slots,items:[],map:'main',esize:4,stand:true},unequip:async(s:string)=>removed.push(s),wishlist:async()=>{}});
+  expect(await run()).toBe(true);expect(removed).toEqual(['trade16']);
+ });
  it('posts no buy order when reserve leaves no available gold',async()=>{
   const wishes:any[]=[];
   const {run}=stand({__ALCC:{standEnabled:false,listings:[],buy:{managed:true,enabled:true,budget:500,reserveGold:1000,orders:[{item:'seashell',level:0,price:100,quantity:10}]}},character:{gold:900,slots:{},items:[],map:'main',esize:4,stand:true},wishlist:async(...args:any[])=>wishes.push(args)});
@@ -739,8 +793,9 @@ describe('daily dungeon',()=>{
   const source=fs.readFileSync(path.join(sourceDir,'cave-dreams.js'),'utf8');
   expect(source).toContain('Number(info.resume.remaining_ms) > 0');
   expect(source).toContain('await cave_enter()');
-  expect(source).toContain('if (is_cave_monster(e)) continue;');
-  expect(source).not.toContain('e.type === "monster") continue');
+  // Talk only to the objective room; any follower or citizen used to park the warrior.
+  expect(source).toContain('await cave_talk(o.id)');
+  expect(source).not.toContain('cave_talk(e.cave.room');
   expect(source).toContain('if (in_cave()) {');
   expect(source).toContain('cave_local_step(x, y)');
   expect(source.indexOf('if (in_cave()) {')).toBeLessThan(source.indexOf('if (typeof go_to === "function")'));
@@ -773,15 +828,49 @@ describe('daily dungeon',()=>{
   await api.tick('follow');
   expect(exits).toBe(1);
  });
- it('ignores personal revive choices while alive and selects the free doorway while dead',()=>{
+ it('votes the free doorway revive whether alive or dead, so 2 of 3 settle it at once',()=>{
   const choice={id:'death',options:[
-   {id:'landing',effect:'revive',label:'Revive at the doorway — free'},
-   {id:'nera',effect:'revive',amber:3,label:'Ask Nera to revive us'}
+   {id:'here',label:'Revive here — 1 Amber total',amber:1},
+   {id:'landing',label:'Revive at the doorway — free'}
   ]};
   const alive=caveApi();
-  expect(alive.pickOption(choice)).toBe(null);
+  expect(alive.pickOption(choice).id).toBe('landing');
+  expect(alive.scoreOption(choice.options[0],choice)).toBe(-1);
   const dead=caveApi(undefined,{character:{rip:true,ctype:'warrior',name:'Eadroma',map:'zone_run_0',x:0,y:0,cave:null}});
   expect(dead.pickOption(choice).id).toBe('landing');
+ });
+ it('scores runtime options from the static encounter table and skips the lamp trap',()=>{
+  const encounters=[{id:'e47',options:[
+   {id:'e47_0',effect:'moths',offer:true},
+   {id:'e47_1',effect:'venture',outcomes:[{weight:1,amber:2}]},
+   {id:'e47_2',effect:'lamp'}
+  ]},{id:'e12',options:[{id:'e12_0',effect:'bad_fight'},{id:'e12_3',effect:'venture',outcomes:[{weight:1,fight:['cave_wolf',4]}]}]}];
+  const runtime=(phrase:string,ids:string[])=>({id:'c',title_message:{phrase},options:ids.map(id=>({id,label:'x',cost:0,amber:0,unavailable:null}))});
+  const noLamp=caveApi({run:'r',floor:0,supplies:[]},{G:{events:{dreams:{encounters}}}});
+  expect(noLamp.pickOption(runtime('event.dreams.e47.name',['e47_0','e47_1'])).id).toBe('e47_1');
+  const lamp=caveApi({run:'r',floor:0,supplies:['lamp']},{G:{events:{dreams:{encounters}}}});
+  expect(lamp.pickOption(runtime('event.dreams.e47.name',['e47_0','e47_1'])).id).toBe('e47_0');
+  // A venture whose outcome is four wolves is refused even though the label says nothing.
+  expect(noLamp.pickOption(runtime('event.dreams.e12.name',['e12_3','e12_0'])).id).toBe('e12_0');
+ });
+ it('refuses smart_move toward another map inside a run, since its path leaves through the up door',async()=>{
+  const calls:any[]=[];const character:any={rip:false,ctype:'priest',name:'Aedroma',map:'zone_run_0',x:0,y:0,cave:{run:'run',floor:0}};
+  const ctx:any={character,CONFIG:{WARRIOR:'Eadroma',PRIEST:'Aedroma',RANGER:'Droma'},game_log:()=>{},get:()=>({}),set:()=>{},smart_move:async(d:any)=>{calls.push(d);return true;}};
+  vm.runInNewContext(fs.readFileSync(path.join(sourceDir,'cave-dreams.js'),'utf8'),ctx);
+  await expect(ctx.smart_move('dreamkeeper')).rejects.toMatchObject({reason:'cave_same_map_only'});
+  await expect(ctx.smart_move({map:'main',x:816,y:1200})).rejects.toMatchObject({reason:'cave_same_map_only'});
+  await ctx.smart_move({map:'zone_run_0',x:10,y:10});
+  character.cave=null;character.map='main';await ctx.smart_move('dreamkeeper');
+  expect(calls).toEqual([{map:'zone_run_0',x:10,y:10},'dreamkeeper']);
+ });
+ it('opens a gather window only for a merchant start sent to a roster member',()=>{
+  const off=caveApi(undefined,{__ALCC:{dailyDungeon:false},character:{rip:false,ctype:'ranger',name:'Droma',map:'main',x:0,y:0,cave:null}});
+  expect(off.enabled()).toBe(false);
+  off.onCm('Stranger',{t:'cave',a:'start'});
+  expect(off.enabled()).toBe(false);
+  off.onCm('EadroSell',{t:'cave',a:'start'});
+  expect(off.enabled()).toBe(true);
+  expect(off.reservingParty()).toBe(true);
  });
  it('prioritizes a hostile attacking any party member outside the destination room',()=>{
   const attacker={id:'aggro',type:'monster',mtype:'cave_guard',x:800,y:800,target:'Aedroma',cave:{side:'enemy'}};
@@ -835,6 +924,10 @@ describe('daily dungeon',()=>{
    {id:'e31_1',effect:'leave',label:'Keep our gold and move on.'}
   ]};
   expect(api.pickOption(merchant).id).toBe('e31_1');
+ });
+ it('opens the shop whenever the purse has gold, since cave gold dies with the run',()=>{
+  const api=caveApi({run:'r',floor:0,gold:2000});
+  expect(api.pickOption({id:'e31',options:[{id:'e31_1',label:'Keep our gold and move on.'},{id:'e31_0',label:'Open the shop'}]}).id).toBe('e31_0');
  });
 });
 

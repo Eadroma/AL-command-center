@@ -33,6 +33,17 @@ it('does not reserve upgraded shoes for a base-level recipe', () => {
   expect(merchant(20).should_sell({ name: 'shoes', level: 1 })).toBe(true);
 });
 
+it('keeps one craft worth of unstackable drops and releases the extras', () => {
+  const m = merchant(0);
+  m.G.items = { ...m.G.items, throwingstars: { g: 72000 } } as typeof m.G.items;
+  m.G.craft = { ...m.G.craft, snowflakes: { items: [[1, 'throwingstars'], [1, 'essenceoffrost']] } } as typeof m.G.craft;
+  m.cc_craft_rules = () => [{ item: 'snowflakes' }];
+  m.character.items = [{ name: 'throwingstars', q: 1 }];
+  expect(m.craft_item_reserved('throwingstars', 0)).toBe(true);
+  m.character.items = [{ name: 'throwingstars', q: 1 }, { name: 'throwingstars', q: 1 }];
+  expect(m.craft_item_reserved('throwingstars', 0)).toBe(false);
+});
+
 it('keeps dropped ingredients and outputs, and releases reservations when craft is disabled', () => {
   const active = merchant(19);
   expect(active.craft_item_reserved('feather', 0)).toBe(true);

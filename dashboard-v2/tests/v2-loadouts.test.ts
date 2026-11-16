@@ -434,7 +434,7 @@ describe('v2 farming and loadout integration', () => {
       town: async () => { towns.push(now); context.character.map = 'main'; },
       stop: () => undefined,
       game_log: () => undefined,
-      Date: Clock, Math, Number, Array, String, isFinite,
+      Date: Clock, Math, Number, Array, String, isFinite, setTimeout, clearTimeout,
     };
     const router = vm.runInNewContext(`${source}\nEventRouter;`, context);
     await router.tick();
@@ -601,7 +601,9 @@ describe('v2 farming and loadout integration', () => {
     expect(source).toContain('var combatStable = targetInRange');
     expect(source).toContain('if (character.moving) stop();');
     expect(source).toContain('stop();');
-    expect(source).toContain('var idleSpacingNeeded = !cache.target');
+    expect(source).toContain('var idleSpacingNeeded = !moveTarget');
+    // During a team hold the priest ignores the target and stays with the warrior, outside the spawn.
+    expect(source).toContain('RuntimePolicy.teamHold() ? null : cache.target');
     expect(source).not.toContain('critical_heal_target() && healReady');
     expect(source).toContain('curseMinHp: 50000');
     expect(source).not.toContain('ActionTiming.after("curse"');
@@ -702,6 +704,7 @@ describe('v2 farming and loadout integration', () => {
       fresh_farmer_report: () => null,
       get_start_character_fn: () => async (name: string, slot: string) => { started.push([name, slot]); },
       team_child_running: (name: string) => name === 'Eadroma',
+      stop_unlisted_team_character: () => false,
       set_message: () => undefined,
       game_log: () => undefined,
       Date: { now: () => 100_000 },

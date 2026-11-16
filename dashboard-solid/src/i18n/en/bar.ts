@@ -1,0 +1,25 @@
+/** Save → Preview → Deploy bar. Deploying writes the CODE slots of the game. */
+export const bar = {
+  label: 'Deployment steps',
+  save: 'Save',
+  preview: 'Preview',
+  deploy: 'Deploy',
+  saveAction: 'Save the profile',
+  discard: 'Discard',
+  previewAction: (params: { readonly revision: number }): string => `Preview revision ${params.revision}`,
+  deployAction: (params: { readonly count: number }): string => (params.count === 1 ? 'Deploy 1 character' : `Deploy ${params.count} characters`),
+  confirm: (params: { readonly revision: number; readonly count: number }): string => `Write revision ${params.revision} into the CODE slots of ${params.count} enabled characters and reload them?`,
+  confirmAction: 'Deploy',
+  cancel: 'Cancel',
+  working: 'Working…',
+  blocker: {
+    noProfile: 'Create or import a profile first.',
+    unsaved: 'Save or discard your changes first.',
+    notPreviewed: 'Preview the saved revision before deploying it.',
+    locked: 'Deploying is locked while dashboard v2 stays the only one deploying (deploy.enabled in settings.json).',
+    busy: 'Wait for the current operation to finish.',
+  },
+  deployed: (params: { readonly names: string }): string => `Deployed: ${params.names}. Telemetry confirms each start a few seconds later.`,
+  failed: (params: { readonly count: number }): string => (params.count === 1 ? '1 character was not deployed:' : `${params.count} characters were not deployed:`),
+  nothingDeployed: 'Nothing was deployed.',
+};

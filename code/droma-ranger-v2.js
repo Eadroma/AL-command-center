@@ -221,6 +221,7 @@ function on_party_request(name) {
 
 function on_cm(name, data) {
 	if (typeof CaveDreams !== "undefined") CaveDreams.onCm(name, data);
+	if (typeof CryptRun !== "undefined") CryptRun.onCm(name, data);
 	if (typeof WorldEventIntel !== "undefined") WorldEventIntel.onCm(name, data);
 	if (!data || typeof data !== "object") return;
 	if (name === CONFIG.MERCHANT && data.t === "mux") report_potion_stock(name);
@@ -396,7 +397,7 @@ function updateCache() {
 		var e = parent.entities[id];
 		if (!e || e.type !== "monster" || e.dead || !e.visible) continue;
 		if (typeof EventRouter !== "undefined" && EventRouter.canEngage && !EventRouter.canEngage(e)) continue;
-		if (typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && e.mtype !== "franky") continue;
+		if (typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && !EventRouter.accepts(e)) continue;
 
 		// Monstre ciblé par le guerrier ou attaquant le guerrier
 		var targetedByWarrior = cache.warrior && cache.warrior.target === id;
@@ -419,7 +420,7 @@ function updateCache() {
 	// 2. Sinon, cible principale du guerrier
 	if (!cache.target && cache.warrior && cache.warrior.target) {
 		var wt = parent.entities[cache.warrior.target];
-		if (wt && wt.type === "monster" && !wt.dead && wt.visible && !(typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && wt.mtype !== "franky") && !(typeof EventRouter !== "undefined" && EventRouter.canEngage && !EventRouter.canEngage(wt))) {
+		if (wt && wt.type === "monster" && !wt.dead && wt.visible && !(typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && !EventRouter.accepts(wt)) && !(typeof EventRouter !== "undefined" && EventRouter.canEngage && !EventRouter.canEngage(wt))) {
 			cache.target = wt;
 		}
 	}
@@ -441,6 +442,11 @@ async function combatLoop() {
 			return;
 		}
 		if (typeof CaveDreams !== "undefined" && CaveDreams.inCave()) {
+			setTimeout(combatLoop, 200);
+			return;
+		}
+		// CryptRun fights inside the crypt (safe-target whitelist only).
+		if (typeof CryptRun !== "undefined" && CryptRun.inside()) {
 			setTimeout(combatLoop, 200);
 			return;
 		}
@@ -617,6 +623,11 @@ async function movementLoop() {
 			setTimeout(movementLoop, 300);
 			return;
 		}
+		// Crypt run (merchant HUD) owns movement before events, dumps and hunts, as for the warrior.
+		if (typeof CryptRun !== "undefined" && await CryptRun.tick()) {
+			setTimeout(movementLoop, 250);
+			return;
+		}
 		// Pause le suivi si un voyage vers la mule ou Daisy est en cours
 		if (state.dumpInProgress || state.huntInProgress) {
 			setTimeout(movementLoop, 500);
@@ -699,7 +710,8 @@ async function movementLoop() {
 
 			// Ajustement de position : Shoot Pocket
 			if (dist > CONFIG.FOLLOW_RANGE || dist < CONFIG.MIN_RANGE) {
-				var pocket = get_shoot_pocket(warrior, cache.target);
+				// Attente d'equipe : ignorer la cible pour rester avec le guerrier, hors du spawn.
+				var pocket = get_shoot_pocket(warrior, typeof RuntimePolicy !== "undefined" && RuntimePolicy.teamHold && RuntimePolicy.teamHold() ? null : cache.target);
 				if (pocket) {
 					if (can_move_to(pocket.x, pocket.y)) {
 						move(pocket.x, pocket.y);
@@ -1030,7 +1042,9 @@ async function dumpLoop() {
 		var mule = get_player(CONFIG.MERCHANT);
 		var freeSlots = character.esize || 0;
 		var dumpLimit = (CONFIG.inventory && CONFIG.inventory.dumpEsize) || 4;
-		var needDump = (freeSlots <= dumpLimit && dumpable_count() > 0);
+		// Pendant un evenement, ne quitter le boss que sac totalement plein.
+		var eventLive = typeof EventRouter !== "undefined" && EventRouter.activeMonster && !!EventRouter.activeMonster();
+		var needDump = (freeSlots <= (eventLive ? 0 : dumpLimit) && dumpable_count() > 0);
 
 		// 1. Si la mule est a proximite immediate, vider directement les sacs
 		if (mule && distance(character, mule) <= 250 && dumpable_count() > 0) {

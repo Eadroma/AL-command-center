@@ -78,7 +78,7 @@ for(const [key,sheet] of itemSheets){
 }
 for(const [id,{sheet,pos}] of itemLocations){const image=downloaded.get('items-'+sheet),size=g.imagesets[sheet].size;catalog.assets['item:'+id]={file:image.file,x:pos[1]*size,y:pos[2]*size,w:size,h:size,sheetWidth:image.width,sheetHeight:image.height};if(!g.monsters[id])catalog.assets[id]=catalog.assets['item:'+id];}
 const existingItems=new Map(catalog.items.map(item=>[item.id,item]));
-catalog.items=Object.entries(g.items).filter(([id,item])=>!item.ignore||catalog.assets['item:'+id]).map(([id,item])=>({...existingItems.get(id),id,name:item.name||existingItems.get(id)?.name||id,upgrade:!!item.upgrade,compound:!!item.compound,exchange:!!item.e,goldValue:Number(item.g)||0,stackSize:Number(item.s)||1,grades:item.grades,npcShops:Object.entries(g.npcs||{}).filter(([,npc])=>npc.role==='merchant'&&!item.cash&&npc.items?.includes(id)).map(([shop])=>shop)}));
+catalog.items=Object.entries(g.items).filter(([id,item])=>!item.ignore||catalog.assets['item:'+id]).map(([id,item])=>({...existingItems.get(id),id,name:item.name||existingItems.get(id)?.name||id,type:item.type,upgrade:!!item.upgrade,compound:!!item.compound,exchange:!!item.e,goldValue:Number(item.g)||0,stackSize:Number(item.s)||1,grades:item.grades,npcShops:Object.entries(g.npcs||{}).filter(([,npc])=>npc.role==='merchant'&&!item.cash&&npc.items?.includes(id)).map(([shop])=>shop)}));
 const dropRows=(id,homeServer=false)=>(g.drops?.[homeServer?'monsters_home_server':'monsters']?.[id]||[])
  .filter(row=>Array.isArray(row)&&Number.isFinite(Number(row[0]))&&typeof row[1]==='string')
  .map(row=>({rate:Number(row[0]),item:row[1],...(Number.isFinite(Number(row[2]))?{argument:Number(row[2])}:{}),...(homeServer?{homeServer:true}:{})}));

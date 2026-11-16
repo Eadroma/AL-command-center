@@ -1,0 +1,16 @@
+@use '../../styles/variables' as v;
+.description { max-width: 900px; margin-bottom: 1rem; color: v.$text-muted; }
+.windows { display: flex; gap: 0.35rem; }
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.error { color: v.$retro-red; }
+.totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.6rem; margin: 0 0 1rem; }
+.totals div { padding: 0.6rem; border: 1px solid v.$retro-border; background: v.$retro-surface; }
+.totals dt { display: flex; align-items: center; gap: 0.25rem; color: v.$text-faint; font-size: 0.65rem; text-transform: uppercase; }
+.totals dd { margin: 0.25rem 0 0; color: v.$text-primary; font: 1.1rem v.$font-hud; }
+.totals small { color: v.$text-muted; }
+.tableWrap { overflow-x: auto; margin-bottom: 1rem; }
+.tableWrap table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.tableWrap caption { text-align: left; color: v.$text-muted; padding: 0.6rem 0; }
+.tableWrap th, .tableWrap td { padding: 0.45rem; border-bottom: 1px solid v.$retro-border; text-align: right; white-space: nowrap; }
+.tableWrap th:first-child, .tableWrap td:first-child { text-align: left; }
+.item { display: inline-flex; align-items: center; gap: 0.4rem; }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { profileSchema, type Profile } from '../../../shared/schema';
-import { applyTeamComposition, type TeamMode } from '../../models/team-composition';
-import { Button, Card, Field, SelectInput, TextInput } from '../ui';
+import { applyTeamComposition, defaultTeam, type TeamMode } from '../../models/team-composition';
+import { Button, Card, Field, SelectInput, TextInput, Toggle } from '../ui';
 
 const STORAGE = 'alcc:team-compositions:v1';
 interface Preset { name: string; profile: Profile; }
@@ -9,6 +9,7 @@ interface Preset { name: string; profile: Profile; }
 export function TeamComposition({ profile, disabled, onChange }: { profile?: Profile; disabled: boolean; onChange: (profile: Profile) => void }) {
   const [mode, setMode] = useState<TeamMode>('solo');
   const [target, setTarget] = useState('');
+  const [members, setMembers] = useState<string[] | null>(null);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [presets, setPresets] = useState<Preset[]>(() => {
@@ -16,7 +17,9 @@ export function TeamComposition({ profile, disabled, onChange }: { profile?: Pro
   });
   const farmers = profile?.characters.filter(character => character.ctype !== 'merchant') ?? [];
   const selected = target || farmers.find(character => character.enabled && profile?.seller.teamSupervisor.characters.includes(character.name))?.name || farmers.find(character => character.enabled)?.name || farmers[0]?.name || '';
-  const stage = () => { if (!profile) return; try { onChange(applyTeamComposition(profile, mode, selected)); setError(''); } catch (cause) { setError((cause as Error).message); } };
+  const team = members ?? (profile ? defaultTeam(profile) : []);
+  const toggleMember = (name: string, on: boolean) => setMembers(on ? [...team, name] : team.filter(entry => entry !== name));
+  const stage = () => { if (!profile) return; try { onChange(applyTeamComposition(profile, mode, selected, team)); setError(''); } catch (cause) { setError((cause as Error).message); } };
   const save = () => {
     if (!profile || !name.trim()) return;
     const next = [...presets.filter(entry => entry.name !== name.trim()), { name: name.trim(), profile: structuredClone(profile) }].slice(-12);
@@ -42,6 +45,7 @@ export function TeamComposition({ profile, disabled, onChange }: { profile?: Pro
     <p>Stage changes, inspect the roster, then save and preview deployment. Excluded characters already online must be stopped from the roster.</p>
     <Field label="Mode" htmlFor="team-mode"><SelectInput id="team-mode" value={mode} disabled={disabled} onChange={value => setMode(value as TeamMode)} options={[{ value: 'solo', label: 'Solo farmer' }, { value: 'team', label: 'Full farming team' }, { value: 'cave', label: 'Cave Dreams · three farmers' }]} /></Field>
     <Field label="Solo character" htmlFor="team-solo"><SelectInput id="team-solo" value={selected} disabled={disabled || mode !== 'solo'} onChange={setTarget} options={farmers.map(character => ({ value: character.name, label: `${character.name} · ${character.ctype}` }))} /></Field>
+    {mode === 'team' && farmers.map(character => <Toggle key={character.name} label={`${character.name} · ${character.ctype}`} value={team.includes(character.name)} disabled={disabled} onChange={on => toggleMember(character.name, on)} />)}
     <Button disabled={disabled || !profile} onClick={stage}>Stage composition</Button>
     <p>{profile?.characters.filter(character => character.enabled).map(character => `${character.name}${character.follow ? ` → ${character.follow}` : ''}`).join(' · ')}</p>
     <Field label="Save current composition as" htmlFor="team-preset"><TextInput id="team-preset" value={name} onChange={setName} /></Field>

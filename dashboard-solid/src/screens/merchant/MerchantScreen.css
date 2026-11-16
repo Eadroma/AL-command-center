@@ -1,0 +1,89 @@
+.merchant { display: grid; gap: 20px; }
+.merchant-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.merchant-head h2 { font: 600 1.75rem/1.2 var(--pixel); }
+.merchant-name { color: var(--text-dim); font-weight: 700; }
+.merchant-name.live { color: var(--text); }
+.merchant-name.live::before { content: ''; display: inline-block; width: 10px; height: 10px; margin-right: 8px; background: var(--herb); }
+.merchant p { margin: 0; max-width: 72ch; overflow-wrap: anywhere; }
+
+.merchant-body { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
+
+/* Activities: a list, the current one in gold; read-only ones (still set in v2) in dim text. */
+.activities ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.activities button {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%;
+  text-align: left; background: transparent; border-color: transparent;
+}
+.activities button.readonly { color: var(--text-dim); }
+.activities button[aria-current='true'] { color: var(--gold); border-color: var(--gold); background: var(--stone); }
+.activities .state { font-size: .8rem; color: var(--text-dim); }
+.activities .state.on { color: var(--herb); }
+
+.activity-detail { display: grid; gap: 18px; min-width: 0; }
+.activity-title { font: 600 1.35rem/1.2 var(--pixel); }
+.not-yet { padding: 12px 14px; border-left: 4px solid var(--mp); background: var(--stone); }
+
+.supply-section { display: grid; gap: 10px; padding-top: 16px; border-top: 1px solid var(--edge); }
+.supply-section h3 { font-size: 1.15rem; font-weight: 700; }
+
+.merchant .check { display: flex; align-items: center; gap: 10px; min-height: 36px; font-weight: 700; }
+.merchant .check input { width: 20px; height: 20px; min-height: 0; accent-color: var(--gold); }
+.merchant .field { display: grid; gap: 4px; font-weight: 700; font-size: .9rem; }
+
+/* One block per character; each reserved piece shows its icon in a notched slot, like the game's inventory. */
+.reserve-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 14px; }
+.reserve-character { display: grid; gap: 10px; align-content: start; padding: 14px; background: var(--stone); border: 2px solid var(--edge); }
+.reserve-character h4 { margin: 0; font-size: 1.05rem; }
+.pieces { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.piece { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.piece.conflict { padding-left: 8px; border-left: 4px solid var(--hp); }
+.piece-icon {
+  position: relative; display: grid; place-items: center; width: 48px; height: 48px; background: var(--ground); border: 2px solid var(--edge);
+  clip-path: polygon(var(--notch) 0, calc(100% - var(--notch)) 0, 100% var(--notch), 100% calc(100% - var(--notch)), calc(100% - var(--notch)) 100%, var(--notch) 100%, 0 calc(100% - var(--notch)), 0 var(--notch));
+}
+.piece-level { position: absolute; right: 2px; bottom: 1px; font: 600 .7rem/1 var(--pixel); color: var(--gold); text-shadow: 0 1px 0 var(--ground); }
+.piece-text { display: grid; gap: 1px; font-size: .9rem; min-width: 0; overflow-wrap: anywhere; }
+.piece-text strong { font-size: 1rem; }
+.piece .quiet { min-height: 36px; padding: 4px 8px; font-size: .85rem; }
+
+/* Where the piece is, in the game's colours: worn = success, elsewhere = information, nowhere = danger. */
+.place { font-weight: 700; }
+.place-worn { color: var(--herb); }
+.place-bag { color: var(--text); }
+.place-bank, .place-other { color: var(--mp); }
+.place-missing { color: var(--hp); }
+.place-unknown { color: var(--text-dim); font-weight: 400; }
+.piece-conflict { color: var(--hp); }
+
+.kit-adder summary { cursor: pointer; color: var(--text-dim); min-height: 36px; display: flex; align-items: center; }
+.kit-adder summary:hover { color: var(--text); }
+.kit-adder-body { display: grid; gap: 10px; padding-top: 6px; }
+.kit-adder-row { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 14px; }
+.kit-adder-row input[type='number'] { width: 96px; }
+
+.supply-rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.supply-rule { display: grid; gap: 10px; padding: 14px; background: var(--stone); border: 2px solid var(--edge); }
+.supply-rule-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.supply-rule-fields { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 14px; }
+.supply-rule-fields .qty input { width: 110px; }
+.supply-error { color: var(--hp); font-weight: 700; }
+
+/* Stock bar: the fill is the stock held; marks at minimum, target (gold) and maximum. */
+.gauge { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; font-size: .9rem; }
+.gauge-track { position: relative; height: 12px; background: var(--ground); border: 1px solid var(--edge); }
+.gauge-fill { position: absolute; inset: 0 auto 0 0; transition: width 300ms ease-out; }
+.gauge-low .gauge-fill { background: var(--hp); }
+.gauge-healthy .gauge-fill { background: var(--herb); }
+.gauge-excess .gauge-fill { background: var(--mp); }
+.gauge-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text-dim); }
+.gauge-mark.target { background: var(--gold); }
+.gauge-text { font-variant-numeric: tabular-nums; color: var(--text-dim); }
+.gauge-low .gauge-text strong { color: var(--hp); }
+.gauge-healthy .gauge-text strong { color: var(--herb); }
+.gauge-excess .gauge-text strong { color: var(--mp); }
+
+@media (max-width: 720px) {
+  .merchant-body { grid-template-columns: minmax(0, 1fr); }
+  .activities ul { display: flex; flex-wrap: wrap; }
+  .activities button { width: auto; }
+}

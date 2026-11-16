@@ -1,0 +1,8 @@
+.profile-bar { display: grid; gap: 8px; padding: 12px 14px; background: var(--stone); border-left: 4px solid var(--gold); }
+.profile-bar h3 { font-size: 1rem; font-weight: 700; color: var(--text-dim); }
+.profile-bar p { margin: 0; overflow-wrap: anywhere; }
+.profile-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.profile-actions .dim { font-size: .875rem; }
+.profile-ready { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px; }
+.profile-confirm { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.profile-error { color: var(--hp); }

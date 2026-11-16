@@ -1,0 +1,8 @@
+.connection { display: inline-flex; align-items: center; gap: 8px; font-size: .875rem; font-weight: 700; }
+.connection::before { content: ''; width: 8px; height: 8px; display: inline-block; }
+.connection-open { color: var(--herb); }
+.connection-open::before { background: var(--herb); }
+.connection-connecting { color: var(--mp); }
+.connection-connecting::before { background: var(--mp); }
+.connection-closed { color: var(--hp); }
+.connection-closed::before { background: var(--hp); }

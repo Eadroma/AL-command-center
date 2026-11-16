@@ -37,7 +37,8 @@ export function PartyPage({ members, catalog, loading, deployments, profile, onO
     <header className={styles.heading}><div><span className={styles.eyebrow}>YOUR ADVENTURE, AT A GLANCE</span><h1>Team</h1><p>{enabled ? `${live} of ${enabled} enabled characters reporting. Everything else is one click away.` : 'Connect your account and prepare your first team.'}</p></div>
       <button type="button" className={styles.configure} onClick={() => onOpenTool?.('setup')}>{enabled ? 'Manage team' : 'Set up your team'}<ArrowUpRight size={17}/></button>
     </header>
-    <PartyPanel members={members} deployments={deployments} catalog={catalog} loading={loading} onDeployCharacter={onDeployCharacter} onStopCharacter={onStopCharacter} onChangeScript={onChangeScript}/>
+    {/* Members come from the saved profile; show the draft script so a pending change stays visible. */}
+    <PartyPanel members={members?.map(m => ({ ...m, script: profile?.characters.find(c => c.name === m.name)?.script ?? m.script })) ?? members} deployments={deployments} catalog={catalog} loading={loading} onDeployCharacter={onDeployCharacter} onStopCharacter={onStopCharacter} onChangeScript={onChangeScript}/>
     <div className={styles.tools} aria-label="Team tools">{tools.map(tool => { const Icon = tool.icon; return <button key={tool.id} type="button" onClick={() => onOpenTool?.(tool.id)}><Icon size={23} aria-hidden="true"/><strong>{tool.label}</strong><span>{tool.description}</span><ArrowUpRight className={styles.arrow} size={17} aria-hidden="true"/></button>; })}</div>
     <Disclosure title="Live positions" description="Open the map to follow your team."><PartyMap members={members} catalog={catalog} loading={loading} deployments={deployments}/></Disclosure>
     <Disclosure title="Needs attention" description="Inspect warnings and operational signals."><OperationalSummary profile={profile} deployments={deployments}/></Disclosure>

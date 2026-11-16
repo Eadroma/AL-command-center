@@ -233,6 +233,7 @@ function on_party_request(name) {
 
 function on_cm(name, data) {
 	if (typeof CaveDreams !== "undefined") CaveDreams.onCm(name, data);
+	if (typeof CryptRun !== "undefined") CryptRun.onCm(name, data);
 	if (typeof WorldEventIntel !== "undefined") WorldEventIntel.onCm(name, data);
 	if (typeof TeamCoordinator !== "undefined") TeamCoordinator.onCm(name, data);
 	if (!data || typeof data !== "object") return;
@@ -441,6 +442,11 @@ async function combatLoop() {
 			setTimeout(combatLoop, 200);
 			return;
 		}
+		// CryptRun fights inside the crypt (safe-target whitelist only).
+		if (typeof CryptRun !== "undefined" && CryptRun.inside()) {
+			setTimeout(combatLoop, 200);
+			return;
+		}
 
 		updateCache();
 		var target = cache.target;
@@ -568,6 +574,11 @@ async function movementLoop() {
 	try {
 		if (is_disabled(character) || character.rip) {
 			setTimeout(movementLoop, 300);
+			return;
+		}
+		// Crypt run (merchant HUD) owns movement before events, dumps and hunts, as for the warrior.
+		if (typeof CryptRun !== "undefined" && await CryptRun.tick()) {
+			setTimeout(movementLoop, 250);
 			return;
 		}
 
@@ -955,7 +966,9 @@ async function dumpLoop() {
 		var mule = get_player(CONFIG.MERCHANT);
 		var freeSlots = character.esize || 0;
 		var dumpLimit = (CONFIG.inventory && CONFIG.inventory.dumpEsize) || 4;
-		var needDump = (freeSlots <= dumpLimit && dumpable_count() > 0);
+		// Pendant un evenement, ne quitter le boss que sac totalement plein.
+		var eventLive = typeof EventRouter !== "undefined" && EventRouter.activeMonster && !!EventRouter.activeMonster();
+		var needDump = (freeSlots <= (eventLive ? 0 : dumpLimit) && dumpable_count() > 0);
 
 		// 1. Si la mule est a proximite immediate, vider directement les sacs
 		if (mule && distance(character, mule) <= 250 && dumpable_count() > 0) {

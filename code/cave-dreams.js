@@ -10,7 +10,8 @@
  */
 var CaveDreams = (function () {
 	var DORR_NPC = "dreamkeeper";
-	var DORR = { map: "main", x: 816, y: 1160 };
+	// Admission checks every member within 160px of this exact point (generated_admission).
+	var DORR = { map: "main", x: 816, y: 1200 };
 	var ENTER_RANGE = 80;
 	var WAIT_MS = 12 * 60 * 1000;
 	var RETRY_MS = 8 * 60 * 1000;
@@ -29,15 +30,23 @@ var CaveDreams = (function () {
 	var leader_missing_since = 0;
 	var leader_exit_requested = false;
 	var dashboard_exit_requested = false;
+	var manual_until = 0;
+	var cave_path_retry_at = 0;
+	var door_wait_since = 0;
+	var talked = {};
+	var shop_reached = {};
+	var shop_closed = {};
 
 	function enabled() {
+		// A merchant HUD start opens one gather window even when the daily switch is off.
+		if (Date.now() < manual_until) return true;
 		if (typeof __ALCC !== "undefined" && __ALCC.dailyDungeon != null) return !!__ALCC.dailyDungeon;
 		return !!(typeof CONFIG !== "undefined" && CONFIG.DAILY_DUNGEON);
 	}
 
+	/** Cave gold dies with the run and opening the shop is free, so shop whenever the purse has gold. */
 	function buy_shops() {
-		if (typeof __ALCC !== "undefined" && __ALCC.dailyDungeonBuy != null) return !!__ALCC.dailyDungeonBuy;
-		return !!(typeof CONFIG !== "undefined" && CONFIG.DAILY_DUNGEON_BUY);
+		return purse_gold() > 0;
 	}
 
 	function in_cave() {
@@ -108,10 +117,12 @@ var CaveDreams = (function () {
 		return 0;
 	}
 
+	/** character.cave.supplies is a list of run flags such as ["tool", "lamp"]. */
 	function cave_flags() {
-		var c = state();
-		if (!c) return {};
-		return c.flags || c.supplies || c.items || {};
+		var c = state(), out = {};
+		var list = (c && c.supplies) || [];
+		for (var i = 0; i < list.length; i++) out[list[i]] = true;
+		return out;
 	}
 
 	function allies() {
@@ -127,7 +138,7 @@ var CaveDreams = (function () {
 		var names = [
 			cfg.WARRIOR || (character.ctype === "warrior" ? character.name : ""),
 			cfg.PRIEST || (character.ctype === "priest" ? character.name : ""),
-			cfg.RANGER || (character.ctype === "ranger" ? character.name : "")
+			cfg.RANGER || (character.ctype === "ranger" || character.ctype === "rogue" ? character.name : "")
 		];
 		var out = [];
 		for (var i = 0; i < names.length; i++) {
@@ -169,7 +180,15 @@ var CaveDreams = (function () {
 			try {
 				await kick_party_member(name);
 				note("removed " + name + " from cave party");
-			} catch (e) { note("party kick " + name + ": " + ((e && e.reason) || e)); }
+			} catch (e) {
+				var why = String((e && (e.reason || e.response)) || e);
+				note("party kick " + name + ": " + why);
+				// The server only lets earlier members kick later ones. When the merchant
+				// joined first, leave and re-invite the trio: accepting moves them over.
+				if (why.indexOf("cant_kick") >= 0 && typeof leave_party === "function") {
+					try { await leave_party(); note("left party to regroup the cave trio"); } catch (e1) {}
+				}
+			}
 			return true;
 		}
 		for (var i = 0; i < roster.length; i++) {
@@ -256,9 +275,9 @@ var CaveDreams = (function () {
 			try { move(x, y); } catch (e1) {}
 			return;
 		}
-		// Generated zone_<run>_<floor> maps are intentionally absent from
-		// G.maps, so smart_move crashes while reading map.small_steps. Walk a
-		// short, collision-checked step and slide consistently around walls.
+		// Generated zone_<run>_<floor> maps do reach G.maps (G is parent.G), but
+		// smart_move is untested on their irregular geometry. Walk a short,
+		// collision-checked step and slide consistently around walls.
 		var base = Math.atan2(y - cy, x - cx);
 		var step = 42;
 		for (var i = 1; i <= 8; i++) {
@@ -279,9 +298,16 @@ var CaveDreams = (function () {
 			try { stop("smart"); } catch (e0) {}
 		}
 		if (in_cave()) {
-			// Never call smart_move for a generated cave map: the vanilla runner
-			// indexes G.maps[character.map], which is undefined for these zones.
-			if (!dest.map || dest.map === character.map) cave_local_step(x, y);
+			if (dest.map && dest.map !== character.map) return;
+			// A same-map smart_move never expands doors, so it cannot walk out of the
+			// run. The greedy step walker stays as a fallback when no path is found.
+			if (Date.now() >= cave_path_retry_at && typeof smart_move === "function") {
+				Promise.resolve(smart_move({ map: character.map, x: x, y: y })).catch(function () {
+					cave_path_retry_at = Date.now() + 5000;
+				});
+				return;
+			}
+			cave_local_step(x, y);
 			return;
 		}
 		if (typeof go_to === "function") {
@@ -451,17 +477,20 @@ var CaveDreams = (function () {
 		var effect = o.effect || "";
 		var text = option_text(o);
 		var revive = effect === "revive" || text.indexOf("revive") >= 0;
-		// Revive prompts are personal. Alive party members used to answer the
-		// doorway NPC as well, recreating the prompt and starving combat.
-		if (revive && !character.rip) return -1;
+		// Everyone votes on revival, so the free doorway option wins 2/3 at once
+		// instead of freezing the run for the full 60 s deadline. Reviving in
+		// place costs Amber, the only currency that leaves the cave.
+		if (revive) return o.id === "landing" || text.indexOf("free") >= 0 ? 200 : -1;
 		if (effect === "wolves" || text.indexOf("level 100") >= 0) return -1;
+		// e47_0 does not declare needs: "lamp"; without one it pays nothing.
+		if (effect === "moths" && !cave_flags().lamp) return -1;
 		if (effect === "bad_double" || text.indexOf("six guards") >= 0) return -1;
 		var fights = option_fight(o);
 		for (var i = 0; i < fights.length; i++) {
 			if (fight_is_deadly(fights[i])) return -1;
 		}
-		if (is_shop_continue(o)) return 96;
-		if (is_shop_inspect(o)) return buy_shops() ? 25 : 4;
+		if (is_shop_continue(o)) return buy_shops() ? 10 : 96;
+		if (is_shop_inspect(o)) return buy_shops() ? 120 : 4;
 		if (o.needs === "tool" && !cave_flags().tool) return 8;
 		if (o.needs === "lamp" && !cave_flags().lamp) return 8;
 		if (o.cost && purse_gold() < o.cost) return 5;
@@ -511,16 +540,39 @@ var CaveDreams = (function () {
 			right: 40,
 			dice: 6,
 			dice6: 4,
-			die: 10
+			die: 10,
+			time: 18
 		};
 		var s = scores[effect];
 		if (s == null) s = 28;
 		if (o.offer) s += 6;
+		if (o.amber) s -= 30;
 		if (effect === "hunt_double") s = 24;
 		if (text.indexOf("lockbreaker") >= 0) s = Math.min(s, 55);
 		if (text.indexOf("sentinel") >= 0) s = Math.min(s, 52);
 		if (text.indexOf("shadow") >= 0) s = Math.min(s, 25);
 		return s;
+	}
+
+	/**
+	 * The pushed choice only carries id, label, cost, amber and unavailable.
+	 * effect, fight, outcomes and offer live in G.events.dreams, keyed by the
+	 * encounter id found in the title phrase (event.dreams.e47.name).
+	 */
+	function static_option(choice, o) {
+		var phrase = String((choice && choice.title_message && choice.title_message.phrase) || "");
+		var m = /^event\.dreams\.(e\d+)\./.exec(phrase);
+		if (!m || !o) return o;
+		var game = (typeof parent !== "undefined" && parent.G) || (typeof G !== "undefined" && G);
+		var list = (game && game.events && game.events.dreams && game.events.dreams.encounters) || [];
+		for (var i = 0; i < list.length; i++) {
+			if (!list[i] || list[i].id !== m[1]) continue;
+			var opts = list[i].options || [];
+			for (var j = 0; j < opts.length; j++) {
+				if (opts[j].id === o.id) return Object.assign({}, opts[j], o);
+			}
+		}
+		return o;
 	}
 
 	function pick_option(choice) {
@@ -529,7 +581,7 @@ var CaveDreams = (function () {
 		var best_s = -1;
 		for (var i = 0; i < choice.options.length; i++) {
 			var o = choice.options[i];
-			var s = score_option(o, choice);
+			var s = score_option(static_option(choice, o), choice);
 			if (s > best_s) {
 				best_s = s;
 				best = o;
@@ -819,6 +871,23 @@ var CaveDreams = (function () {
 		return !cp || !op || cp === op;
 	}
 
+	/** All required rooms done on the last floor (the one without a down door). */
+	function run_cleared(c) {
+		return !!(c && (c.objectives || []).length && (c.doors || []).length && !required_open() && !has_down_door(c));
+	}
+
+	function amber_capped(c) {
+		var l = c && c.limits;
+		return !!(l && l.amber && l.amber_spawned >= l.amber);
+	}
+
+	/** The last floor has no down entry at all, not a permanently locked one. */
+	function has_down_door(c) {
+		var doors = (c && c.doors) || [];
+		for (var i = 0; i < doors.length; i++) if (doors[i] && doors[i].down) return true;
+		return false;
+	}
+
 	function required_open() {
 		var c = state();
 		var objs = (c && c.objectives) || [];
@@ -847,10 +916,14 @@ var CaveDreams = (function () {
 			return objective_spot(o);
 		}
 		// The shop is useful only when the dashboard explicitly allows spending.
+		// Its objective never flips done, so leave once it is sold, unaffordable
+		// or 90 s after arrival; otherwise the team parks there for the run.
 		if (buy_shops()) {
 			for (var s = 0; s < objs.length; s++) {
 				var shopGoal = objs[s];
-				if (unfinished(shopGoal, floor) && is_shop_goal(shopGoal)) return objective_spot(shopGoal);
+				if (!unfinished(shopGoal, floor) || !is_shop_goal(shopGoal) || shop_closed[shopGoal.id]) continue;
+				if (shop_reached[shopGoal.id] && Date.now() - shop_reached[shopGoal.id] > 90000) continue;
+				return objective_spot(shopGoal);
 			}
 		}
 		var doors = c.doors || [];
@@ -875,21 +948,21 @@ var CaveDreams = (function () {
 		return null;
 	}
 
-	async function maybe_talk_cave() {
-		if (typeof cave_talk !== "function") return false;
-		if (!is_lead()) return false;
-		for (var id in parent.entities) {
-			var e = parent.entities[id];
-			if (!e || e.rip) continue;
-			if (!e.cave || !e.cave.room) continue;
-			if (is_cave_monster(e)) continue;
-			if (distance(character, e) > 160) continue;
-			try {
-				await cave_talk(e.cave.room, e.id);
-				note("talk " + (e.name || e.cave.room));
-				return true;
-			} catch (err) {}
-		}
+	/**
+	 * The server opens an encounter vote by itself once a living member is within
+	 * 160px of its NPC. Talk only to the objective room we stand in, as a fallback
+	 * for an NPC placed off-centre. Never blocks the tick: followers and citizens
+	 * also answer talk, and returning true used to park the warrior on them.
+	 */
+	async function maybe_talk_cave(spot) {
+		var o = spot && spot.objective;
+		if (typeof cave_talk !== "function" || !o || o.kind !== "encounter") return false;
+		if (Date.now() - (talked[o.id] || 0) < 5000) return false;
+		talked[o.id] = Date.now();
+		try {
+			await cave_talk(o.id);
+			note("talk " + goal_label(o));
+		} catch (err) {}
 		return false;
 	}
 
@@ -900,15 +973,27 @@ var CaveDreams = (function () {
 		var leader = typeof CONFIG !== "undefined" && CONFIG.WARRIOR ? get_player(CONFIG.WARRIOR) : null;
 		if (!is_lead() && leader && leader.map === character.map) return true;
 		if (is_lead()) {
-			var roster = cave_roster();
-			for (var i = 0; i < roster.length; i++) {
-				if (roster[i] === character.name) continue;
-				var member = get_player(roster[i]);
-				if (!member || member.map !== character.map || distance(character, member) > 150) return true;
+			// Wait only for members still in the run: one who left or disconnected never
+			// arrives, and the old config-roster check parked the warrior at the stairs.
+			// Followers take the door on their own once the leader is gone, so cap the wait.
+			var run_roster = (state() && state().roster) || [];
+			var waiting = false;
+			for (var i = 0; i < run_roster.length; i++) {
+				var m = run_roster[i];
+				if (!m || m.name === character.name || m.left || m.disconnected) continue;
+				var member = get_player(m.name);
+				if (!member || member.map !== character.map || distance(character, member) > 150) waiting = true;
+			}
+			if (!waiting) door_wait_since = 0;
+			else {
+				if (!door_wait_since) door_wait_since = Date.now();
+				if (Date.now() - door_wait_since < 45000) return true;
+				note("stairs: stopped waiting for the party");
 			}
 		}
 		try {
 			await use_nearest_door();
+			door_wait_since = 0;
 			note("door " + (spot.why || ""));
 			return true;
 		} catch (e) {
@@ -940,7 +1025,12 @@ var CaveDreams = (function () {
 		if (!buy_shops()) return false;
 		var shop = c && (c.shop || (choice && choice.shop));
 		if (!shop || !shop.room) return false;
-		if (shop.sold || shop.bought) return false;
+		if (shop.sold || shop.bought || purse_gold() < (shop.price || 0)) {
+			shop_closed[shop.room] = true;
+			return false;
+		}
+		// nearby is the server's own 160px check; skip the round trip until it holds.
+		if (!shop.nearby) return false;
 		try {
 			await cave_buy(shop.room);
 			note("bought cave shop item");
@@ -950,7 +1040,13 @@ var CaveDreams = (function () {
 		}
 	}
 
+	/** A smart_move started outside (e.g. toward Dorr) re-plans through the up door, which the server treats as cave_exit. */
+	function stop_foreign_smart_move() {
+		if (typeof smart !== "undefined" && smart.moving && smart.map && smart.map !== character.map) stop_smart_now();
+	}
+
 	async function run_inside() {
+		stop_foreign_smart_move();
 		var c = state();
 		if (!run_log) {
 			run_log = { started: Date.now(), votes: [], chests: 0, floor: (c && c.floor) || 0 };
@@ -983,6 +1079,15 @@ var CaveDreams = (function () {
 		if (await maybe_shop()) return true;
 		if (await maybe_vote()) return true;
 		if (await loot_cave_chests()) return true;
+		if (run_cleared(c) && (amber_capped(c) || !next_go_target())) {
+			// The final clear already settled Amber. Once the Amber cap is spent, optional
+			// camps only pay cave gold, which dies with the run, so stop spending the clock.
+			note("cave cleared, exiting");
+			try { await cave_exit(); } catch (e3) {}
+			persist_run({ ended: Date.now(), reason: "cleared", amber: purse_amber(), gold: purse_gold() });
+			run_log = null;
+			return true;
+		}
 		var spot = next_go_target();
 		if (spot) {
 			if (await maybe_use_door(spot)) return true;
@@ -999,7 +1104,8 @@ var CaveDreams = (function () {
 				await walk_xy(spot.x, spot.y, "cave go " + spot.why, 40, spot.map);
 				return true;
 			}
-			if (await maybe_talk_cave()) return true;
+			if (spot.objective && is_shop_goal(spot.objective) && !shop_reached[spot.objective.id]) shop_reached[spot.objective.id] = Date.now();
+			await maybe_talk_cave(spot);
 		}
 		if (await fight_cave(null)) return true;
 		if (!is_lead()) {
@@ -1070,6 +1176,7 @@ var CaveDreams = (function () {
 	}
 
 	async function maybe_enter() {
+		if (await maybe_resume_open_run()) return true;
 		if (!enabled()) return false;
 		if (Date.now() < gather_fail_until) return false;
 		if (live_event_busy()) {
@@ -1107,9 +1214,18 @@ var CaveDreams = (function () {
 		return true;
 	}
 
+	/** An open run outranks every switch: a restarted client must walk back in even with the daily cave off. */
+	async function maybe_resume_open_run() {
+		if (in_cave() || typeof cave_info !== "function") return false;
+		return await maybe_resume(await refresh_visit());
+	}
+
 	async function follow_gather() {
-		if (!enabled() && !in_cave()) return false;
 		if (in_cave()) return await run_inside();
+		if (await maybe_resume_open_run()) return true;
+		if (!enabled()) return false;
+		// A fourth farmer (rogue, mage) loads this runner too but is never admitted.
+		if (cave_roster().indexOf(character.name) < 0) return false;
 		if (Date.now() < gather_fail_until) return false;
 		if (live_event_busy()) {
 			end_gather();
@@ -1133,6 +1249,15 @@ var CaveDreams = (function () {
 			gather_until = gather_started + WAIT_MS;
 		}
 		if (data.a === "cancel") end_gather();
+		// Merchant HUD "Start cave": one gather window, ignoring the retry backoff.
+		if (data.a === "start" && typeof CONFIG !== "undefined" && name === CONFIG.MERCHANT && cave_roster().indexOf(character.name) >= 0) {
+			manual_until = Date.now() + WAIT_MS;
+			gather_fail_until = 0;
+			last_info = 0;
+			gather_started = Date.now();
+			gather_until = gather_started + WAIT_MS;
+			note("cave start requested by " + name);
+		}
 		if (data.a === "exit" && (!CONFIG.WARRIOR || name === CONFIG.WARRIOR)) leader_exit_requested = true;
 	}
 
@@ -1162,10 +1287,40 @@ var CaveDreams = (function () {
 					run_log = null;
 					last_vote = "";
 					last_vote_at = 0;
+					manual_until = 0;
+					talked = {};
+					shop_reached = {};
+					shop_closed = {};
 					return;
 				}
+				stop_foreign_smart_move();
 				if (st.paused) note("vote pause floor " + ((st.floor || 0) + 1));
 			});
+		}
+	} catch (e) {}
+
+	// Farmer loops stop while dead, so a dead member never voted on its own revive.
+	// With one member gone that left no majority and froze the run for 60 s per death.
+	try {
+		if (typeof setInterval === "function") setInterval(function () {
+			if (in_cave() && character.rip) maybe_vote().catch(function () {});
+		}, 1500);
+	} catch (e) {}
+
+	// Any other loop (dump to mule, follow, events) may still call smart_move toward
+	// another map; inside a run that path leaves through the up door and ends the
+	// character's run. Only same-map moves are allowed while character.cave is set.
+	try {
+		if (typeof smart_move === "function" && !smart_move.__alcc_cave_guard) {
+			var raw_smart_move = smart_move;
+			smart_move = function (destination) {
+				var same_map = destination && typeof destination === "object" && "x" in destination && (!destination.map || destination.map === character.map);
+				if (in_cave() && !same_map) {
+					return Promise.reject({ reason: "cave_same_map_only", place: "smart_move" });
+				}
+				return raw_smart_move.apply(this, arguments);
+			};
+			smart_move.__alcc_cave_guard = true;
 		}
 	} catch (e) {}
 

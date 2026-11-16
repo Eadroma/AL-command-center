@@ -1,0 +1,130 @@
+{
+  "automation": {
+    "activities": [],
+    "lootGoals": [],
+    "dangers": {
+      "enabled": false,
+      "maxAttackers": 4,
+      "retreatHpPercent": 25,
+      "resumeHpPercent": 70,
+      "requirePriest": false,
+      "healerRange": 200,
+      "action": "hold",
+      "maxDeaths": 0,
+      "runId": "",
+      "coordinatedRetreat": false
+    },
+    "commercialGoals": [],
+    "activeBuilds": {},
+    "activeActivity": "",
+    "activeConsumables": [],
+    "combatGear": []
+  },
+  "farming": {
+    "defaultMonster": "goo",
+    "hunts": false,
+    "allowedHunts": [],
+    "rareVisits": false,
+    "dailyDungeon": false,
+    "style": {},
+    "loadouts": {},
+    "bossChecks": {
+      "enabled": false,
+      "rules": []
+    }
+  },
+  "events": {
+    "enabled": false,
+    "allowed": [],
+    "style": {},
+    "expedition": {
+      "enabled": false,
+      "allowed": [
+        "mrgreen",
+        "mrpumpkin"
+      ],
+      "maxMinutes": 20,
+      "maxDeaths": 3
+    }
+  },
+  "seller": {
+    "trickOrTreat": {
+      "enabled": false
+    },
+    "witchCipher": {
+      "enabled": false
+    },
+    "workOrder": [
+      "bank",
+      "sell",
+      "exchange",
+      "craft",
+      "compound",
+      "upgrade"
+    ],
+    "buy": {
+      "managed": true,
+      "enabled": false,
+      "reserveGold": 1000000,
+      "budget": 100000,
+      "orders": []
+    },
+    "npcEnabled": false,
+    "npcItems": [],
+    "standEnabled": false,
+    "listings": [],
+    "standSpot": {
+      "map": "main",
+      "x": -100,
+      "y": -20
+    },
+    "exchange": {
+      "enabled": false,
+      "items": [],
+      "minimum": {
+        "anniversarygift": 50
+      }
+    },
+    "upgrade": {
+      "enabled": false,
+      "minGold": 0,
+      "rules": []
+    },
+    "compound": {
+      "enabled": false,
+      "checkBankOnDeposit": false,
+      "rules": []
+    },
+    "craft": {
+      "enabled": false,
+      "reserveGold": 1000000,
+      "rules": []
+    },
+    "ponty": {
+      "enabled": false,
+      "minGold": 200000,
+      "items": []
+    },
+    "kit": {
+      "enabled": false,
+      "rules": []
+    },
+    "consumables": {
+      "enabled": false,
+      "rules": []
+    },
+    "gifts": {
+      "enabled": false,
+      "rules": []
+    },
+    "bankDeposit": {
+      "enabled": false,
+      "items": []
+    },
+    "teamSupervisor": {
+      "enabled": false,
+      "characters": [],
+      "soloGuard": false
+    }
+  }
+}

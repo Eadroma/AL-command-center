@@ -3,6 +3,7 @@ import vm from 'node:vm';
 import {expect,it} from 'vitest';
 import {sourceDir} from '../server/scripts';
 import path from 'node:path';
+import {bankHubSchema} from '../shared/bank-hub';
 const source=fs.readFileSync(path.join(sourceDir,'bank-coordinator.js'),'utf8');
 function fixture(saved:any={}) {
  const c:any={character:{name:'Merchant',map:'bank',items:[{name:'coat',level:9}],bank:{items0:[{name:'coat',level:9},{name:'coat',level:9},{name:'coat',level:9},{name:'coat',level:9,l:true}]}},Date,get:(key:string)=>saved[key],set:(key:string,value:any)=>saved[key]=structuredClone(value),cc_listings:()=>[{item:'coat',level:9,bankReserve:2}]};
@@ -23,4 +24,13 @@ it('retains stock reservations and compatible listing reserves',()=>{
 it('treats pieces withdrawn for a stand listing as reserved',()=>{
  const {c,hub}=fixture();c.listing_bank_stock_reserved=(it:any)=>it.name==='coat';
  expect(hub.reserved({name:'coat'})).toBe(true);expect(hub.reserved({name:'pants'})).toBe(false);
+});
+
+it('stores journal evidence as text so telemetry validation accepts the snapshot, repairing saved objects',()=>{
+ const f=fixture();f.hub.begin('withdraw','coat',9,1,'items0');f.hub.finish(true,{item:'coat',pack:'items0',slot:0});
+ expect(typeof f.hub.snapshot().journal.at(-1).evidence).toBe('string');
+ expect(bankHubSchema.safeParse(f.hub.snapshot()).success).toBe(true);
+ const legacy=fixture({'alcc:bank-hub:Merchant':{version:1,journal:[{kind:'withdraw',item:'coat',level:9,quantity:1,pack:'items0',at:1,state:'confirmed',evidence:{item:'coat'}}],current:null}});
+ expect(legacy.hub.snapshot().journal[0].evidence).toBe('{"item":"coat"}');
+ expect(bankHubSchema.safeParse(legacy.hub.snapshot()).success).toBe(true);
 });

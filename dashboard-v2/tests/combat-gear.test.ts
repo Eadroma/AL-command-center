@@ -24,6 +24,12 @@ function setup(movementItem = '') {
   return { c, gear: c.CombatGear, calls, advance: () => { now += 500; } };
 }
 describe('combat-only gloves', () => {
+  it('keeps the movement gloves on inside the crypt, even stationary next to a target', async () => {
+    const { c, gear } = setup('wgloves');
+    c.CryptRun = { inside: () => true };
+    await gear.apply();
+    expect(c.character.slots.gloves.name).toBe('wgloves');
+  });
   it('equips Midas for rogue skills at skill range and removes them before movement starts', async () => {
     const { c, gear, calls, advance } = setup('wgloves');
     c.parent.entities.m.x = 140; gear.install();

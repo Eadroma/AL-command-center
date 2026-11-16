@@ -1,0 +1,104 @@
+/*
+ * Visual identity (docs/DESIGN.md): colours carry the game's meaning — gold = action, HP red = danger,
+ * MP blue = information, herb green = success. One bold device: the notched inventory slot.
+ * Components use these variables only, never literal colours.
+ */
+:root {
+  --ground: #1f2631;
+  --stone: #2a3340;
+  --slot: #343f50;
+  --edge: #56657c;
+  --text: #ece6d6;
+  --text-dim: #a9b0bb;
+  --gold: #f0bf4c;
+  --gold-ink: #2a2008;
+  --hp: #e25b4f;
+  --mp: #5b93e6;
+  --herb: #7cc26a;
+  --pixel: 'Pixelify Sans', 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --text-face: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --notch: 4px;
+  color-scheme: dark;
+}
+
+:root[data-theme='day'] {
+  --ground: #e8eef4;
+  --stone: #f7f9fb;
+  --slot: #dde5ee;
+  --edge: #8a99ad;
+  --text: #1c2430;
+  --text-dim: #4c5868;
+  --gold: #a87710;
+  --gold-ink: #fffaf0;
+  --hp: #b93a30;
+  --mp: #2f63b8;
+  --herb: #3c7f2d;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font: 16px/1.5 var(--text-face);
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.2; }
+input, select, button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* The notched slot: square corners cut by a pixel step, like the game's inventory cases. */
+.slot {
+  background: var(--slot);
+  border: 2px solid var(--edge);
+  clip-path: polygon(
+    var(--notch) 0, calc(100% - var(--notch)) 0, 100% var(--notch), 100% calc(100% - var(--notch)),
+    calc(100% - var(--notch)) 100%, var(--notch) 100%, 0 calc(100% - var(--notch)), 0 var(--notch)
+  );
+}
+
+input, select {
+  background: var(--slot);
+  border: 2px solid var(--edge);
+  border-radius: 0;
+  padding: 8px 10px;
+  min-height: 44px;
+}
+
+button {
+  cursor: pointer;
+  background: var(--slot);
+  border: 2px solid var(--edge);
+  border-radius: 0;
+  padding: 8px 14px;
+  min-height: 44px;
+}
+
+button:hover:not(:disabled) { border-color: var(--text-dim); }
+button:disabled { cursor: default; opacity: .55; }
+button.primary { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); font-weight: 700; }
+button.primary:hover:not(:disabled) { border-color: var(--text); }
+button.quiet { background: transparent; border-color: transparent; color: var(--text-dim); }
+button.quiet:hover:not(:disabled) { color: var(--text); border-color: var(--edge); }
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px max(16px, env(safe-area-inset-left, 0px));
+  background: var(--stone);
+  border-bottom: 2px solid var(--edge);
+}
+
+.app-header .brand { font: 600 1.75rem/1 var(--pixel); color: var(--gold); letter-spacing: .02em; }
+.app-header .grow { flex: 1; }
+
+.app-main { padding: 32px max(16px, env(safe-area-inset-left, 0px)); max-width: 1040px; margin: 0 auto; }
+.dim { color: var(--text-dim); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

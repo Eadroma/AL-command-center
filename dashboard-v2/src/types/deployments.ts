@@ -29,6 +29,8 @@ export interface ActiveEffect {
   id: string;
   /** Remaining effect time reported by the game, when available. */
   ms?: number;
+  /** Cooperative boss points (only on `coop`, e.g. Franky): proof the next kill credits this character. */
+  points?: number;
 }
 
 export interface CombatMetrics {

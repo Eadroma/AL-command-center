@@ -20,6 +20,7 @@ function runtime(automation: any = {}, store: Record<string, any> = {}, name = '
     parent: { entities: { m: { id: 'm', type: 'monster', mtype: 'crab', x: 20, y: 0 } } },
     setInterval: () => 1, get: (key: string) => structuredClone(store[key]), set: (key: string, value: any) => { store[key] = structuredClone(value); },
     is_disabled: () => false, is_on_cooldown: () => false,
+    get_player: (n: string) => ({ name: n, hp: 1000, max_hp: 1000, mp: 100, max_mp: 100, x: 10, y: 0, map: 'main' }),
     attack: async () => { calls.push('attack'); }, heal: async () => { calls.push('heal'); }, use_skill: async (skill: string) => { calls.push(skill); },
     can_attack: () => true, stop: () => { calls.push('stop'); }, town: async () => { calls.push('town'); }, move: () => { calls.push('move'); }, smart_move: () => { calls.push('smart_move'); },
     G: { craft: { wingedboots: { cost: 100, items: [[20, 'feather', 0], [1, 'shoes', 0]] } }, items: { shoes: { g: 50 } } },
@@ -38,6 +39,13 @@ describe('activity runtime and automation', () => {
     c.parent.entities.m.target = 'Droma';
     await c.use_skill('fanofknives', ['m']); await c.use_skill('mentalburst', 'm');
     expect(calls).toContain('fanofknives'); expect(calls).toContain('mentalburst');
+  });
+  it('does not hold for absent farmers during a live event (Graveyard duo without the ranger)', () => {
+    const { c, policy } = runtime({}, {}, 'Aedroma');
+    c.get_player = () => null; // Droma is not in the duo
+    expect(policy.teamHold()).toContain('Droma');
+    c.EventRouter = { activeMonster: () => 'graveyard' };
+    expect(policy.teamHold()).toBe('');
   });
   it('coordinates fresh peer retreats without echoing them and rejects unrelated senders/runs', () => {
     const settings = { dangers: { ...dangerDefaults, enabled: true, coordinatedRetreat: true, runId: 'run' } };
@@ -221,4 +229,36 @@ it('bounds craft provisioning by remaining quantity and counts carried NPC bases
   expect(f.policy.commercialBatchLimit('wingedboots', 20)).toBe(1);
   f.policy.reserve('wingedboots', 100); f.policy.settle('wingedboots', 100, 1);
   expect(f.policy.commercialBatchLimit('wingedboots', 20)).toBe(0);
+});
+
+describe('full team pull gate', () => {
+  it('holds a fresh pull until every farmer is present with full HP/MP and drinks potions meanwhile', async () => {
+    const { c, policy, calls } = runtime();
+    c.get_player = (n: string) => ({ name: n, hp: 500, max_hp: 1000, mp: 100, max_mp: 100, x: 10, y: 0, map: 'main' });
+    c.character.hp = 600;
+    await expect(c.attack(c.parent.entities.m)).rejects.toMatchObject({ reason: 'Waiting for full team' });
+    policy.tick();
+    expect(policy.snapshot().diagnostic.reason).toBe('Waiting for full team: Droma HP');
+    expect(calls).toContain('use_hp');
+    c.character.hp = 1000;
+    c.get_player = (n: string) => ({ name: n, hp: 1000, max_hp: 1000, mp: 100, max_mp: 100, x: 10, y: 0, map: 'main' });
+    await c.attack(c.parent.entities.m);
+    expect(calls).toContain('attack');
+  });
+  it('fights back against an aggressive monster hitting the team without targeting it', async () => {
+    const { c, calls } = runtime();
+    c.get_player = () => null;
+    c.G.monsters = { crab: { aggro: 0.8, range: 32 } };
+    await c.attack(c.parent.entities.m);
+    expect(calls).toContain('attack');
+    c.parent.entities.m.x = 300;
+    await expect(c.attack(c.parent.entities.m)).rejects.toMatchObject({ reason: 'Waiting for full team' });
+  });
+  it('never blocks a fight that already involves the team', async () => {
+    const { c, calls } = runtime();
+    c.get_player = () => null;
+    c.parent.entities.m.target = 'Droma';
+    await c.attack(c.parent.entities.m);
+    expect(calls).toContain('attack');
+  });
 });

@@ -1,0 +1,41 @@
+.events-dialog {
+  width: min(760px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 20px;
+  border: 2px solid var(--edge);
+  background: var(--stone);
+  color: var(--text);
+  overflow-y: auto;
+}
+.events-dialog::backdrop { background: rgb(0 0 0 / .55); }
+.events-dialog section { display: grid; gap: 8px; padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--edge); }
+.events-dialog h3 { font-size: 1rem; font-weight: 700; color: var(--text-dim); }
+.events-dialog h4 { font-size: .9rem; font-weight: 700; color: var(--text-dim); margin-top: 4px; }
+.events-dialog p { margin: 0; overflow-wrap: anywhere; }
+.events-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.events-head h2 { font: 600 1.4rem/1.2 var(--pixel); }
+
+.events-check { display: flex; align-items: center; gap: 10px; min-height: 36px; font-weight: 700; }
+.events-check input, .event-allow input { flex: none; width: 20px; height: 20px; accent-color: var(--gold); }
+.events-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Toggle chips: the characters taking part. */
+.events-people { display: flex; flex-wrap: wrap; gap: 6px; }
+.events-people button { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; border-color: var(--edge); color: var(--text-dim); }
+.events-people button[aria-pressed="true"] { color: var(--text); border-color: var(--gold); }
+
+/* The board of events: one row per event, its sprite, and the build once it is allowed. */
+.event-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px 20px; }
+.event-group { display: grid; gap: 6px; align-content: start; }
+.event-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.event-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 4px 8px; background: var(--ground); border-left: 3px solid var(--gold); }
+.event-row.off { background: transparent; border-left-color: var(--edge); color: var(--text-dim); }
+.event-row.off .frame-image { opacity: .45; filter: grayscale(1); }
+.event-allow { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 600; }
+.event-row select { max-width: 9.5rem; min-height: 36px; }
+
+.boss-rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.boss-rule { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 6px 8px; background: var(--ground); }
+.boss-rule select { min-height: 36px; }
+.boss-every { display: inline-flex; align-items: center; gap: 6px; }
+.boss-rule > button { margin-left: auto; min-width: 40px; min-height: 40px; }

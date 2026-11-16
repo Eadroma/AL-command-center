@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "account": {
+    "mcpUrl": "https://adventure.land/mcp",
+    "mcpToken": ""
+  },
+  "game": {
+    "region": "EU",
+    "server": "III",
+    "runtime": "browser",
+    "codeDirectory": "../code"
+  },
+  "dashboard": {
+    "mode": "local",
+    "publicUrl": "",
+    "host": "127.0.0.1",
+    "port": 9320,
+    "dataDirectory": "",
+    "language": "fr",
+    "theme": "night"
+  },
+  "gameData": {
+    "autoUpdate": true,
+    "checkEveryHours": 24,
+    "docsEveryDays": 7
+  },
+  "market": {
+    "enabled": false,
+    "refreshMinutes": 15
+  },
+  "deploy": {
+    "enabled": true
+  },
+  "migration": {
+    "relayV2Url": ""
+  }
+}

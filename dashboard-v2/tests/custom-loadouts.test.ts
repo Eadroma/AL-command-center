@@ -31,13 +31,34 @@ it('applies named builds while keeping their inherited single-target skill defau
   expect(context.StyleLoadout.allows('supershot', 'franky')).toBe(true);
 });
 
+it('puts the priest on Lantern +4 against magical monsters only', () => {
+  const lo = { gear: [{ slot: 'offhand', item: 'candleward', minLevel: 7 }, { slot: 'ring1', item: 'cring', minLevel: 2 }], skills: [] };
+  const context: any = { character: { name: 'Aedroma', ctype: 'priest' }, G: { monsters: { mag: { damage_type: 'magical' }, phys: { damage_type: 'physical' } } }, CONFIG: { STYLE_LOADOUTS: { aoe: lo } } };
+  vm.runInNewContext(fs.readFileSync(path.join(sourceDir, 'style-loadout.js'), 'utf8'), context);
+  expect(context.StyleLoadout.current('mag').gear).toEqual([{ slot: 'ring1', item: 'cring', minLevel: 2 }, { slot: 'offhand', item: 'lantern', minLevel: 4 }]);
+  expect(context.StyleLoadout.current('phys').gear).toEqual(lo.gear);
+  context.character.ctype = 'warrior';
+  expect(context.StyleLoadout.current('mag').gear).toEqual(lo.gear);
+});
+
+it('keeps the crypt loadout while the trio waits out a retreat at the door', () => {
+  let phase = 'retreat';
+  const context: any = { character: { name: 'Aedroma', ctype: 'priest' }, CONFIG: { PACK_STYLE: { vbat: 'crypt', mrgreen: 'mono' }, STYLE_LOADOUTS: { crypt: { base: 'aoe', gear: [], skills: [] } } },
+    CryptRun: { inside: () => false, monster: () => 'vbat', snapshot: () => ({ phase }) }, combat_mtype: () => 'mrgreen' };
+  vm.runInNewContext(fs.readFileSync(path.join(sourceDir, 'style-loadout.js'), 'utf8'), context);
+  expect(context.StyleLoadout.mode()).toBe('crypt');
+  phase = 'done';
+  expect(context.StyleLoadout.mode()).toBe('mono');
+});
+
 it('targets Franky rather than surrounding One Eyes, retaining other event map enemies', () => {
   const source = fs.readFileSync(path.join(sourceDir, 'event-router.js'), 'utf8');
   const start = source.indexOf('function accepts(entity)'), end = source.indexOf('function visible_event_enemy()', start);
   let route = { id: 'franky', kind: 'join', map: 'level2' };
-  const accepts = vm.runInNewContext(`(${source.slice(start, end)})`, { next: () => route, EVENT_MONSTERS: {}, character: { map: 'level2' } });
+  const accepts = vm.runInNewContext(`(${source.slice(start, end)})`, { next: () => route, EVENT_MONSTERS: {}, own_team: (n: string) => n === 'Eadroma', character: { map: 'level2' } });
   expect(accepts({ type: 'monster', visible: true, mtype: 'oneeye' })).toBe(false);
   expect(accepts({ type: 'monster', visible: true, mtype: 'franky' })).toBe(true);
+  expect(accepts({ type: 'monster', visible: true, mtype: 'oneeye', target: 'Eadroma' })).toBe(true); // defend the team
   route = { id: 'goobrawl', kind: 'join', map: 'level2' };
   expect(accepts({ type: 'monster', visible: true, mtype: 'bgoo' })).toBe(true);
 });

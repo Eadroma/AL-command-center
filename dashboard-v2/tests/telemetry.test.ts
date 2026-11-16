@@ -32,10 +32,37 @@ describe('deployment telemetry',()=>{
   onLoot({gold:125,items:[{name:'coat',level:0,q:2,looter:'A'},{name:'pants',q:5,looter:'B'}]});onLoot({gold:75});onLoot({gold:-10});
   context.character.gold=999999;
   pulse();
-  expect(bodies[1].loot).toEqual({gold:200,items:[{name:'coat',level:0,quantity:2}]});
+  const loot={gold:200,items:[{name:'coat',level:0,quantity:2}],monsters:{unknown:{kills:0,gold:200,items:[{name:'coat',level:0,quantity:2}]}}};
+  expect(bodies[1].loot).toEqual(loot);
   const t=new Telemetry(),session=t.create('A','hash');
   t.ingest({...bodies[1],ticket:session.ticket});
-  expect(t.view(session.id)?.loot).toEqual({gold:200,items:[{name:'coat',level:0,quantity:2}]});
+  expect(t.view(session.id)?.loot).toEqual(loot);
+ });
+ it('keeps reporting after one pulse throws while building the payload, and logs the error',()=>{
+  const bodies:any[]=[];let pulse:()=>void=()=>{};let fail=true;
+  const ok={then:()=>({then:()=>({catch:()=>({finally:(fn:any)=>fn()})})})};
+  const context:any={character:{name:'A',...stats},BankCoordinator:{snapshot:()=>{if(fail)throw Error('boom');return {owner:''};}},AbortController,setTimeout:()=>1,clearTimeout:()=>{},setInterval:(fn:any,ms:number)=>{if(ms===5000)pulse=fn;return 1;},fetch:(_url:string,options:any)=>{bodies.push(JSON.parse(options.body));return ok;}};
+  vm.runInNewContext(instrument('','A','a'.repeat(64),9320),context);
+  expect(bodies).toHaveLength(0); // the first pulse at install threw
+  fail=false;pulse();
+  expect(bodies).toHaveLength(1);
+  expect(bodies[0].logs.some((l:string)=>l.includes('ERROR: telemetry pulse: boom'))).toBe(true);
+ });
+ it('credits kills and chest loot to the monster that dropped the chest',()=>{
+  const bodies:any[]=[];let now=1000;
+  const on:Record<string,(event:any)=>void>={},listeners:Record<string,Array<(event:any)=>void>>={};
+  const emit=(event:string,data:any)=>(listeners[event]??[]).forEach(fn=>fn(data));
+  let pulse:()=>void=()=>{};
+  const context={Date:{now:()=>now},character:{name:'A',...stats,on:(event:string,fn:any)=>{on[event]=fn;}},parent:{socket:{on:(event:string,fn:any)=>{(listeners[event]??=[]).push(fn);}}},AbortController,setTimeout:()=>1,clearTimeout:()=>{},setInterval:(fn:any,ms:number)=>{if(ms===5000)pulse=fn;return 1;},fetch:(_url:string,options:any)=>{bodies.push(JSON.parse(options.body));return {then:()=>({then:()=>({catch:()=>({finally:(fn:any)=>fn()})})})};}};
+  vm.runInNewContext(instrument('','A','a'.repeat(64),9320),context);
+  emit('kill_credit',{mtype:'bscorpion'});emit('drop',{id:'c1'});
+  now+=500;emit('kill_credit',{mtype:'scorpion'});
+  // The scorpion died last, but the chest id still belongs to the black scorpion.
+  on.loot({id:'c1',gold:900,items:[{name:'stramulet',q:1,looter:'A'}]});
+  on.loot({id:'other',gold:10});
+  now+=120000;on.loot({id:'late',gold:5});
+  pulse();
+  expect(bodies.at(-1).loot.monsters).toEqual({bscorpion:{kills:1,gold:900,items:[{name:'stramulet',level:0,quantity:1}]},scorpion:{kills:1,gold:10,items:[]},unknown:{kills:0,gold:5,items:[]}});
  });
  it('binds reports to character and ticket, rejects replay and expires liveness',()=>{
   let now=10000;const t=new Telemetry(undefined,()=>now),s=t.create('A','hash');

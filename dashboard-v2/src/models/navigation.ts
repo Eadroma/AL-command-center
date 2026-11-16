@@ -11,7 +11,7 @@ export type TeamTool = typeof TEAM_TOOLS[number];
 const legacyTools: Record<string, TeamTool> = {
   farming: 'farming', events: 'farming', cave: 'farming', simulator: 'insights',
   inventory: 'inventory', combat: 'insights', operations: 'insights', incidents: 'insights',
-  performance: 'insights', deployments: 'setup', activity: 'insights', scripts: 'setup',
+  performance: 'insights', loot: 'insights', deployments: 'setup', activity: 'insights', scripts: 'setup',
 };
 export function routeFromHash(hash: string): { page: PageId; tool?: TeamTool; section?: string } {
   const [name, query = ''] = hash.replace(/^#/, '').split('?');

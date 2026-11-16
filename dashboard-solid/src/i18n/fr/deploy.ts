@@ -1,0 +1,35 @@
+/** CODE du personnage : état du déploiement, démarrer / arrêter. Démarrer ou arrêter agit dans le jeu. */
+import type { RawDictionary } from '../en/index.ts';
+
+export const deploy = {
+  title: 'Lancement',
+  locked: 'Démarrer et arrêter le CODE est verrouillé : le dashboard v2 reste seul à déployer pendant la migration. Pour le déverrouiller, mets deploy.enabled à true dans settings.json et redémarre.',
+  start: 'Démarrer',
+  stop: 'Arrêter',
+  status: 'Vérifier',
+  working: 'Demande au jeu…',
+  never: 'Jamais déployé depuis ce dashboard.',
+  last: (params: { readonly stage: string; readonly ago: string }): string => `${params.stage}, ${params.ago}`,
+  slot: (params: { readonly slot: string }): string => `Emplacement CODE ${params.slot}`,
+  online: 'Connecté dans le jeu',
+  offline: 'Pas connecté dans le jeu',
+  running: 'CODE en marche',
+  stopped: 'CODE arrêté',
+  requestNote: 'Le jeu met la demande en file : la télémétrie confirme le nouvel état quelques secondes plus tard.',
+  stage: {
+    idle: 'Rien de fait pour l’instant',
+    building: 'Construction',
+    checking: 'Vérification de la connexion',
+    choosingSlot: 'Choix de l’emplacement CODE',
+    backingUp: 'Sauvegarde de l’emplacement',
+    uploading: 'Envoi',
+    verifying: 'Vérification de l’envoi',
+    reloading: 'Demande de rechargement',
+    prepared: 'Envoyé, pas démarré',
+    reloadRequested: 'Déployé, rechargement demandé',
+    startRequested: 'Démarrage demandé',
+    stopRequested: 'Arrêt demandé',
+    rollbackRequested: 'Restauré, rechargement demandé',
+    failed: 'Échec',
+  },
+} satisfies RawDictionary['deploy'];

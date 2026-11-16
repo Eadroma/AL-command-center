@@ -31,7 +31,47 @@ var RuntimePolicy = (function () {
     return entities()[character.target] || null;
   }
   function distance(entity) { return Math.hypot((entity.real_x == null ? entity.x : entity.real_x) - character.x, (entity.real_y == null ? entity.y : entity.real_y) - character.y); }
-  function selfDefence(entity) { return !!entity && (entity.target === me || (__ALCC.farmers || []).indexOf(entity.target) >= 0); }
+  function selfDefence(entity) {
+    if (!entity) return false;
+    var team = __ALCC.farmers || [];
+    if (entity.target === me || team.indexOf(entity.target) >= 0) return true;
+    // An aggressive monster without a target still hits whoever stands in front of it (server mode.aggro, no rage = no retarget).
+    var def = typeof G !== 'undefined' && G.monsters && G.monsters[entity.mtype];
+    if (entity.target || !def || !def.aggro) return false;
+    var reach = (entity.range || def.range || 0) + 20;
+    return team.concat([me]).some(function (name) {
+      var p = name === me ? character : typeof get_player === 'function' ? get_player(name) : null;
+      return !!p && (!p.map || p.map === character.map) && Math.hypot(p.x - entity.x, p.y - entity.y) <= reach;
+    });
+  }
+  // Team pull gate: no new pull until every farmer is here, alive and near full HP/MP.
+  // 0.98 instead of 1.0 so the last regeneration tick does not stall the pull.
+  var READY_RATIO = 0.98, READY_DISTANCE = 400;
+  function memberUnready(name) {
+    var p = name === me ? character : typeof get_player === 'function' ? get_player(name) : null;
+    if (!p || p.rip || p.map && p.map !== character.map || name !== me && distance(p) > READY_DISTANCE) return name + ' absent';
+    if (p.max_hp && p.hp / p.max_hp < READY_RATIO) return name + ' HP';
+    if (p.max_mp && p.mp / p.max_mp < READY_RATIO) return name + ' MP';
+    return '';
+  }
+  function teamHold() {
+    if (character.ctype === 'merchant') return '';
+    // Live events are timed and EventRouter owns engagement: the event duo leaves the ranger behind
+    // ("Droma absent"), so this hold parked them at the Graveyard stairs and they skipped the waves.
+    if (typeof EventRouter !== 'undefined' && EventRouter.activeMonster && EventRouter.activeMonster()) return '';
+    var ents = entities();
+    // A fight already involving the team is never interrupted.
+    for (var id in ents) { var e = ents[id]; if (e && e.type === 'monster' && !e.dead && selfDefence(e)) return ''; }
+    var team = __ALCC.farmers || [];
+    for (var i = 0; i < team.length; i++) { var why = memberUnready(team[i]); if (why) return why; }
+    return '';
+  }
+  function topUpWhileHolding() {
+    if (character.rip || typeof use_skill !== 'function' || typeof is_on_cooldown !== 'function' || is_on_cooldown('use_hp')) return;
+    var hp = character.max_hp ? character.hp / character.max_hp : 1, mp = character.max_mp ? character.mp / character.max_mp : 1;
+    if (Math.min(hp, mp) >= READY_RATIO) return;
+    Promise.resolve(use_skill(hp <= mp ? 'use_hp' : 'use_mp')).catch(function () {});
+  }
   function setReason(value) { if (reason !== value) { reason = value; since = Date.now(); } }
   function record(action, result) {
     actions.push({ at: Date.now(), action: String(action).slice(0, 80), result: String(result).slice(0, 180) });
@@ -153,7 +193,9 @@ var RuntimePolicy = (function () {
     if (danger.active && d.action === 'town' && at - townAt >= 30000 && typeof town === 'function' && !character.rip) {
       townAt = at; try { if (typeof stop === 'function') stop('smart'); Promise.resolve(town()).catch(function (e) { record('town', 'Town failed: ' + String(e && (e.reason || e.message) || e).slice(0, 120)); }); } catch (e) { record('town', String(e)); }
     }
-    var t = target(), observation = character.rip ? 'Dead' : paused() ? 'Loot objective complete' : danger.active ? 'Safety: ' + danger.reason : typeof is_disabled === 'function' && is_disabled(character) ? 'Disabled' : !t ? 'No target' : !selfDefence(t) && typeof TeamCoordinator !== 'undefined' && !TeamCoordinator.canEngage() ? 'Waiting for team readiness' : !selfDefence(t) && typeof recurring_boss_waiting_for_priest === 'function' && recurring_boss_waiting_for_priest(t) ? 'Waiting for priest' : distance(t) > (character.range || 0) + (t.size || 0) ? 'Target out of range' : character.mp < (character.mp_cost || 0) ? 'Insufficient attack mana' : typeof is_on_cooldown === 'function' && is_on_cooldown('attack') ? 'Attack / heal cooldown' : 'Ready to attack';
+    var waitingFor = teamHold();
+    if (waitingFor) topUpWhileHolding();
+    var t = target(), observation = character.rip ? 'Dead' : paused() ? 'Loot objective complete' : danger.active ? 'Safety: ' + danger.reason : typeof is_disabled === 'function' && is_disabled(character) ? 'Disabled' : !t ? 'No target' : waitingFor && !selfDefence(t) ? 'Waiting for full team: ' + waitingFor : !selfDefence(t) && typeof TeamCoordinator !== 'undefined' && !TeamCoordinator.canEngage() ? 'Waiting for team readiness' : !selfDefence(t) && typeof recurring_boss_waiting_for_priest === 'function' && recurring_boss_waiting_for_priest(t) ? 'Waiting for priest' : distance(t) > (character.range || 0) + (t.size || 0) ? 'Target out of range' : character.mp < (character.mp_cost || 0) ? 'Insufficient attack mana' : typeof is_on_cooldown === 'function' && is_on_cooldown('attack') ? 'Attack / heal cooldown' : 'Ready to attack';
     setReason(at - lastActionAt < 1500 && (observation === 'Ready to attack' || observation === 'Attack / heal cooldown' && lastActionReason === 'Healing priority') ? lastActionReason : observation);
   }
   function allowLoop(name) {
@@ -161,7 +203,7 @@ var RuntimePolicy = (function () {
     if (name === 'movementLoop' || name === 'huntLoop') return !paused() && !danger.active;
     return true; // Attack gates below retain self-defence and healing during holds.
   }
-  function allowTarget(t) { return !(paused() || danger.active) || selfDefence(t); }
+  function allowTarget(t) { return !(paused() || danger.active || teamHold()) || selfDefence(t); }
   function install() {
     if (lootSupported) character.on('loot', onLoot);
     if (lootSupported) character.on('cm', function (data) {
@@ -186,9 +228,9 @@ var RuntimePolicy = (function () {
       globalThis[name] = function () {
         var args = arguments, skill = name === 'use_skill' ? String(args[0]) : name, t = name === 'use_skill' ? args[1] : args[0];
         var offensive = name === 'attack' || ['3shot', '5shot', 'supershot', 'huntersmark', 'poisonarrow', 'curse', 'cleave', 'stomp', 'agitate', 'cburst', 'burst', 'taunt', 'fanofknives', 'mentalburst'].indexOf(skill) >= 0;
-        if (offensive && (paused() || danger.active)) {
+        if (offensive && (paused() || danger.active || teamHold())) {
           var targets = (Array.isArray(t) ? t : [t]).map(function (entity) { return entity && typeof entity === 'object' ? entity : entities()[entity]; });
-          if (!targets.length || targets.some(function (entity) { return !selfDefence(entity); })) return Promise.reject({ reason: 'Command Center safety / objective hold' });
+          if (!targets.length || targets.some(function (entity) { return !selfDefence(entity); })) return Promise.reject({ reason: paused() || danger.active ? 'Command Center safety / objective hold' : 'Waiting for full team' });
         }
         try { return Promise.resolve(original.apply(this, args)).then(function (value) { record(skill, value && value.failed ? value.reason || 'failed' : 'success'); return value; }, function (error) { record(skill, error && (error.reason || error.message) || String(error)); throw error; }); }
         catch (error) { record(skill, error && (error.reason || error.message) || String(error)); throw error; }
@@ -205,5 +247,5 @@ var RuntimePolicy = (function () {
     });
     setInterval(tick, 250);
   }
-  return { install: install, tick: tick, allowLoop: allowLoop, allowTarget: allowTarget, onLoot: onLoot, charge: charge, reserve: reserve, settle: settle, commercialAllowed: commercialAllowed, commercialBatchLimit: commercialBatchLimit, skillBlocked: function (skill) { if (lastActionReason !== 'Skill disabled by loadout: ' + skill || Date.now() - lastActionAt > 1000) record(skill, 'Skill disabled by loadout: ' + skill); }, snapshot: function () { tick(); return { combatGear: typeof CombatGear !== 'undefined' ? CombatGear.snapshot() : undefined, diagnostic: { reason: reason, since: since, updatedAt: Date.now(), target: String(target() && target().id || ''), source: Date.now() - lastActionAt < 1500 && reason === lastActionReason ? 'action' : 'observed', durations: durations, actions: actions }, danger: danger, goals: goalRows(), commerce: commerceRows() }; } };
+  return { install: install, tick: tick, teamHold: teamHold, allowLoop: allowLoop, allowTarget: allowTarget, onLoot: onLoot, charge: charge, reserve: reserve, settle: settle, commercialAllowed: commercialAllowed, commercialBatchLimit: commercialBatchLimit, skillBlocked: function (skill) { if (lastActionReason !== 'Skill disabled by loadout: ' + skill || Date.now() - lastActionAt > 1000) record(skill, 'Skill disabled by loadout: ' + skill); }, snapshot: function () { tick(); return { combatGear: typeof CombatGear !== 'undefined' ? CombatGear.snapshot() : undefined, diagnostic: { reason: reason, since: since, updatedAt: Date.now(), target: String(target() && target().id || ''), source: Date.now() - lastActionAt < 1500 && reason === lastActionReason ? 'action' : 'observed', durations: durations, actions: actions }, danger: danger, goals: goalRows(), commerce: commerceRows() }; } };
 })();

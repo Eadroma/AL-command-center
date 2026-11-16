@@ -4,18 +4,21 @@ import { throttledJsonWriter } from './json-file';
 export interface PerformanceSample {
   sessionId: string; character: string; at: number;
   stats: { gold: number; xp: number; level: number; map?: string; server?: string };
-  loot?: { gold: number };
+  loot?: { gold: number; monsters?: Record<string, { kills: number; gold: number; items: Array<{ name: string; level: number; quantity: number }> }> };
   economy?: { consumablesGold: number; consumed: number; unpriced: number; npcSalesGold?: number };
   farmContext?: { activity?: string; monster: string; participants: string[]; build?: string; effects?: string[]; goldMultiplier?: number };
   combat?: { damageDealt: number; healing: number; kills: number; deaths: number; attacks: number; movingMs: number; combatMs: number };
 }
 export interface PerformanceBucket {
   lootGold?: number; lootElapsedMs?: number;
+  /** Per-monster deltas from kill_credit and chest attribution; items keyed `name@level`. */
+  monsters?: Record<string, MonsterLoot>;
   npcSalesGold?: number; npcSalesElapsedMs?: number; netLootGold?: number; consumablesGold?: number; consumed?: number; unpriced?: number; economyElapsedMs?: number;
   map?: string; server?: string;
   farmContext?: { activity?: string; monster: string; participants: string[]; build?: string; effects?: string[]; goldMultiplier?: number };
   character: string; at: number; elapsedMs: number; damage: number; healing: number; kills: number; deaths: number; attacks: number; movingMs: number; combatMs: number; xp: number; gold: number;
 }
+export interface MonsterLoot { kills: number; gold: number; items: Record<string, number> }
 interface State { last: Record<string, PerformanceSample>; buckets: PerformanceBucket[]; }
 const BUCKET_MS = 5 * 60 * 1000;
 const RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
@@ -24,6 +27,24 @@ const MAX_SAMPLE_GAP_MS = 20_000;
 const bucketKey = (row: Pick<PerformanceBucket, 'character' | 'at' | 'map' | 'server' | 'farmContext'>) =>
   `${row.character}|${row.at}|${row.map}|${row.server}|${JSON.stringify(row.farmContext)}`;
 const delta =(current: number, previous: number) => current >= previous ? current - previous : 0;
+
+type MonsterTotals = NonNullable<NonNullable<PerformanceSample['loot']>['monsters']>;
+const itemCounts = (items: MonsterTotals[string]['items']) => new Map(items.map(it => [`${it.name}@${it.level}`, it.quantity]));
+function addMonsterDeltas(bucket: PerformanceBucket, current: MonsterTotals, previous: MonsterTotals) {
+  // Created even without kills so idle observed time still dilutes the rates.
+  bucket.monsters ??= {};
+  for (const [mtype, row] of Object.entries(current)) {
+    const before = previous[mtype] ?? { kills: 0, gold: 0, items: [] };
+    const target = bucket.monsters[mtype] ??= { kills: 0, gold: 0, items: {} };
+    target.kills += delta(row.kills, before.kills);
+    target.gold += delta(row.gold, before.gold);
+    const old = itemCounts(before.items);
+    for (const [key, quantity] of itemCounts(row.items)) {
+      const gained = delta(quantity, old.get(key) ?? 0);
+      if (gained) target.items[key] = (target.items[key] ?? 0) + gained;
+    }
+  }
+}
 
 /** Persist compact five-minute deltas and reset baselines across CODE sessions. */
 export class PerformanceHistory {
@@ -70,6 +91,7 @@ export class PerformanceHistory {
       bucket.lootGold = (bucket.lootGold ?? 0) + sample.loot.gold - previous.loot.gold;
       bucket.lootElapsedMs = (bucket.lootElapsedMs ?? 0) + elapsedMs;
     }
+    if (sample.loot?.monsters && previous.loot?.monsters) addMonsterDeltas(bucket, sample.loot.monsters, previous.loot.monsters);
     if (sample.loot && previous.loot && sample.economy && previous.economy
       && sample.loot.gold >= previous.loot.gold && sample.economy.consumablesGold >= previous.economy.consumablesGold
       && sample.economy.consumed >= previous.economy.consumed && sample.economy.unpriced >= previous.economy.unpriced) {
