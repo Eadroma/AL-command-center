@@ -46,7 +46,7 @@ function partySteps(context: Context, result: JsonRecord): Step[] {
     ...leader,
     ['PRIEST', nameOf(context, 'priest'), 'set'],
     ['MAGE', nameOf(context, 'ranger') === '' ? nameOf(context, 'mage') : nameOf(context, 'ranger'), 'set'],
-    ['RANGER', nameOf(context, 'ranger') || nameOf(context, 'rogue'), 'set'],
+    ['RANGER', nameOf(context, 'ranger') === '' ? nameOf(context, 'rogue') : nameOf(context, 'ranger'), 'set'],
     ['MERCHANT', nameOf(context, 'merchant'), 'set'],
     ...(character.ctype === 'rogue' ? [['merchantSpot', field(section(context, 'seller'), 'standSpot'), 'set'] as const] : []),
     ['PARTY', active.filter(inParty).map((entry) => entry.name), 'set'],
