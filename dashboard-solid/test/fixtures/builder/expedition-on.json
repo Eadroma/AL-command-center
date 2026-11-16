@@ -1,0 +1,3287 @@
+{
+  "variant": "expedition-on",
+  "v2Revision": 237,
+  "validation": null,
+  "profile": {
+    "name": "Main party",
+    "onboardingComplete": true,
+    "automation": {
+      "combatGear": [
+        {
+          "character": "Archer",
+          "enabled": true,
+          "combatItem": "handofmidas",
+          "combatMinLevel": 3,
+          "movementItem": "wgloves",
+          "movementMinLevel": 1
+        },
+        {
+          "character": "Blade",
+          "enabled": true,
+          "combatItem": "handofmidas",
+          "combatMinLevel": 0,
+          "movementItem": "gloves",
+          "movementMinLevel": 0
+        }
+      ],
+      "activeActivity": "",
+      "activeConsumables": [],
+      "activeBuilds": {},
+      "activities": [],
+      "lootGoals": [],
+      "dangers": {
+        "enabled": false,
+        "maxAttackers": 4,
+        "retreatHpPercent": 25,
+        "resumeHpPercent": 70,
+        "requirePriest": false,
+        "healerRange": 200,
+        "action": "hold",
+        "maxDeaths": 0,
+        "runId": "",
+        "coordinatedRetreat": false
+      },
+      "commercialGoals": []
+    },
+    "server": {
+      "region": "EU",
+      "name": "IV"
+    },
+    "characters": [
+      {
+        "name": "Hero",
+        "ctype": "warrior",
+        "enabled": true,
+        "runtime": "browser",
+        "script": "eadroma-warrior-v2",
+        "follow": "",
+        "events": true,
+        "job": "hunt",
+        "farmMonster": "",
+        "overrides": {}
+      },
+      {
+        "name": "Healer",
+        "ctype": "priest",
+        "enabled": true,
+        "runtime": "browser",
+        "script": "aedroma-priest-v2",
+        "follow": "Hero",
+        "events": true,
+        "job": "hunt",
+        "farmMonster": "",
+        "overrides": {}
+      },
+      {
+        "name": "Archer",
+        "ctype": "ranger",
+        "enabled": false,
+        "runtime": "browser",
+        "script": "droma-ranger-v2",
+        "follow": "Hero",
+        "events": true,
+        "job": "hunt",
+        "farmMonster": "",
+        "overrides": {}
+      },
+      {
+        "name": "Trader",
+        "ctype": "merchant",
+        "enabled": true,
+        "runtime": "browser",
+        "script": "eadrosell-merchant-v2",
+        "follow": "",
+        "events": false,
+        "job": "hunt",
+        "farmMonster": "",
+        "overrides": {}
+      },
+      {
+        "name": "Wizard",
+        "ctype": "mage",
+        "enabled": false,
+        "runtime": "browser",
+        "script": "tonerre-mage",
+        "follow": "",
+        "events": true,
+        "job": "hunt",
+        "farmMonster": "",
+        "overrides": {}
+      },
+      {
+        "name": "Blade",
+        "ctype": "rogue",
+        "enabled": true,
+        "runtime": "browser",
+        "script": "dromas-rogue-party-v2",
+        "follow": "Hero",
+        "events": true,
+        "job": "hunt",
+        "farmMonster": "",
+        "overrides": {}
+      }
+    ],
+    "farming": {
+      "defaultMonster": "bscorpion",
+      "hunts": false,
+      "allowedHunts": [
+        "goo",
+        "bee",
+        "crab",
+        "frog",
+        "squig",
+        "squigtoad",
+        "armadillo",
+        "snake",
+        "osnake",
+        "tortoise",
+        "croc",
+        "rat",
+        "spider",
+        "bat",
+        "jr",
+        "greenjr",
+        "minimush",
+        "arcticbee",
+        "iceroamer",
+        "scorpion",
+        "crabx",
+        "bigbird",
+        "phoenix",
+        "poisio",
+        "stoneworm",
+        "mvampire",
+        "porcupine",
+        "cgoo",
+        "prat",
+        "boar",
+        "mole",
+        "wolfie",
+        "ghost",
+        "booboo",
+        "fireroamer",
+        "mummy",
+        "nerfedmummy",
+        "hen",
+        "rooster",
+        "dragold",
+        "crabxx",
+        "fvampire",
+        "snowman",
+        "tiger"
+      ],
+      "rareVisits": false,
+      "dailyDungeon": false,
+      "style": {
+        "goo": "aoe",
+        "bee": "aoe",
+        "crab": "aoe",
+        "frog": "aoe",
+        "squig": "aoe",
+        "squigtoad": "aoe",
+        "armadillo": "aoe",
+        "snake": "aoe",
+        "osnake": "aoe",
+        "tortoise": "aoe",
+        "croc": "aoe",
+        "rat": "aoe",
+        "spider": "mono",
+        "bat": "aoe",
+        "jr": "mono",
+        "greenjr": "mono",
+        "minimush": "mono",
+        "arcticbee": "aoe",
+        "iceroamer": "mono",
+        "scorpion": "mono",
+        "crabx": "aoe",
+        "bigbird": "aoe",
+        "phoenix": "mono",
+        "poisio": "aoe",
+        "stoneworm": "mono",
+        "mvampire": "mono",
+        "porcupine": "aoe",
+        "cgoo": "aoe",
+        "prat": "aoe",
+        "boar": "aoe",
+        "mole": "mono",
+        "wolfie": "mono",
+        "ghost": "mono",
+        "booboo": "mono",
+        "fireroamer": "tank",
+        "mummy": "aoe",
+        "nerfedmummy": "aoe",
+        "goobrawl": "aoe",
+        "crabxx": "aoe",
+        "franky": "mono",
+        "icegolem": "mono",
+        "snowman": "mono",
+        "dragold": "mono",
+        "grinch": "mono",
+        "wabbit": "mono",
+        "pinkgoo": "aoe",
+        "mrpumpkin": "mono",
+        "mrgreen": "mono",
+        "slenderman": "mono",
+        "tiger": "mono",
+        "harpy": "aoe",
+        "a2": "aoe",
+        "fvampire": "tank",
+        "hen": "aoe",
+        "rooster": "aoe",
+        "bscorpion": "mono",
+        "vbat": "crypt",
+        "a3": "crypt",
+        "a7": "crypt"
+      },
+      "loadouts": {
+        "Hero": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "ololipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "offhand",
+                "item": "glolipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry",
+              "cleave"
+            ]
+          },
+          "mono": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "fireblade",
+                "minLevel": 8
+              },
+              {
+                "slot": "offhand",
+                "item": "fireblade",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry"
+            ]
+          },
+          "tank": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "offhand",
+                "item": "candleward",
+                "minLevel": 5
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "ololipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "offhand",
+                "item": "glolipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry"
+            ]
+          },
+          "crypt": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "fireblade",
+                "minLevel": 8
+              },
+              {
+                "slot": "offhand",
+                "item": "fireblade",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry"
+            ]
+          }
+        },
+        "Healer": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "mono": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "tank": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "crypt": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "belt",
+                "item": "hpbelt",
+                "minLevel": 2
+              },
+              {
+                "slot": "offhand",
+                "item": "candleward",
+                "minLevel": 7
+              },
+              {
+                "slot": "amulet",
+                "item": "t2intamulet",
+                "minLevel": 0
+              }
+            ],
+            "skills": []
+          }
+        },
+        "Archer": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "gloves",
+                "item": "handofmidas",
+                "minLevel": 3
+              },
+              {
+                "slot": "mainhand",
+                "item": "firebow",
+                "minLevel": 8
+              },
+              {
+                "slot": "helmet",
+                "item": "oxhelmet",
+                "minLevel": 0
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 7
+              }
+            ],
+            "skills": []
+          },
+          "mono": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          },
+          "tank": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "gloves",
+                "item": "handofmidas",
+                "minLevel": 3
+              },
+              {
+                "slot": "mainhand",
+                "item": "firebow",
+                "minLevel": 8
+              },
+              {
+                "slot": "helmet",
+                "item": "oxhelmet",
+                "minLevel": 0
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 7
+              }
+            ],
+            "skills": []
+          },
+          "crypt": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          }
+        },
+        "Wizard": {
+          "aoe": {
+            "gear": [],
+            "skills": []
+          },
+          "mono": {
+            "gear": [],
+            "skills": []
+          },
+          "tank": {
+            "gear": [],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          }
+        }
+      },
+      "bossChecks": {
+        "enabled": false,
+        "rules": [
+          {
+            "boss": "jr",
+            "everyMinutes": 240
+          },
+          {
+            "boss": "greenjr",
+            "everyMinutes": 240
+          },
+          {
+            "boss": "dragold",
+            "everyMinutes": 60
+          },
+          {
+            "boss": "fvampire",
+            "everyMinutes": 15
+          }
+        ]
+      }
+    },
+    "events": {
+      "expedition": {
+        "enabled": true,
+        "allowed": [
+          "mrgreen",
+          "mrpumpkin",
+          "crabxx",
+          "franky",
+          "icegolem",
+          "snowman",
+          "dragold",
+          "grinch",
+          "wabbit",
+          "pinkgoo",
+          "tiger",
+          "phoenix",
+          "jr",
+          "greenjr",
+          "horseman",
+          "graveyard"
+        ],
+        "maxMinutes": 20,
+        "maxDeaths": 3
+      },
+      "enabled": true,
+      "allowed": [
+        "crabxx",
+        "goobrawl",
+        "franky",
+        "icegolem",
+        "abtesting",
+        "phoenix",
+        "jr",
+        "greenjr",
+        "mrpumpkin",
+        "mrgreen",
+        "snowman",
+        "dragold",
+        "grinch",
+        "wabbit",
+        "pinkgoo",
+        "tiger",
+        "horseman",
+        "graveyard"
+      ],
+      "style": {
+        "crabxx": "aoe",
+        "goobrawl": "aoe",
+        "franky": "tank",
+        "icegolem": "tank",
+        "abtesting": "aoe",
+        "phoenix": "mono",
+        "jr": "tank",
+        "greenjr": "tank",
+        "mrpumpkin": "aoe",
+        "mrgreen": "tank",
+        "snowman": "mono",
+        "dragold": "mono",
+        "grinch": "tank",
+        "wabbit": "mono",
+        "pinkgoo": "aoe",
+        "slenderman": "tank",
+        "tiger": "mono",
+        "horseman": "mono",
+        "graveyard": "aoe"
+      }
+    },
+    "seller": {
+      "trickOrTreat": {
+        "enabled": true
+      },
+      "witchCipher": {
+        "enabled": true
+      },
+      "workOrder": [
+        "sell",
+        "craft",
+        "exchange",
+        "bank",
+        "compound",
+        "upgrade"
+      ],
+      "buy": {
+        "managed": true,
+        "enabled": true,
+        "reserveGold": 300000000,
+        "budget": 999999999999,
+        "orders": [
+          {
+            "item": "monstertoken",
+            "level": 0,
+            "price": 700000,
+            "quantity": 200
+          },
+          {
+            "item": "ololipop",
+            "level": 0,
+            "price": 1100000,
+            "quantity": 10
+          },
+          {
+            "item": "supermittens",
+            "level": 0,
+            "price": 100000000,
+            "quantity": 10
+          },
+          {
+            "item": "firebow",
+            "level": 0,
+            "price": 1000000,
+            "quantity": 10
+          },
+          {
+            "item": "strbelt",
+            "level": 4,
+            "price": 500000000,
+            "quantity": 1
+          }
+        ]
+      },
+      "npcEnabled": true,
+      "npcItems": [
+        "ringsj",
+        "beewings",
+        "gslime",
+        "hpbelt",
+        "hpamulet",
+        "rattail",
+        "spores",
+        "dstones",
+        "helmet",
+        "coat",
+        "gloves",
+        "pants",
+        "shoes",
+        "helmet1",
+        "coat1",
+        "gloves1",
+        "pants1",
+        "shoes1",
+        "poker",
+        "confetti",
+        "stinger",
+        "mushroomstaff",
+        "slimestaff",
+        "partyhat",
+        "wcap",
+        "wbreeches",
+        "phelmet",
+        "xmasshoes",
+        "merry",
+        "strbelt",
+        "whiteegg",
+        "dexbelt",
+        "cclaw",
+        "wshoes",
+        "strearring",
+        "dexearring",
+        "intearring",
+        "vitearring",
+        "lotusf",
+        "stramulet",
+        "wgloves",
+        "drapes",
+        "cake",
+        "ftrinket",
+        "vitring",
+        "strring",
+        "intring",
+        "dexring",
+        "wattire",
+        "spear",
+        "basher",
+        "frogt",
+        "wbook0",
+        "frankypants",
+        "skullamulet",
+        "throwingstars",
+        "bowofthedead",
+        "talkingskull",
+        "hotchocolate",
+        "xmashat",
+        "rednose",
+        "ornamentstaff",
+        "firestaff",
+        "candycanesword",
+        "xmassweater",
+        "xmaspants",
+        "carrot",
+        "jacko",
+        "staffofthedead",
+        "swordofthedead",
+        "maceofthedead",
+        "pmaceofthedead",
+        "gphelmet",
+        "pmace",
+        "xmace",
+        "harmor",
+        "hgloves",
+        "hpants",
+        "hboots",
+        "hhelmet",
+        "harbringer",
+        "smoke",
+        "fieldgen0"
+      ],
+      "standEnabled": true,
+      "listings": [
+        {
+          "item": "frozenkey",
+          "level": 0,
+          "price": 5000000
+        },
+        {
+          "item": "embercore",
+          "level": 0,
+          "price": 5000000
+        },
+        {
+          "item": "tombkey",
+          "level": 0,
+          "price": 5000000
+        },
+        {
+          "item": "spiderkey",
+          "level": 0,
+          "price": 5000000
+        },
+        {
+          "item": "weaponbox",
+          "level": 0,
+          "price": 750000
+        },
+        {
+          "item": "voidthread",
+          "level": 0,
+          "price": 10000000
+        },
+        {
+          "item": "slice_strawberry",
+          "level": 0,
+          "price": 300000
+        },
+        {
+          "item": "mcape",
+          "level": 5,
+          "price": 25040000
+        },
+        {
+          "item": "gemfragment",
+          "level": 0,
+          "price": 1000000
+        },
+        {
+          "item": "suckerpunch",
+          "level": 0,
+          "price": 1400000000
+        },
+        {
+          "item": "lantern",
+          "level": 1,
+          "price": 50000000
+        },
+        {
+          "item": "cxjar",
+          "level": 0,
+          "price": 1500000000
+        },
+        {
+          "item": "glolipop",
+          "level": 8,
+          "price": 90000000
+        },
+        {
+          "item": "ololipop",
+          "level": 8,
+          "price": 92000000
+        },
+        {
+          "item": "xboots",
+          "level": 0,
+          "price": 44920000
+        },
+        {
+          "item": "xpants",
+          "level": 0,
+          "price": 43572500
+        },
+        {
+          "item": "xgloves",
+          "level": 0,
+          "price": 32382857
+        },
+        {
+          "item": "xhelmet",
+          "level": 0,
+          "price": 50000000
+        },
+        {
+          "item": "cscroll3",
+          "level": 0,
+          "price": 800000000
+        },
+        {
+          "item": "scroll3",
+          "level": 0,
+          "price": 250000000
+        },
+        {
+          "item": "starkillers",
+          "level": 0,
+          "price": 200000000
+        },
+        {
+          "item": "offeringp",
+          "level": 0,
+          "price": 5000000
+        },
+        {
+          "item": "witchparcel",
+          "level": 0,
+          "price": 10000000
+        },
+        {
+          "item": "warpvest",
+          "level": 0,
+          "price": 2000000000
+        }
+      ],
+      "standSpot": {
+        "map": "main",
+        "x": -100,
+        "y": -20
+      },
+      "exchange": {
+        "enabled": true,
+        "items": [
+          "gem0",
+          "gift0",
+          "mistletoe",
+          "marketparcel",
+          "candycane",
+          "gem1",
+          "armorbox",
+          "anniversarygift",
+          "mysterybox",
+          "candy1",
+          "candy0"
+        ],
+        "minimum": {
+          "marketparcel": 1,
+          "candycane": 1,
+          "gem1": 1,
+          "armorbox": 5,
+          "anniversarygift": 10,
+          "mysterybox": 1,
+          "candy1": 50,
+          "candy0": 50
+        },
+        "bank": {
+          "candy0": {
+            "enabled": true,
+            "batchSize": 50
+          },
+          "candy1": {
+            "enabled": true,
+            "batchSize": 50
+          },
+          "gift0": {
+            "enabled": false,
+            "batchSize": 10
+          }
+        }
+      },
+      "upgrade": {
+        "enabled": true,
+        "minGold": 100000000,
+        "rules": [
+          {
+            "item": "mittens",
+            "maxLevel": 8
+          },
+          {
+            "item": "wingedboots",
+            "maxLevel": 8
+          },
+          {
+            "item": "ololipop",
+            "maxLevel": 8
+          },
+          {
+            "item": "warmscarf",
+            "maxLevel": 7
+          },
+          {
+            "item": "candleward",
+            "maxLevel": 7
+          },
+          {
+            "item": "homecomingcape",
+            "maxLevel": 7
+          },
+          {
+            "item": "homecomingcoat",
+            "maxLevel": 7
+          },
+          {
+            "item": "horsecape",
+            "maxLevel": 7
+          },
+          {
+            "item": "paradequiver",
+            "maxLevel": 7
+          },
+          {
+            "item": "reunionbow",
+            "maxLevel": 7
+          },
+          {
+            "item": "froststaff",
+            "maxLevel": 7
+          },
+          {
+            "item": "supermittens",
+            "maxLevel": 5
+          },
+          {
+            "item": "t2quiver",
+            "maxLevel": 8
+          },
+          {
+            "item": "alloyquiver",
+            "maxLevel": 8
+          },
+          {
+            "item": "quiver",
+            "maxLevel": 8
+          },
+          {
+            "item": "oozingterror",
+            "maxLevel": 7
+          },
+          {
+            "item": "handofmidas",
+            "maxLevel": 5
+          },
+          {
+            "item": "pouchbow",
+            "maxLevel": 9
+          },
+          {
+            "item": "glolipop",
+            "maxLevel": 8
+          },
+          {
+            "item": "coat",
+            "maxLevel": 10,
+            "buyNpc": true,
+            "paused": false,
+            "production": {
+              "enabled": true,
+              "quantity": 1,
+              "budget": 200000000,
+              "runId": "a2c7499e-554a-4d5d-b53a-3c19382f04df"
+            }
+          },
+          {
+            "item": "helmet",
+            "maxLevel": 10,
+            "buyNpc": true,
+            "paused": false,
+            "production": {
+              "enabled": true,
+              "quantity": 1,
+              "budget": 200000000,
+              "runId": "9b00955e-434e-4580-83b7-e6813f85edbc"
+            }
+          },
+          {
+            "item": "pants",
+            "maxLevel": 10,
+            "buyNpc": true,
+            "paused": false,
+            "production": {
+              "enabled": true,
+              "quantity": 1,
+              "budget": 200000000,
+              "runId": "a856f5a3-db7a-4b42-a948-b26d08308ac5"
+            }
+          },
+          {
+            "item": "gloves",
+            "maxLevel": 10,
+            "buyNpc": true,
+            "production": {
+              "enabled": true,
+              "quantity": 3,
+              "budget": 200000000,
+              "runId": "e30a7d61-e606-404f-9b7b-e5e76eccda94"
+            }
+          },
+          {
+            "item": "homecominghelm",
+            "maxLevel": 7
+          },
+          {
+            "item": "daggerofthedead",
+            "maxLevel": 8
+          },
+          {
+            "item": "cave_counterweight",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_locktooth",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_deepaxe",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_mothsteps",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_reedscythe",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_tunnelaxe",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_blackstaff",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_backstabber",
+            "maxLevel": 7
+          },
+          {
+            "item": "cave_ambercoat",
+            "maxLevel": 7
+          },
+          {
+            "item": "fireblade",
+            "maxLevel": 8
+          },
+          {
+            "item": "firebow",
+            "maxLevel": 8
+          },
+          {
+            "item": "broom",
+            "maxLevel": 8
+          }
+        ]
+      },
+      "compound": {
+        "enabled": true,
+        "checkBankOnDeposit": true,
+        "rules": [
+          {
+            "item": "lantern",
+            "maxLevel": 3
+          },
+          {
+            "item": "orbofvit",
+            "maxLevel": 3
+          },
+          {
+            "item": "orbofstr",
+            "maxLevel": 3
+          },
+          {
+            "item": "orbofint",
+            "maxLevel": 3
+          },
+          {
+            "item": "orbofdex",
+            "maxLevel": 3
+          },
+          {
+            "item": "spookyamulet",
+            "maxLevel": 3
+          },
+          {
+            "item": "keepsakependant",
+            "maxLevel": 3
+          },
+          {
+            "item": "intbelt",
+            "maxLevel": 3
+          },
+          {
+            "item": "cearring",
+            "maxLevel": 3
+          },
+          {
+            "item": "cring",
+            "maxLevel": 3
+          },
+          {
+            "item": "intamulet",
+            "maxLevel": 3
+          },
+          {
+            "item": "dexamulet",
+            "maxLevel": 3
+          },
+          {
+            "item": "cave_loaded_die",
+            "maxLevel": 3
+          }
+        ]
+      },
+      "craft": {
+        "enabled": true,
+        "reserveGold": 1000000,
+        "rules": [
+          {
+            "item": "wingedboots",
+            "useBank": true,
+            "batchSize": 3
+          },
+          {
+            "item": "cave_loaded_die",
+            "useBank": true
+          }
+        ]
+      },
+      "ponty": {
+        "enabled": true,
+        "minGold": 200000,
+        "items": [
+          "ololipop",
+          "glolipop"
+        ]
+      },
+      "kit": {
+        "enabled": true,
+        "rules": []
+      },
+      "consumables": {
+        "enabled": true,
+        "rules": [
+          {
+            "character": "Archer",
+            "item": "elixirluck",
+            "minQty": 1,
+            "targetQty": 1,
+            "maxQty": 1,
+            "mode": "elixir",
+            "source": "mule"
+          },
+          {
+            "character": "Blade",
+            "item": "elixirluck",
+            "minQty": 1,
+            "targetQty": 1,
+            "maxQty": 1,
+            "mode": "elixir",
+            "source": "mule"
+          }
+        ]
+      },
+      "gifts": {
+        "enabled": true,
+        "rules": []
+      },
+      "bankDeposit": {
+        "enabled": true,
+        "items": [
+          "lantern",
+          "leather",
+          "gemfragment",
+          "orbofdex",
+          "lifestealscroll",
+          "manastealscroll",
+          "outputscroll",
+          "mpcostscroll",
+          "luckscroll",
+          "intscroll",
+          "forscroll",
+          "goldscroll",
+          "evasionscroll",
+          "dexscroll",
+          "critscroll",
+          "dreturnscroll",
+          "armorscroll",
+          "apiercingscroll",
+          "frequencyscroll",
+          "reflectionscroll",
+          "rpiercingscroll",
+          "resistancescroll",
+          "speedscroll",
+          "strscroll",
+          "vitscroll",
+          "xpscroll",
+          "bwing",
+          "poison",
+          "essenceoffrost",
+          "essenceoffire",
+          "essenceoflife",
+          "essenceofgreed",
+          "essenceofnature",
+          "essenceofether",
+          "frostcore",
+          "snowball",
+          "suckerpunch",
+          "swirlipop",
+          "fallen",
+          "funtoken",
+          "pvptoken",
+          "spookyamulet",
+          "pstem",
+          "ashleaf",
+          "weaponbox",
+          "cryptkey",
+          "greenbomb",
+          "xarmor",
+          "xgloves",
+          "xpants",
+          "xboots",
+          "xhelmet",
+          "crabclaw",
+          "cshell",
+          "feather0",
+          "feather1",
+          "stormfeather",
+          "candy1",
+          "candy1v2",
+          "candy1v3",
+          "candy0v3",
+          "candy0",
+          "candy0v2",
+          "witchparcel",
+          "cave_amber",
+          "pumpkinspice",
+          "dexamulet",
+          "intamulet",
+          "intbelt",
+          "seashell",
+          "reefglass"
+        ]
+      },
+      "teamSupervisor": {
+        "enabled": true,
+        "characters": [
+          "Hero",
+          "Healer",
+          "Blade"
+        ],
+        "soloGuard": false
+      }
+    }
+  },
+  "characters": {
+    "Hero": {
+      "config": {
+        "NAME": "Hero",
+        "PRIEST": "Healer",
+        "RANGER": "Blade",
+        "MERCHANT": "Trader",
+        "PARTY": [
+          "Healer"
+        ],
+        "PARTY_GUESTS": [],
+        "HOME": {
+          "region": "EU",
+          "name": "IV"
+        },
+        "DEFAULT_FARM": "bscorpion",
+        "FARM_INDEPENDENT": false,
+        "DAILY_DUNGEON": false,
+        "RARE_VISITS": false,
+        "TEAM_SLOTS": {},
+        "hunts": {
+          "enabled": false,
+          "maxWipes": 3,
+          "wipeTimeoutMs": 2160000
+        },
+        "skills": {
+          "warcryEnabled": true,
+          "chargeEnabled": true,
+          "tauntEnabled": true,
+          "tauntCooldown": 3000,
+          "inviteContesters": true,
+          "cleaveEnabled": true,
+          "cleaveMinMobs": 2,
+          "cleaveMinMp": 120,
+          "stompEnabled": true,
+          "stompPanicRatio": 0.35,
+          "agitateEnabled": false,
+          "agitateMinMobs": 2,
+          "mpReserve": 300,
+          "mpHysteresisUpper": 450,
+          "circleWalk": true,
+          "circleRadius": 35
+        },
+        "bossLuckHp": {
+          "dragold": 200000,
+          "franky": 80000,
+          "tiger": 60000,
+          "greenjr": 150000,
+          "jr": 120000,
+          "default": 100000
+        },
+        "potions": {
+          "autoBuy": true,
+          "hpThreshold": 0.8,
+          "mpThreshold": 0.65,
+          "minStock": 100,
+          "needH": 200,
+          "needM": 300,
+          "hpot": "hpot1",
+          "mpot": "mpot1",
+          "potBuyCount": 200
+        },
+        "movement": {
+          "enabled": true,
+          "approachRatio": 0.85,
+          "followPriest": true,
+          "priestMaxDist": 350
+        },
+        "WEAPONS": {
+          "default": "lolipop",
+          "lolipop": {
+            "main": "ololipop",
+            "off": "glolipop"
+          },
+          "fireblade": {
+            "main": "fireblade",
+            "off": "fireblade",
+            "shiny_main": true
+          },
+          "pack": {
+            "goo": "lolipop",
+            "bee": "lolipop",
+            "crab": "lolipop",
+            "croc": "lolipop",
+            "armadillo": "lolipop",
+            "minimush": "fireblade",
+            "spider": "fireblade",
+            "scorpion": "fireblade",
+            "stoneworm": "fireblade",
+            "bigbird": "lolipop",
+            "booboo": "fireblade",
+            "phoenix": "fireblade",
+            "jr": "fireblade",
+            "greenjr": "fireblade",
+            "dragold": "fireblade",
+            "franky": "fireblade",
+            "icegolem": "fireblade",
+            "crabxx": "lolipop",
+            "frog": "lolipop",
+            "squig": "lolipop",
+            "squigtoad": "lolipop",
+            "snake": "lolipop",
+            "osnake": "lolipop",
+            "tortoise": "lolipop",
+            "rat": "lolipop",
+            "bat": "lolipop",
+            "arcticbee": "lolipop",
+            "iceroamer": "fireblade",
+            "crabx": "lolipop",
+            "poisio": "lolipop",
+            "mvampire": "fireblade",
+            "porcupine": "lolipop",
+            "cgoo": "lolipop",
+            "prat": "lolipop",
+            "boar": "lolipop",
+            "mole": "fireblade",
+            "wolfie": "fireblade",
+            "ghost": "fireblade",
+            "fireroamer": "fireblade",
+            "mummy": "lolipop",
+            "nerfedmummy": "lolipop",
+            "goobrawl": "lolipop",
+            "snowman": "fireblade",
+            "grinch": "fireblade",
+            "wabbit": "fireblade",
+            "pinkgoo": "lolipop",
+            "mrpumpkin": "lolipop",
+            "mrgreen": "fireblade",
+            "slenderman": "fireblade",
+            "tiger": "fireblade",
+            "harpy": "lolipop",
+            "a2": "lolipop",
+            "fvampire": "fireblade",
+            "hen": "lolipop",
+            "rooster": "lolipop",
+            "bscorpion": "fireblade",
+            "vbat": "lolipop",
+            "a3": "lolipop",
+            "a7": "lolipop",
+            "abtesting": "lolipop",
+            "horseman": "fireblade",
+            "graveyard": "lolipop"
+          }
+        },
+        "KEEP_ITEMS": [
+          "ololipop",
+          "glolipop",
+          "fireblade",
+          "tracker",
+          "hpot0",
+          "mpot0",
+          "hpot1",
+          "mpot1"
+        ],
+        "GIVE_WEAPONS": [],
+        "GIVE_ARMOR": [
+          "coat",
+          "gloves",
+          "pants",
+          "helmet",
+          "shoes"
+        ],
+        "loot": {
+          "enabled": true,
+          "intervalMs": 400,
+          "chestRange": 350
+        },
+        "inventory": {
+          "dumpEsize": 4,
+          "dumpCooldownMs": 60000,
+          "goldKeep": 50000
+        },
+        "DUMP_ESIZE": 4,
+        "HUNT_WIPE_MAX": 3,
+        "PACK_STYLE": {
+          "crabxx": "aoe",
+          "goobrawl": "aoe",
+          "franky": "mono",
+          "icegolem": "mono",
+          "abtesting": "aoe",
+          "phoenix": "mono",
+          "jr": "mono",
+          "greenjr": "mono",
+          "mrpumpkin": "mono",
+          "mrgreen": "mono",
+          "snowman": "mono",
+          "dragold": "mono",
+          "grinch": "mono",
+          "wabbit": "mono",
+          "pinkgoo": "aoe",
+          "slenderman": "mono",
+          "tiger": "mono",
+          "horseman": "mono",
+          "graveyard": "aoe",
+          "goo": "aoe",
+          "bee": "aoe",
+          "crab": "aoe",
+          "frog": "aoe",
+          "squig": "aoe",
+          "squigtoad": "aoe",
+          "armadillo": "aoe",
+          "snake": "aoe",
+          "osnake": "aoe",
+          "tortoise": "aoe",
+          "croc": "aoe",
+          "rat": "aoe",
+          "spider": "mono",
+          "bat": "aoe",
+          "minimush": "mono",
+          "arcticbee": "aoe",
+          "iceroamer": "mono",
+          "scorpion": "mono",
+          "crabx": "aoe",
+          "bigbird": "aoe",
+          "poisio": "aoe",
+          "stoneworm": "mono",
+          "mvampire": "mono",
+          "porcupine": "aoe",
+          "cgoo": "aoe",
+          "prat": "aoe",
+          "boar": "aoe",
+          "mole": "mono",
+          "wolfie": "mono",
+          "ghost": "mono",
+          "booboo": "mono",
+          "fireroamer": "tank",
+          "mummy": "aoe",
+          "nerfedmummy": "aoe",
+          "harpy": "aoe",
+          "a2": "aoe",
+          "fvampire": "tank",
+          "hen": "aoe",
+          "rooster": "aoe",
+          "bscorpion": "mono",
+          "vbat": "crypt",
+          "a3": "crypt",
+          "a7": "crypt"
+        },
+        "STYLE_LOADOUTS": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "ololipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "offhand",
+                "item": "glolipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry",
+              "cleave"
+            ]
+          },
+          "mono": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "fireblade",
+                "minLevel": 8
+              },
+              {
+                "slot": "offhand",
+                "item": "fireblade",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry"
+            ]
+          },
+          "tank": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "offhand",
+                "item": "candleward",
+                "minLevel": 5
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "ololipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "offhand",
+                "item": "glolipop",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry"
+            ]
+          },
+          "crypt": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "mainhand",
+                "item": "fireblade",
+                "minLevel": 8
+              },
+              {
+                "slot": "offhand",
+                "item": "fireblade",
+                "minLevel": 7
+              },
+              {
+                "slot": "belt",
+                "item": "strbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "suckerpunch",
+                "minLevel": 0
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 8
+              },
+              {
+                "slot": "orb",
+                "item": "cave_loaded_die",
+                "minLevel": 2
+              }
+            ],
+            "skills": [
+              "taunt",
+              "charge",
+              "warcry"
+            ]
+          }
+        },
+        "LOADOUT_ITEMS": [
+          {
+            "item": "ololipop",
+            "minLevel": 7
+          },
+          {
+            "item": "glolipop",
+            "minLevel": 7
+          },
+          {
+            "item": "strbelt",
+            "minLevel": 1
+          },
+          {
+            "item": "suckerpunch",
+            "minLevel": 0
+          },
+          {
+            "item": "wingedboots",
+            "minLevel": 8
+          },
+          {
+            "item": "cave_loaded_die",
+            "minLevel": 2
+          },
+          {
+            "item": "fireblade",
+            "minLevel": 8
+          },
+          {
+            "item": "fireblade",
+            "minLevel": 7
+          },
+          {
+            "item": "candleward",
+            "minLevel": 5
+          }
+        ]
+      },
+      "codeSha256": "0d2733768ae645764f6739c41e8f3880d61e2e963649697a461e77dc2aa8bb7e",
+      "warnings": [
+        "Generated only; not uploaded or started.",
+        "Profile edits require rebuilding and restarting CODE.",
+        "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
+      ],
+      "bundleSha256": "554f9e10b2f2e4f7a0c6482d45f6b919772d4ed4d930276c0eee8ab2be263f51"
+    },
+    "Healer": {
+      "config": {
+        "NAME": "Healer",
+        "WARRIOR": "Hero",
+        "RANGER": "Blade",
+        "MERCHANT": "Trader",
+        "PARTY": [
+          "Hero"
+        ],
+        "PARTY_GUESTS": [],
+        "DEFAULT_FARM": "bscorpion",
+        "FARM_INDEPENDENT": false,
+        "DAILY_DUNGEON": false,
+        "RARE_VISITS": false,
+        "HEAL_HP_RATIO": 0.8,
+        "PARTYHEAL_WARRIOR_RATIO": 0.7,
+        "PARTYHEAL_MIN_ALLIES": 2,
+        "PARTYHEAL_SELF_RATIO": 0.55,
+        "ABSORB_MAX_HIT_RATIO": 0.15,
+        "SELF_HEAL_RATIO": 0.85,
+        "SELF_CRITICAL_RATIO": 0.4,
+        "HEAL_MISSING_HP": 200,
+        "partyHealMinMp": 2000,
+        "FOLLOW_RANGE": 140,
+        "MIN_RANGE": 95,
+        "ANCHOR": 120,
+        "MELEE_SAFE": 60,
+        "kiting": {
+          "enabled": true,
+          "optimalDistance": 120,
+          "sampleAngles": 8,
+          "bossAngles": 12,
+          "stepDistance": 40,
+          "repositionThreshold": 20,
+          "origins": {
+            "bscorpion": {
+              "map": "desertland",
+              "x": -440,
+              "y": -1240
+            }
+          }
+        },
+        "mpReserve": 800,
+        "mpHysteresisUpper": 1100,
+        "curseEnabled": true,
+        "curseMinHp": 50000,
+        "WEAPON_PREFERENCE": [
+          "lmace",
+          "vstaff",
+          "firestaff",
+          "staff"
+        ],
+        "KEEP_ITEMS": [
+          "vstaff",
+          "staff",
+          "oozingterror",
+          "elixirint0",
+          "ecape",
+          "tracker",
+          "hpot0",
+          "mpot0",
+          "hpot1",
+          "mpot1"
+        ],
+        "GIVE_ARMOR": [
+          "coat",
+          "gloves",
+          "pants",
+          "helmet",
+          "shoes"
+        ],
+        "GIVE_WEAPONS": [
+          "blade",
+          "claw"
+        ],
+        "AUTO_ELIXIR": "elixirint0",
+        "SELF_POT_HP_RATIO": 0.4,
+        "SELF_POT_MP_RATIO": 0.35,
+        "SELF_POT_MP_MISSING": 500,
+        "HPOT": "hpot1",
+        "MPOT": "mpot1",
+        "POT_BUY_COUNT": 200,
+        "POT_MIN_STOCK": 60,
+        "needH": 200,
+        "needM": 300,
+        "hunts": {
+          "enabled": false
+        },
+        "loot": {
+          "enabled": true,
+          "intervalMs": 500,
+          "chestRange": 350
+        },
+        "inventory": {
+          "dumpEsize": 4,
+          "dumpCooldownMs": 30000
+        },
+        "PARTNER": "Hero",
+        "PACK_STYLE": {
+          "crabxx": "aoe",
+          "goobrawl": "aoe",
+          "franky": "mono",
+          "icegolem": "mono",
+          "abtesting": "aoe",
+          "phoenix": "mono",
+          "jr": "mono",
+          "greenjr": "mono",
+          "mrpumpkin": "mono",
+          "mrgreen": "mono",
+          "snowman": "mono",
+          "dragold": "mono",
+          "grinch": "mono",
+          "wabbit": "mono",
+          "pinkgoo": "aoe",
+          "slenderman": "mono",
+          "tiger": "mono",
+          "horseman": "mono",
+          "graveyard": "aoe",
+          "goo": "aoe",
+          "bee": "aoe",
+          "crab": "aoe",
+          "frog": "aoe",
+          "squig": "aoe",
+          "squigtoad": "aoe",
+          "armadillo": "aoe",
+          "snake": "aoe",
+          "osnake": "aoe",
+          "tortoise": "aoe",
+          "croc": "aoe",
+          "rat": "aoe",
+          "spider": "mono",
+          "bat": "aoe",
+          "minimush": "mono",
+          "arcticbee": "aoe",
+          "iceroamer": "mono",
+          "scorpion": "mono",
+          "crabx": "aoe",
+          "bigbird": "aoe",
+          "poisio": "aoe",
+          "stoneworm": "mono",
+          "mvampire": "mono",
+          "porcupine": "aoe",
+          "cgoo": "aoe",
+          "prat": "aoe",
+          "boar": "aoe",
+          "mole": "mono",
+          "wolfie": "mono",
+          "ghost": "mono",
+          "booboo": "mono",
+          "fireroamer": "tank",
+          "mummy": "aoe",
+          "nerfedmummy": "aoe",
+          "harpy": "aoe",
+          "a2": "aoe",
+          "fvampire": "tank",
+          "hen": "aoe",
+          "rooster": "aoe",
+          "bscorpion": "mono",
+          "vbat": "crypt",
+          "a3": "crypt",
+          "a7": "crypt"
+        },
+        "STYLE_LOADOUTS": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "mono": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "tank": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "belt",
+                "item": "intbelt",
+                "minLevel": 1
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "amulet",
+                "item": "intamulet",
+                "minLevel": 2
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              }
+            ],
+            "skills": []
+          },
+          "crypt": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "ring1",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "ring2",
+                "item": "cring",
+                "minLevel": 2
+              },
+              {
+                "slot": "earring1",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "earring2",
+                "item": "cearring",
+                "minLevel": 1
+              },
+              {
+                "slot": "belt",
+                "item": "hpbelt",
+                "minLevel": 2
+              },
+              {
+                "slot": "offhand",
+                "item": "candleward",
+                "minLevel": 7
+              },
+              {
+                "slot": "amulet",
+                "item": "t2intamulet",
+                "minLevel": 0
+              }
+            ],
+            "skills": []
+          }
+        },
+        "LOADOUT_ITEMS": [
+          {
+            "item": "intbelt",
+            "minLevel": 1
+          },
+          {
+            "item": "rabbitsfoot",
+            "minLevel": 1
+          },
+          {
+            "item": "cring",
+            "minLevel": 2
+          },
+          {
+            "item": "intamulet",
+            "minLevel": 2
+          },
+          {
+            "item": "cearring",
+            "minLevel": 1
+          },
+          {
+            "item": "hpbelt",
+            "minLevel": 2
+          },
+          {
+            "item": "candleward",
+            "minLevel": 7
+          },
+          {
+            "item": "t2intamulet",
+            "minLevel": 0
+          },
+          {
+            "item": "lantern",
+            "minLevel": 4
+          }
+        ]
+      },
+      "codeSha256": "eb26ac425219e5bffb35864a4053dd6a859ec02f355b9be8b02f79043d3a06a6",
+      "warnings": [
+        "Generated only; not uploaded or started.",
+        "Profile edits require rebuilding and restarting CODE.",
+        "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
+      ],
+      "bundleSha256": "eb0261e8e93f9189e90d669f48a3cf642c879149a7582c32666b6ee594d7b066"
+    },
+    "Archer": {
+      "config": {
+        "NAME": "Archer",
+        "WARRIOR": "Hero",
+        "PRIEST": "Healer",
+        "MERCHANT": "Trader",
+        "PARTY": [],
+        "PARTY_GUESTS": [
+          "EadroSell"
+        ],
+        "DEFAULT_FARM": "bscorpion",
+        "FARM_INDEPENDENT": false,
+        "DAILY_DUNGEON": false,
+        "RARE_VISITS": false,
+        "FOLLOW_RANGE": 170,
+        "MIN_RANGE": 90,
+        "ANCHOR": 120,
+        "MELEE_SAFE": 55,
+        "kiting": {
+          "enabled": true,
+          "optimalDistance": 170,
+          "sampleAngles": 8,
+          "bossAngles": 12,
+          "stepDistance": 40,
+          "repositionThreshold": 20
+        },
+        "bossLuckHp": {
+          "dragold": 200000,
+          "franky": 80000,
+          "tiger": 60000,
+          "greenjr": 150000,
+          "jr": 120000,
+          "default": 100000
+        },
+        "skills": {
+          "huntersmarkEnabled": true,
+          "huntersmarkMinHp": 3000,
+          "multishotEnabled": true,
+          "multishotMinMp": 220,
+          "mpReserve": 220,
+          "mpHysteresisUpper": 350,
+          "supershotEnabled": true,
+          "supershotMinHp": 4000,
+          "supershotMinMp": 150,
+          "energizeEnabled": true
+        },
+        "offhand": {
+          "manageQuiver": true,
+          "alloyQuiverName": "alloyquiver",
+          "defaultQuiverName": "quiver"
+        },
+        "AUTO_ELIXIR": "elixirdex0",
+        "potions": {
+          "hpThreshold": 0.35,
+          "mpThreshold": 0.3,
+          "hpot": "hpot1",
+          "mpot": "mpot1",
+          "needH": 200,
+          "needM": 300
+        },
+        "hunts": {
+          "enabled": false
+        },
+        "loot": {
+          "enabled": true,
+          "intervalMs": 500,
+          "chestRange": 350
+        },
+        "inventory": {
+          "dumpEsize": 4,
+          "dumpCooldownMs": 30000
+        },
+        "PARTNER": "Hero",
+        "PACK_STYLE": {
+          "crabxx": "aoe",
+          "goobrawl": "aoe",
+          "franky": "mono",
+          "icegolem": "mono",
+          "abtesting": "aoe",
+          "phoenix": "mono",
+          "jr": "mono",
+          "greenjr": "mono",
+          "mrpumpkin": "mono",
+          "mrgreen": "mono",
+          "snowman": "mono",
+          "dragold": "mono",
+          "grinch": "mono",
+          "wabbit": "mono",
+          "pinkgoo": "aoe",
+          "slenderman": "mono",
+          "tiger": "mono",
+          "horseman": "mono",
+          "graveyard": "aoe",
+          "goo": "aoe",
+          "bee": "aoe",
+          "crab": "aoe",
+          "frog": "aoe",
+          "squig": "aoe",
+          "squigtoad": "aoe",
+          "armadillo": "aoe",
+          "snake": "aoe",
+          "osnake": "aoe",
+          "tortoise": "aoe",
+          "croc": "aoe",
+          "rat": "aoe",
+          "spider": "mono",
+          "bat": "aoe",
+          "minimush": "mono",
+          "arcticbee": "aoe",
+          "iceroamer": "mono",
+          "scorpion": "mono",
+          "crabx": "aoe",
+          "bigbird": "aoe",
+          "poisio": "aoe",
+          "stoneworm": "mono",
+          "mvampire": "mono",
+          "porcupine": "aoe",
+          "cgoo": "aoe",
+          "prat": "aoe",
+          "boar": "aoe",
+          "mole": "mono",
+          "wolfie": "mono",
+          "ghost": "mono",
+          "booboo": "mono",
+          "fireroamer": "tank",
+          "mummy": "aoe",
+          "nerfedmummy": "aoe",
+          "harpy": "aoe",
+          "a2": "aoe",
+          "fvampire": "tank",
+          "hen": "aoe",
+          "rooster": "aoe",
+          "bscorpion": "mono",
+          "vbat": "crypt",
+          "a3": "crypt",
+          "a7": "crypt"
+        },
+        "STYLE_LOADOUTS": {
+          "aoe": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "gloves",
+                "item": "handofmidas",
+                "minLevel": 3
+              },
+              {
+                "slot": "mainhand",
+                "item": "firebow",
+                "minLevel": 8
+              },
+              {
+                "slot": "helmet",
+                "item": "oxhelmet",
+                "minLevel": 0
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 7
+              }
+            ],
+            "skills": []
+          },
+          "mono": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          },
+          "tank": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [
+              {
+                "slot": "gloves",
+                "item": "handofmidas",
+                "minLevel": 3
+              },
+              {
+                "slot": "mainhand",
+                "item": "firebow",
+                "minLevel": 8
+              },
+              {
+                "slot": "helmet",
+                "item": "oxhelmet",
+                "minLevel": 0
+              },
+              {
+                "slot": "orb",
+                "item": "rabbitsfoot",
+                "minLevel": 1
+              },
+              {
+                "slot": "shoes",
+                "item": "wingedboots",
+                "minLevel": 7
+              }
+            ],
+            "skills": []
+          },
+          "crypt": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          }
+        },
+        "LOADOUT_ITEMS": [
+          {
+            "item": "handofmidas",
+            "minLevel": 3
+          },
+          {
+            "item": "wgloves",
+            "minLevel": 1
+          },
+          {
+            "item": "firebow",
+            "minLevel": 8
+          },
+          {
+            "item": "oxhelmet",
+            "minLevel": 0
+          },
+          {
+            "item": "rabbitsfoot",
+            "minLevel": 1
+          },
+          {
+            "item": "wingedboots",
+            "minLevel": 7
+          }
+        ],
+        "KEEP_ITEMS": [
+          "elixirluck"
+        ]
+      },
+      "codeSha256": "763896c0b66b1558ac8bc271bcce29f59a7cb3d417daa1ad8feaae7a087fe899",
+      "warnings": [
+        "Generated only; not uploaded or started.",
+        "Profile edits require rebuilding and restarting CODE.",
+        "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
+      ],
+      "bundleSha256": "dee1cb8d6a59dd96cc1525d304f89d990e415c7f65388c3344981d74a2667a38"
+    },
+    "Trader": {
+      "config": {
+        "NAME": "Trader",
+        "FARMERS": [
+          "Hero",
+          "Healer",
+          "Blade"
+        ],
+        "WARRIOR": "Hero",
+        "PRIEST": "Healer",
+        "RANGER": "Blade",
+        "TEAM_SLOTS": {
+          "Blade": "CC_Blade"
+        },
+        "TEAM_SUPERVISOR_ENABLED": true,
+        "TEAM_START_INTERVAL_MS": 8000,
+        "TEAM_START_RETRY_MS": 60000,
+        "HPOT": "hpot1",
+        "MPOT": "mpot1",
+        "POT_STOCK": 3000,
+        "MPOT_STOCK": 3000,
+        "POT_GIVE": 1000,
+        "MPOT_GIVE": 1000,
+        "POT_THRESHOLD_H": 800,
+        "POT_THRESHOLD_M": 800,
+        "SELF_HP_RATIO": 0.7,
+        "SELF_MP_RATIO": 0.65,
+        "SELF_HPOT_RESERVE": 100,
+        "SELF_MPOT_RESERVE": 150,
+        "POT_STOCK_LOW_H": 1200,
+        "POT_STOCK_LOW_M": 1200,
+        "RESTOCK_COOLDOWN_MS": 60000,
+        "SCROLL_STOCK": {
+          "scroll0": 50,
+          "cscroll0": 8,
+          "cscroll1": 2
+        },
+        "BAG_DUMP": 10,
+        "EXCHANGE_ITEMS": [
+          "gem0",
+          "gift0",
+          "mistletoe",
+          "marketparcel",
+          "candycane",
+          "gem1",
+          "armorbox",
+          "anniversarygift",
+          "mysterybox",
+          "candy1",
+          "candy0"
+        ],
+        "EXCHANGE_MIN": {
+          "marketparcel": 1,
+          "candycane": 1,
+          "gem1": 1,
+          "armorbox": 5,
+          "anniversarygift": 10,
+          "mysterybox": 1,
+          "candy1": 50,
+          "candy0": 50
+        },
+        "GABRIEL_SELL": [
+          "ringsj",
+          "beewings",
+          "gslime",
+          "hpbelt",
+          "hpamulet",
+          "rattail",
+          "spores",
+          "dstones",
+          "helmet",
+          "coat",
+          "gloves",
+          "pants",
+          "shoes",
+          "helmet1",
+          "coat1",
+          "gloves1",
+          "pants1",
+          "shoes1",
+          "poker",
+          "confetti",
+          "stinger",
+          "mushroomstaff",
+          "slimestaff",
+          "partyhat",
+          "wcap",
+          "wbreeches",
+          "phelmet",
+          "xmasshoes",
+          "merry",
+          "strbelt",
+          "whiteegg",
+          "dexbelt",
+          "cclaw",
+          "wshoes",
+          "strearring",
+          "dexearring",
+          "intearring",
+          "vitearring",
+          "lotusf",
+          "stramulet",
+          "wgloves",
+          "drapes",
+          "cake",
+          "ftrinket",
+          "vitring",
+          "strring",
+          "intring",
+          "dexring",
+          "wattire",
+          "spear",
+          "basher",
+          "frogt",
+          "wbook0",
+          "frankypants",
+          "skullamulet",
+          "throwingstars",
+          "bowofthedead",
+          "talkingskull",
+          "hotchocolate",
+          "xmashat",
+          "rednose",
+          "ornamentstaff",
+          "firestaff",
+          "candycanesword",
+          "xmassweater",
+          "xmaspants",
+          "carrot",
+          "jacko",
+          "staffofthedead",
+          "swordofthedead",
+          "maceofthedead",
+          "pmaceofthedead",
+          "gphelmet",
+          "pmace",
+          "xmace",
+          "harmor",
+          "hgloves",
+          "hpants",
+          "hboots",
+          "hhelmet",
+          "harbringer",
+          "smoke",
+          "fieldgen0"
+        ],
+        "NEVER_UPGRADE": {
+          "blade": 1,
+          "fireblade": 1,
+          "wcap": 1,
+          "wbreeches": 1,
+          "ecape": 1,
+          "quiver": 1,
+          "alloyquiver": 1,
+          "ololipop": 1,
+          "glolipop": 1
+        },
+        "UPGRADE_GOLD_MIN": 100000000,
+        "BAG_BANK_THRESHOLD": 10,
+        "BANK_COOLDOWN_MS": 45000,
+        "BANK_ALWAYS": [
+          "gem0",
+          "gem1",
+          "gem2",
+          "gem3",
+          "gem4",
+          "candy0",
+          "candy1",
+          "mistletoe",
+          "vorb",
+          "offering",
+          "goldenpower",
+          "seashell",
+          "frozenstone",
+          "platinumnugget",
+          "goldnugget",
+          "armorbox",
+          "weaponbox",
+          "xbox",
+          "essenceofgreed",
+          "essenceoflife",
+          "essenceoffire",
+          "essenceofnature"
+        ],
+        "BANK_NEVER": {
+          "hpot0": 1,
+          "hpot1": 1,
+          "mpot0": 1,
+          "mpot1": 1,
+          "scroll0": 1,
+          "scroll1": 1,
+          "cscroll0": 1,
+          "cscroll1": 1,
+          "stand0": 1,
+          "computer": 1,
+          "tracker": 1,
+          "marketparcel": 1,
+          "monstertoken": 1,
+          "feather0": 1,
+          "wingedboots": 1
+        },
+        "MUX_MS": 8000,
+        "REACH": 300,
+        "HOME": {
+          "region": "EU",
+          "name": "IV"
+        },
+        "DEFAULT_FARM": "bscorpion",
+        "FARM_INDEPENDENT": false,
+        "DAILY_DUNGEON": false,
+        "RARE_VISITS": false,
+        "PACK_STYLE": {
+          "crabxx": "aoe",
+          "goobrawl": "aoe",
+          "franky": "mono",
+          "icegolem": "mono",
+          "abtesting": "aoe",
+          "phoenix": "mono",
+          "jr": "mono",
+          "greenjr": "mono",
+          "mrpumpkin": "mono",
+          "mrgreen": "mono",
+          "snowman": "mono",
+          "dragold": "mono",
+          "grinch": "mono",
+          "wabbit": "mono",
+          "pinkgoo": "aoe",
+          "slenderman": "mono",
+          "tiger": "mono",
+          "horseman": "mono",
+          "graveyard": "aoe",
+          "goo": "aoe",
+          "bee": "aoe",
+          "crab": "aoe",
+          "frog": "aoe",
+          "squig": "aoe",
+          "squigtoad": "aoe",
+          "armadillo": "aoe",
+          "snake": "aoe",
+          "osnake": "aoe",
+          "tortoise": "aoe",
+          "croc": "aoe",
+          "rat": "aoe",
+          "spider": "mono",
+          "bat": "aoe",
+          "minimush": "mono",
+          "arcticbee": "aoe",
+          "iceroamer": "mono",
+          "scorpion": "mono",
+          "crabx": "aoe",
+          "bigbird": "aoe",
+          "poisio": "aoe",
+          "stoneworm": "mono",
+          "mvampire": "mono",
+          "porcupine": "aoe",
+          "cgoo": "aoe",
+          "prat": "aoe",
+          "boar": "aoe",
+          "mole": "mono",
+          "wolfie": "mono",
+          "ghost": "mono",
+          "booboo": "mono",
+          "fireroamer": "tank",
+          "mummy": "aoe",
+          "nerfedmummy": "aoe",
+          "harpy": "aoe",
+          "a2": "aoe",
+          "fvampire": "tank",
+          "hen": "aoe",
+          "rooster": "aoe",
+          "bscorpion": "mono",
+          "vbat": "crypt",
+          "a3": "crypt",
+          "a7": "crypt"
+        },
+        "STYLE_LOADOUTS": {
+          "aoe": {
+            "gear": [],
+            "skills": []
+          },
+          "mono": {
+            "gear": [],
+            "skills": []
+          },
+          "tank": {
+            "gear": [],
+            "skills": []
+          }
+        },
+        "UPGRADE_MAX": 10,
+        "PONTY_ITEMS": [
+          "ololipop",
+          "glolipop"
+        ],
+        "PONTY_GOLD_KEEP": 200000
+      },
+      "codeSha256": "aa918df996578eeb8c7395a95c15c5e8f93a46f2ad6441c9e4766a27d3230acf",
+      "warnings": [
+        "Generated only; not uploaded or started.",
+        "Profile edits require rebuilding and restarting CODE.",
+        "glolipop is also in PONTY_ITEMS — Ponty tours may still buy more of it.",
+        "ololipop is also in PONTY_ITEMS — Ponty tours may still buy more of it.",
+        "helmet is on both Gabriel and upgrade lists — upgrade wins; NPC sales skip it.",
+        "coat is on both Gabriel and upgrade lists — upgrade wins; NPC sales skip it.",
+        "gloves is on both Gabriel and upgrade lists — upgrade wins; NPC sales skip it.",
+        "pants is on both Gabriel and upgrade lists — upgrade wins; NPC sales skip it.",
+        "ololipop is bought from Ponty and also listed on the stand — intentional but watch stock.",
+        "glolipop is bought from Ponty and also listed on the stand — intentional but watch stock.",
+        "Merchant will start_character Blade into their CC_* CODE slots when they are not already running.",
+        "Stand rules apply when the merchant reaches its idle-shop phase. Restocking, safety and gathering keep their existing priority. Existing sell listings outside the allowlist are removed when there is bag space; configured buy orders use the last eight slots of the available stand. Dashboard listings are never auto-unlisted by keep-gear.",
+        "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
+      ],
+      "bundleSha256": "f7df11192513a84da3aedb84c1244619b3f0e51cd37f281ed5639d66a2f90010"
+    },
+    "Wizard": {
+      "config": {
+        "KITE_ENABLED": true,
+        "KITE_LEASH": 240,
+        "KITE_PANIC_RATIO": 0.45,
+        "NAME": "Wizard",
+        "WARRIOR": "Hero",
+        "PRIEST": "Healer",
+        "MERCHANT": "Trader",
+        "GIVE_WEAPONS": [
+          "firestaff",
+          "staff"
+        ],
+        "GIVE_ARMOR": [
+          "helmet",
+          "shoes",
+          "coat",
+          "gloves",
+          "pants"
+        ],
+        "KEEP_ITEMS": [
+          "ololipop",
+          "glolipop",
+          "vstaff"
+        ],
+        "FOLLOW_RANGE": 140,
+        "MIN_RANGE": 85,
+        "MELEE_SAFE": 55,
+        "ANCHOR": 90,
+        "ANCHOR_SLACK": 32,
+        "ENERGIZE_PRIEST_MP_RATIO": 0.55,
+        "POT_HP_RATIO": 0.25,
+        "POT_MP_RATIO": 0.2,
+        "POT_MIN": 40,
+        "POT_ASK_HP": 80,
+        "POT_ASK_MP": 120,
+        "HPOT": "hpot1",
+        "MPOT": "mpot1",
+        "POT_BUY": 200,
+        "POT_CRITICAL": 8,
+        "POT_STARVE_MS": 45000,
+        "MLUCK_REFRESH_MS": 600000,
+        "GOLD_RESERVE": 400,
+        "GOLD_KEEP": 800,
+        "CITY": {
+          "map": "main",
+          "x": 0,
+          "y": 0
+        },
+        "CITY_WAIT_MS": 180000,
+        "GEAR_MS": 1500,
+        "UPGRADE_MAX_LEVEL": 7,
+        "UPGRADE_MAX_TRIES": 20,
+        "UPGRADE_TRIP_GOLD": 15000,
+        "SCROLL_KEEP": 6,
+        "CSCROLL_KEEP": 4,
+        "DEFAULT_FARM": "bscorpion",
+        "FARM_INDEPENDENT": false,
+        "DAILY_DUNGEON": false,
+        "RARE_VISITS": false,
+        "PACK_STYLE": {
+          "crabxx": "aoe",
+          "goobrawl": "aoe",
+          "franky": "mono",
+          "icegolem": "mono",
+          "abtesting": "aoe",
+          "phoenix": "mono",
+          "jr": "mono",
+          "greenjr": "mono",
+          "mrpumpkin": "mono",
+          "mrgreen": "mono",
+          "snowman": "mono",
+          "dragold": "mono",
+          "grinch": "mono",
+          "wabbit": "mono",
+          "pinkgoo": "aoe",
+          "slenderman": "mono",
+          "tiger": "mono",
+          "horseman": "mono",
+          "graveyard": "aoe",
+          "goo": "aoe",
+          "bee": "aoe",
+          "crab": "aoe",
+          "frog": "aoe",
+          "squig": "aoe",
+          "squigtoad": "aoe",
+          "armadillo": "aoe",
+          "snake": "aoe",
+          "osnake": "aoe",
+          "tortoise": "aoe",
+          "croc": "aoe",
+          "rat": "aoe",
+          "spider": "mono",
+          "bat": "aoe",
+          "minimush": "mono",
+          "arcticbee": "aoe",
+          "iceroamer": "mono",
+          "scorpion": "mono",
+          "crabx": "aoe",
+          "bigbird": "aoe",
+          "poisio": "aoe",
+          "stoneworm": "mono",
+          "mvampire": "mono",
+          "porcupine": "aoe",
+          "cgoo": "aoe",
+          "prat": "aoe",
+          "boar": "aoe",
+          "mole": "mono",
+          "wolfie": "mono",
+          "ghost": "mono",
+          "booboo": "mono",
+          "fireroamer": "tank",
+          "mummy": "aoe",
+          "nerfedmummy": "aoe",
+          "harpy": "aoe",
+          "a2": "aoe",
+          "fvampire": "tank",
+          "hen": "aoe",
+          "rooster": "aoe",
+          "bscorpion": "mono",
+          "vbat": "crypt",
+          "a3": "crypt",
+          "a7": "crypt"
+        },
+        "STYLE_LOADOUTS": {
+          "aoe": {
+            "gear": [],
+            "skills": []
+          },
+          "mono": {
+            "gear": [],
+            "skills": []
+          },
+          "tank": {
+            "gear": [],
+            "skills": []
+          },
+          "Lucky": {
+            "base": "aoe",
+            "gear": [],
+            "skills": []
+          }
+        }
+      },
+      "codeSha256": "3da626d893b0619312a27c9ccee2d64b23d7e2d93398ecfa90c7bed0ccc0ee25",
+      "warnings": [
+        "Generated only; not uploaded or started.",
+        "Profile edits require rebuilding and restarting CODE.",
+        "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
+      ],
+      "bundleSha256": "44a945b9c12e81a08c2755c0f13b59e36909ae0fd9036a02077fbd7d52c918b8"
+    },
+    "Blade": {
+      "config": {
+        "NAME": "Blade",
+        "WARRIOR": "Hero",
+        "PRIEST": "Healer",
+        "MERCHANT": "Trader",
+        "PARTY": [],
+        "PARTY_GUESTS": [
+          "EadroSell"
+        ],
+        "DEFAULT_FARM": "bscorpion",
+        "FARM_INDEPENDENT": false,
+        "DAILY_DUNGEON": false,
+        "RARE_VISITS": false,
+        "FOLLOW_RANGE": 110,
+        "MIN_RANGE": 35,
+        "ANCHOR": 60,
+        "MELEE_SAFE": 45,
+        "kiting": {
+          "enabled": true,
+          "optimalDistance": 100,
+          "sampleAngles": 8,
+          "bossAngles": 12,
+          "stepDistance": 40,
+          "repositionThreshold": 20
+        },
+        "skills": {
+          "fanEnabled": true,
+          "fanMinTargets": 2,
+          "burstEnabled": true,
+          "swiftnessEnabled": true,
+          "mpReserve": 200
+        },
+        "potions": {
+          "hpThreshold": 0.45,
+          "mpThreshold": 0.3,
+          "hpot": "hpot1",
+          "mpot": "mpot1",
+          "needH": 200,
+          "needM": 300
+        },
+        "hunts": {
+          "enabled": false
+        },
+        "loot": {
+          "enabled": true,
+          "intervalMs": 500,
+          "chestRange": 350
+        },
+        "inventory": {
+          "dumpEsize": 4,
+          "dumpCooldownMs": 30000
+        },
+        "PARTNER": "Hero",
+        "PACK_STYLE": {
+          "crabxx": "aoe",
+          "goobrawl": "aoe",
+          "franky": "mono",
+          "icegolem": "mono",
+          "abtesting": "aoe",
+          "phoenix": "mono",
+          "jr": "mono",
+          "greenjr": "mono",
+          "mrpumpkin": "mono",
+          "mrgreen": "mono",
+          "snowman": "mono",
+          "dragold": "mono",
+          "grinch": "mono",
+          "wabbit": "mono",
+          "pinkgoo": "aoe",
+          "slenderman": "mono",
+          "tiger": "mono",
+          "horseman": "mono",
+          "graveyard": "aoe",
+          "goo": "aoe",
+          "bee": "aoe",
+          "crab": "aoe",
+          "frog": "aoe",
+          "squig": "aoe",
+          "squigtoad": "aoe",
+          "armadillo": "aoe",
+          "snake": "aoe",
+          "osnake": "aoe",
+          "tortoise": "aoe",
+          "croc": "aoe",
+          "rat": "aoe",
+          "spider": "mono",
+          "bat": "aoe",
+          "minimush": "mono",
+          "arcticbee": "aoe",
+          "iceroamer": "mono",
+          "scorpion": "mono",
+          "crabx": "aoe",
+          "bigbird": "aoe",
+          "poisio": "aoe",
+          "stoneworm": "mono",
+          "mvampire": "mono",
+          "porcupine": "aoe",
+          "cgoo": "aoe",
+          "prat": "aoe",
+          "boar": "aoe",
+          "mole": "mono",
+          "wolfie": "mono",
+          "ghost": "mono",
+          "booboo": "mono",
+          "fireroamer": "tank",
+          "mummy": "aoe",
+          "nerfedmummy": "aoe",
+          "harpy": "aoe",
+          "a2": "aoe",
+          "fvampire": "tank",
+          "hen": "aoe",
+          "rooster": "aoe",
+          "bscorpion": "mono",
+          "vbat": "crypt",
+          "a3": "crypt",
+          "a7": "crypt"
+        },
+        "STYLE_LOADOUTS": {
+          "aoe": {
+            "gear": [],
+            "skills": []
+          },
+          "mono": {
+            "gear": [],
+            "skills": []
+          },
+          "tank": {
+            "gear": [],
+            "skills": []
+          }
+        },
+        "LOADOUT_ITEMS": [
+          {
+            "item": "handofmidas",
+            "minLevel": 0
+          },
+          {
+            "item": "gloves",
+            "minLevel": 0
+          }
+        ],
+        "KEEP_ITEMS": [
+          "elixirluck"
+        ]
+      },
+      "codeSha256": "0281f8d6c26e72577a955c4104f97b4ea4dfb3cbf9e2c40fb364a416c258c70d",
+      "warnings": [
+        "Generated only; not uploaded or started.",
+        "Profile edits require rebuilding and restarting CODE.",
+        "Consumables: mule tops farmers up from bag/bank; elixir mode auto-drinks on the farmer gear tick."
+      ],
+      "bundleSha256": "72abf54fbacd62ce12a830c6698e6c9e7bde02a9d3858994c09d0274bfc97695"
+    }
+  }
+}

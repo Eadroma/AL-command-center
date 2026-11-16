@@ -1,0 +1,21 @@
+.party-map { display: grid; gap: 10px; }
+.party-map-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.party-map-head h3 { font-size: 1rem; font-weight: 700; color: var(--text-dim); }
+.party-map-maps, .party-map-follow { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Scoped under .party-map so they win over the shared button.quiet: these are toggles and must read as buttons. */
+.party-map .party-map-maps button, .party-map .party-map-follow button { border-color: var(--edge); color: var(--text); }
+.party-map button[aria-pressed='true'] { color: var(--gold); border-color: var(--gold); }
+
+.party-map-stage { position: relative; background: var(--slot); padding: 4px; }
+.party-map-stage canvas { display: block; width: 100%; height: clamp(280px, 55vh, 560px); cursor: grab; touch-action: none; }
+.party-map-stage canvas:active { cursor: grabbing; }
+/* Maps are wider than tall: on a phone a tall canvas would only add empty margins. */
+@media (max-width: 600px) { .party-map-stage canvas { height: clamp(240px, 80vw, 400px); } }
+
+.party-map-tools { position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; }
+.party-map-tools button { min-width: 36px; min-height: 36px; background: var(--stone); border-color: var(--edge); color: var(--text); font-weight: 700; }
+.party-map-note { position: absolute; left: 12px; bottom: 12px; margin: 0; padding: 6px 10px; background: var(--stone); color: var(--text-dim); font-size: .85rem; max-width: calc(100% - 24px); }
+
+.party-map-follow button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 10px 4px 4px; }
+.party-map-follow .character-sprite { display: block; overflow: hidden; }
+.party-map-help { margin: 0; color: var(--text-dim); font-size: .85rem; max-width: 75ch; }

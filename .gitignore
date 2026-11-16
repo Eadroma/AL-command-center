@@ -63,3 +63,7 @@ Thumbs.db
 # Screenshots need an explicit privacy review before publication.
 /dashboard-v2/docs/*.png
 /dashboard-v2/docs/*.jpg
+
+# Local-only notes and account helpers
+/dashboard-config-reference.md
+/tools/*.ps1

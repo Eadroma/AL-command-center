@@ -10,9 +10,9 @@ it('drains carried bank-fed stock below the inventory trigger without changing i
 });
 it('pauses at four slots, prioritizes carried work and resumes only at eight slots',()=>{
  const source=fs.readFileSync(path.join(sourceDir,'eadrosell-merchant-v2.js'),'utf8');let slots=4,sell=0,bank=false,upgrade=2;
- const c:any={bank_dump_active:false,exchange_space_pause:false,production_trip:'exchange',cc_exchange_enabled:()=>true,free_slots:()=>slots,locate_exchange_item:()=>1,game_log:()=>{},set_message:()=>{},character:{items:[{}]},cc_npc_enabled:()=>true,locate_sell_item:()=>sell,merchant_task_allowed:()=>true,should_bank_item:()=>bank,bankable_signature:()=> 'stock',last_bank_failure_signature:'',last_bank_failure_at:0,CONFIG:{},Date,cc_upgrade_enabled:()=>true,locate_upgrade_item:()=>upgrade};
+ const c:any={bank_dump_active:false,exchange_space_pause:false,production_trip:'exchange',cc_exchange_enabled:()=>true,free_slots:()=>slots,locate_exchange_item:()=>1,game_log:()=>{},set_message:()=>{},character:{items:[{}]},cc_npc_enabled:()=>true,locate_sell_item:()=>sell,merchant_task_allowed:()=>true,should_bank_item:()=>bank,bankable_signature:()=> 'stock',last_bank_failure_signature:'',last_bank_failure_at:0,CONFIG:{},Date,cc_upgrade_enabled:()=>true,locate_upgrade_item:()=>upgrade,find_compound_set:()=>compound};let compound:any={key:'intamulet@0',slots:[9,18,39]};
  vm.createContext(c);vm.runInContext(ast(source).body.filter((n:any)=>n.type==='FunctionDeclaration'&&['exchange_space_paused','merchant_work_next'].includes(n.id.name)).map((n:any)=>source.slice(n.start,n.end)).join(''),c);
- expect(c.merchant_work_next()).toBe('sell');sell=-1;bank=true;expect(c.merchant_work_next()).toBe('bank');bank=false;expect(c.merchant_work_next()).toBe('upgrade');upgrade=-1;expect(c.merchant_work_next()).toBeNull();
+ expect(c.merchant_work_next()).toBe('sell');sell=-1;bank=true;expect(c.merchant_work_next()).toBe('bank');bank=false;expect(c.merchant_work_next()).toBe('compound');compound=null;expect(c.merchant_work_next()).toBe('upgrade');upgrade=-1;expect(c.merchant_work_next()).toBeNull();
  slots=5;expect(c.exchange_space_paused()).toBe(true);slots=8;expect(c.exchange_space_paused()).toBe(false);
  slots=4;c.exchange_space_pause=true;c.character.q={exchange:{}};expect(c.merchant_work_next()).toBeNull();
 });

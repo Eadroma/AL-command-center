@@ -31,6 +31,7 @@ import { useRoute } from './hooks/usePage';
 import { teamToolHash, type TeamTool } from './models/navigation';
 const IncidentsPage = lazy(() => import('./components/pages/IncidentsPage').then(m => ({ default: m.IncidentsPage })));
 const CavePage = lazy(() => import('./components/pages/CavePage').then(m => ({ default: m.CavePage })));
+const LootTrackerPage = lazy(() => import('./components/pages/LootTrackerPage').then(m => ({ default: m.LootTrackerPage })));
 const PerformancePage = lazy(() => import('./components/pages/PerformancePage').then(m => ({ default: m.PerformancePage })));
 const DeploymentsPage = lazy(() => import('./components/pages/DeploymentsPage').then(m => ({ default: m.DeploymentsPage })));
 const OperationsPage = lazy(() => import('./components/pages/OperationsPage').then(m => ({ default: m.OperationsPage })));
@@ -78,6 +79,7 @@ export function App() {
           <Disclosure title="Combat performance" reveal={reveal('combat')}><CombatPage profile={saved} deployments={party.deployments} catalog={party.snapshot?.catalog} loading={party.loading}/></Disclosure>
           <Disclosure title="Operations & movement" reveal={reveal('operations')}><OperationsPage profile={saved} deployments={party.deployments} loading={party.loading}/></Disclosure>
           <Disclosure title="Incidents" reveal={reveal('incidents')}><IncidentsPage profile={saved} deployments={party.deployments} loading={party.loading}/></Disclosure>
+          <Disclosure title="Kills & loot tracker" description="Kills and loot per monster, with hourly and daily projections." reveal={reveal('loot')}><LootTrackerPage profile={saved} catalog={party.snapshot?.catalog}/></Disclosure>
           <Disclosure title="Performance history" reveal={reveal('performance')}><PerformancePage profile={saved}/></Disclosure>
           <Disclosure title="Loot estimates" reveal={reveal('simulator')}><LootSimulatorPage profile={saved} catalog={party.snapshot?.catalog} deployments={party.deployments} loading={party.loading}/></Disclosure>
           <Disclosure title="Activity log" reveal={reveal('activity')}><ActivityPage entries={party.logs} loading={party.loading} onClear={party.clearLogs}/></Disclosure>

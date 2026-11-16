@@ -1,0 +1,55 @@
+.settings { max-width: 680px; display: grid; gap: 20px; }
+.settings-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.settings-head h2 { font: 600 1.75rem/1.2 var(--pixel); }
+.settings .lead { margin: 0; color: var(--text-dim); max-width: 60ch; }
+
+.settings form { display: grid; gap: 28px; }
+.settings .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; counter-reset: step; }
+.settings .step { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 4px 14px; counter-increment: step; }
+.settings .step::before {
+  content: counter(step);
+  grid-row: 1 / span 2;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  font: 600 1.1rem/1 var(--pixel);
+  color: var(--gold);
+  border: 2px solid var(--gold);
+}
+.settings .step h3 { font-size: 1.25rem; font-weight: 700; padding-top: 3px; }
+.settings .step-body { display: grid; gap: 12px; min-width: 0; }
+
+.settings .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: end; }
+.settings .row > input { flex: 1 1 260px; min-width: 0; }
+.settings .stacked { display: grid; gap: 6px; min-width: 120px; justify-items: start; }
+.settings .stacked select { min-width: 120px; max-width: 100%; }
+.settings .stacked > span { color: var(--text-dim); font-size: .875rem; }
+.settings .help { margin: 0; font-size: .875rem; color: var(--text-dim); overflow-wrap: anywhere; }
+.settings fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.settings legend { padding: 0 0 6px; color: var(--text-dim); font-size: .875rem; }
+.settings .choice { display: flex; gap: 10px; align-items: center; min-height: 32px; }
+.settings .choice input { min-height: 0; accent-color: var(--gold); width: 18px; height: 18px; }
+.settings summary { cursor: pointer; color: var(--text-dim); min-height: 32px; }
+
+.settings .roster { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 10px; }
+.settings .roster li { padding: 10px 12px; display: grid; gap: 2px; animation: slot-in 280ms ease-out both; }
+.settings .roster li:nth-child(2) { animation-delay: 60ms; }
+.settings .roster li:nth-child(3) { animation-delay: 120ms; }
+.settings .roster li:nth-child(4) { animation-delay: 180ms; }
+.settings .roster li:nth-child(5) { animation-delay: 240ms; }
+.settings .roster li:nth-child(n + 6) { animation-delay: 300ms; }
+.settings .roster .name { font-weight: 700; overflow-wrap: anywhere; }
+.settings .roster .class { color: var(--text-dim); font-size: .875rem; }
+.settings .roster .level { color: var(--gold); font: 600 1rem/1.2 var(--pixel); }
+.settings .found { margin: 0; color: var(--herb); font-weight: 700; }
+
+.settings .notice { margin: 0; padding: 10px 14px; border-left: 4px solid var(--edge); background: var(--stone); }
+.settings .notice.error { border-left-color: var(--hp); }
+.settings .notice.ok { border-left-color: var(--herb); }
+.settings .actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+@keyframes slot-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}

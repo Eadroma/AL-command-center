@@ -1,0 +1,24 @@
+.farming-dialog {
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 20px;
+  border: 2px solid var(--edge);
+  background: var(--stone);
+  color: var(--text);
+  overflow-y: auto;
+}
+.farming-dialog::backdrop { background: rgb(0 0 0 / .55); }
+.farming-dialog section { display: grid; gap: 8px; padding-top: 14px; margin-top: 14px; border-top: 1px solid var(--edge); }
+.farming-dialog h3 { font-size: 1rem; font-weight: 700; color: var(--text-dim); }
+.farming-dialog p { margin: 0; overflow-wrap: anywhere; }
+.farming-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+.farming-head h2 { font: 600 1.4rem/1.2 var(--pixel); }
+
+
+.farming-check { display: flex; align-items: center; gap: 10px; min-height: 36px; font-weight: 700; }
+.farming-check input { width: 20px; height: 20px; accent-color: var(--gold); }
+
+.farming-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.farming-character { display: grid; gap: 6px; padding: 10px 12px; background: var(--ground); }
+/* A target the script pins: shown, explained, not editable. */
+.farming-fixed { padding-left: 10px; border-left: 3px solid var(--mp); }

@@ -23,6 +23,13 @@ describe('team composition staging', () => {
     expect(cave.seller.teamSupervisor.characters).not.toContain('EadroSell');
     expect(profile.characters.find(row => row.name === 'Eadroma')?.enabled).toBe(true);
   });
+  it('stages a chosen full team and switches the on-demand event duo off', () => {
+    const profile = initialProfile(scripts());
+    profile.events.expedition.enabled = true;
+    const team = applyTeamComposition(profile, 'team', 'Droma', ['Eadroma', 'Aedroma']);
+    expect(team.characters.filter(row => row.enabled && row.ctype !== 'merchant').map(row => row.name)).toEqual(['Eadroma', 'Aedroma']);
+    expect(team.seller.teamSupervisor.characters).toEqual(['Eadroma', 'Aedroma']);
+    expect(team.events.expedition.enabled).toBe(false);  });
 });
 
 describe('deployment preview', () => {

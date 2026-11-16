@@ -36,6 +36,9 @@ var CONFIG = {
 	FARM_INDEPENDENT: false,
 	DAILY_DUNGEON: false,
 	RARE_VISITS: true,
+	// Crypt (lead only): Bill fight at the pillar, Marceline attempt after the objective (profile overrides).
+	CRYPT_BILL: true,
+	CRYPT_MARCELINE: false,
 
 	// --- Slots pour start_character (gere par Command Center ou manuel) ---
 	TEAM_SLOTS: {
@@ -56,12 +59,13 @@ var CONFIG = {
 		chargeEnabled: true,       // Acceleration de vitesse
 		tauntEnabled: true,        // Taunt les monstres qui attaquent les allies
 		tauntCooldown: 3000,       // Intervalle minimum entre taunts (ms)
+		inviteContesters: true,    // Invite au groupe les joueurs qui frappent nos mobs
 		cleaveEnabled: true,       // Attaque circulaire de zone
 		cleaveMinMobs: 2,          // Nombre min de monstres pour lancer Cleave
 		cleaveMinMp: 120,          // Reserve de MP necessaire pour Cleave
 		stompEnabled: true,        // Stun de zone si l'equipe ou le guerrier est en danger
 		stompPanicRatio: 0.35,     // Stomp si PV joueur/allie sous 35%
-		agitateEnabled: true,      // Agitate AoE (necro) sur packs — gate par StyleLoadout
+		agitateEnabled: false,     // Desactive : Agitate attire tous les monstres proches sur le guerrier
 		agitateMinMobs: 2,         // Nombre min de monstres pour Agitate
 		mpReserve: 300,            // Reserve MP : bloque warcry/charge/agitate sous ce seuil
 		mpHysteresisUpper: 450,    // Reprise des depenses au-dessus de ce seuil (anti-yoyo)
@@ -297,11 +301,13 @@ function updateCache() {
 	var blockedHunt = abandoned_hunt_id();
 	var bestCandidate = null;
 	var bestDist = 999999;
+	var eventBoss = null;
+	var eventBossDist = 999999;
 
 	for (var id in parent.entities) {
 		var e = parent.entities[id];
 		if (!e || e.type !== "monster" || e.dead || !e.visible) continue;
-		if (eventTargeting === "franky" && e.mtype !== "franky") continue;
+		if (eventTargeting === "franky" && !EventRouter.canEngage(e)) continue;
 		// Apres le nombre maximal de morts, ignorer completement ce type de hunt.
 		// Cela bloque aussi les skills AOE qui pouvaient relancer le combat alors
 		// que l'attaque normale avait deja bascule sur le fallback.
@@ -309,14 +315,24 @@ function updateCache() {
 
 		var dist = distance(character, e);
 		cache.mobCount++;
+		if (eventTargeting && e.mtype === eventTargeting && dist < eventBossDist && EventRouter.accepts(e)) {
+			eventBoss = e;
+			eventBossDist = dist;
+		}
 
 		// Detection pour Cleave
 		if (dist <= cleaveRange) {
 			cache.monstersInCleaveRange.push(e);
 		}
 
-		// Detection si un allie est attaque par ce monstre (priorite au Taunt)
-		if (e.target && e.target !== character.name && cache.partyMembers.indexOf(e.target) >= 0) {
+		// Detection si un allie est attaque par ce monstre (priorite au Taunt).
+		// Exception : la pretresse kite volontairement ce monstre (Absorb). Taunt seulement si elle
+		// mourrait au prochain coup (attaque brute +10%, armure ignoree : marge de securite).
+		var pr = cache.priestEntity;
+		// Vitesse hors weakness (aura bscorpion) : sinon Taunt et Absorb de la pretresse se renvoient le boss.
+		var prWeak = pr && pr.s && pr.s.weakness && G.conditions.weakness ? G.conditions.weakness.speed || 0 : 0;
+		var priestKiting = e.target === CONFIG.PRIEST && pr && pr.hp > (e.attack || 0) * 1.1 && (e.speed || 0) < (pr.speed || 0) - prWeak && (e.range || 0) + 40 < (pr.range || 0);
+		if (e.target && e.target !== character.name && cache.partyMembers.indexOf(e.target) >= 0 && !priestKiting) {
 			cache.alliesUnderAttack.push(e);
 		}
 
@@ -344,7 +360,30 @@ function updateCache() {
 	}
 
 	if (!cache.target) {
-		cache.target = bestCandidate;
+		// Mob sur un allie : s'en approcher pour le Taunt, la pretresse l'Absorb ensuite.
+		cache.target = cache.alliesUnderAttack[0] || bestCandidate;
+	}
+	// Event boss beats its summons (crabx around Giga Crab): AOE skills still clear the adds.
+	// Only an add hitting the priest keeps priority.
+	if (eventBoss && !(cache.target && cache.target.target === CONFIG.PRIEST)) cache.target = eventBoss;
+	invite_contesters();
+}
+
+// Joueurs etrangers qui frappent nos mobs : invitation au groupe (loot partage, Taunt possible).
+var contester_invites = {};
+function invite_contesters() {
+	if (!(CONFIG.skills && CONFIG.skills.inviteContesters) || cache.partyMembers.length >= 9) return;
+	if (typeof CaveDreams !== "undefined" && ((CaveDreams.reservingParty && CaveDreams.reservingParty()) || CaveDreams.inCave())) return;
+	var now = Date.now();
+	for (var id in parent.entities) {
+		var p = parent.entities[id];
+		if (!p || p.type !== "character" || p.npc || !p.target || cache.partyMembers.indexOf(p.name) >= 0) continue;
+		var mob = parent.entities[p.target];
+		var ours = mob && mob.type === "monster" && (mob === cache.target || cache.partyMembers.indexOf(mob.target) >= 0);
+		if (!ours || now - (contester_invites[p.name] || 0) < 60000) continue;
+		contester_invites[p.name] = now;
+		send_party_invite(p.name);
+		game_log("Invite " + p.name + " (frappe " + mob.mtype + ")", "#8FBC8F");
 	}
 }
 
@@ -681,6 +720,7 @@ function is_dumpable_slot(slotIndex) {
 	var items = character.items || [];
 	var item = items[slotIndex];
 	if (!item || item.l) return false;
+	if (typeof CryptRun !== "undefined" && CryptRun.keeps(item)) return false;
 	if (is_potion(item.name)) return false;
 	var loadoutItems = CONFIG.LOADOUT_ITEMS || [];
 	for (var li = 0; li < loadoutItems.length; li++) {
@@ -713,6 +753,7 @@ function is_dumpable_slot(slotIndex) {
 
 function is_dumpable(item, optIndex) {
 	if (!item || item.l) return false;
+	if (typeof CryptRun !== "undefined" && CryptRun.keeps(item)) return false;
 	if (typeof optIndex === "number") {
 		return is_dumpable_slot(optIndex);
 	}
@@ -840,7 +881,10 @@ async function dumpLoop() {
 
 		// 2. Gestion du voyage vers la mule si sac plein ou besoin critique de mluck
 		var needDump = (bag_is_full() && dumpable_count() > 0);
-		var needMluckVisit = (wants_mluck() && dumpable_count() > 0);
+		// Pendant un evenement (Franky...), pas d'aller-retour mluck : il faisait quitter
+		// le boss en boucle et perdre les points coop et le coffre.
+		var eventLive = typeof EventRouter !== "undefined" && EventRouter.activeMonster && !!EventRouter.activeMonster();
+		var needMluckVisit = (!eventLive && wants_mluck() && dumpable_count() > 0);
 
 		if (state.dumpInProgress) {
 			if (!bag_is_full() && dumpable_count() === 0 && !wants_mluck()) {
@@ -981,14 +1025,19 @@ function start_boss_check() {
 	return next;
 }
 
+/** Points d'attente hors des spawns agressifs, le temps que l'equipe soit complete et pleine (albot-js). */
+var WAIT_SPOTS = {
+	bscorpion: { map: "desertland", x: -420, y: -1050 }, // 130 px sous la zone de spawn : le ranger (pocket -50 y) reste a ~80 px
+};
+
 var BOSS_SPOTS = {
 	jr: { map: "spookytown", x: -968, y: -657 },
 	greenjr: { map: "halloween", x: -480, y: -420 },
 	dragold: { map: "cave", x: 1200, y: -800 },
-	fvampire: { map: "halloween", x: 80, y: -850 },
+	fvampire: { map: "halloween", x: -405, y: -1640 }, // centre de la zone de spawn G.maps.halloween
 	mvampire: { map: "cave", x: 158, y: -1130 },
 	stompy: { map: "winterland", x: 420, y: -2400 },
-	bscorpion: { map: "desertland", x: 390, y: -1420 },
+	bscorpion: { map: "desertland", x: -409, y: -1262 }, // centre de la zone de spawn G.maps.desertland
 	mrpumpkin: { map: "halloween", x: -260, y: -1600 },
 	mrgreen: { map: "spookytown", x: 10, y: -1060 }
 };
@@ -1074,6 +1123,11 @@ async function actionLoop() {
 			setTimeout(actionLoop, 250);
 			return;
 		}
+		// CryptRun fights inside the crypt (safe-target whitelist only).
+		if (typeof CryptRun !== "undefined" && CryptRun.inside()) {
+			setTimeout(actionLoop, 250);
+			return;
+		}
 
 		updateCache();
 		var target = cache.target;
@@ -1083,7 +1137,7 @@ async function actionLoop() {
 		if (target && is_in_range(target, "attack")) {
 			var ph = pick_party_hunt();
 			var isHuntMob = ph && ph.id && target.mtype === ph.id;
-			var isSelfDefense = target.target === character.name || (cache.alliesUnderAttack && cache.alliesUnderAttack.indexOf(target) >= 0);
+			var isSelfDefense = target.target === character.name || target.target === CONFIG.PRIEST || (cache.alliesUnderAttack && cache.alliesUnderAttack.indexOf(target) >= 0);
 			if (typeof TeamCoordinator !== "undefined" && !TeamCoordinator.canEngage() && !isSelfDefense) {
 				set_message("Wait priest (mission)");
 			} else if (recurring_boss_waiting_for_priest(target) && !isSelfDefense) {
@@ -1146,20 +1200,15 @@ async function skillLoop() {
 			setTimeout(skillLoop, 200);
 			return;
 		}
+		// CryptRun fights inside the crypt (safe-target whitelist only).
+		if (typeof CryptRun !== "undefined" && CryptRun.inside()) {
+			setTimeout(skillLoop, 200);
+			return;
+		}
 
 		updateCache();
 		var skills = CONFIG.skills;
-		if (cache.target && typeof TeamCoordinator !== "undefined" && !TeamCoordinator.canEngage()) {
-			set_message("Wait priest (mission)");
-			setTimeout(skillLoop, 200);
-			return;
-		}
-		if (recurring_boss_waiting_for_priest(cache.target)) {
-			set_message("Wait priest (boss)");
-			setTimeout(skillLoop, 200);
-			return;
-		}
-
+		// Taunt avant les attentes (mission/boss) : sauver un allie ne doit jamais attendre.
 		// 1. Taunt — Sauvetage des allies (Pretre / Ranger)
 		if (skills.tauntEnabled && (typeof StyleLoadout === "undefined" || StyleLoadout.allows("taunt")) && !is_on_cooldown("taunt") && Date.now() - state.lastTaunt > skills.tauntCooldown) {
 			if (cache.alliesUnderAttack.length > 0) {
@@ -1170,6 +1219,17 @@ async function skillLoop() {
 					game_log("Taunt sur " + mobToTaunt.mtype + " pour proteger " + mobToTaunt.target, "#FFD700");
 				}
 			}
+		}
+
+		if (cache.target && typeof TeamCoordinator !== "undefined" && !TeamCoordinator.canEngage()) {
+			set_message("Wait priest (mission)");
+			setTimeout(skillLoop, 200);
+			return;
+		}
+		if (recurring_boss_waiting_for_priest(cache.target)) {
+			set_message("Wait priest (boss)");
+			setTimeout(skillLoop, 200);
+			return;
 		}
 
 		// 3. Stomp — Controle de foule si danger
@@ -1224,11 +1284,32 @@ async function skillLoop() {
 // ============================================================================
 // 10. MOVEMENT LOOP — Deplacement & Navigation
 // ============================================================================
+/** User (2026-11-04): the Spookytown mummies have a "rage" area (entering it pulls all of them). True while the
+ *  warrior is just outside it and the priest or the rogue is not within 150 px: wait for them there. */
+function mummy_regroup_needed() {
+	if (character.map !== "spookytown" || character.rip || farm_monster() !== "mummy") return false;
+	var RAGE = [-124, -1631, 614, -1130], EDGE = 140;
+	var inRage = character.x > RAGE[0] && character.x < RAGE[2] && character.y > RAGE[1] && character.y < RAGE[3];
+	var nearRage = character.x > RAGE[0] - EDGE && character.x < RAGE[2] + EDGE && character.y > RAGE[1] - EDGE && character.y < RAGE[3] + EDGE;
+	if (!nearRage || inRage) return false;
+	return ![CONFIG.PRIEST, CONFIG.RANGER].filter(Boolean).every(function (n) { var p = get_player(n); return p && !p.rip && distance(character, p) < 150; });
+}
+// Run 2026-11-04 21:42: movementLoop sits in `await smart_move()` for the whole walk, so its check never ran and the
+// warrior walked in alone and died (3 times). This timer stops the walk at the edge; movementLoop then holds.
+setInterval(function () {
+	try { if ((smart.moving || character.moving) && mummy_regroup_needed()) stop(); } catch (e) {}
+}, 250);
+
 async function movementLoop() {
 	if (typeof EventExpedition !== "undefined" && await EventExpedition.actorTick()) { setTimeout(movementLoop, 500); return; }
 	try {
 		if (is_disabled(character) || character.rip) {
 			setTimeout(movementLoop, 300);
+			return;
+		}
+		// Crypt run (merchant HUD) owns movement until the trio has left the instance.
+		if (typeof CryptRun !== "undefined" && await CryptRun.tick()) {
+			setTimeout(movementLoop, 250);
 			return;
 		}
 		// Pause les déplacements de combat si on est en voyage pour vider les sacs ou chez Daisy
@@ -1248,6 +1329,15 @@ async function movementLoop() {
 			return;
 		}
 
+		// User (2026-11-04): the Spookytown mummies have a "rage" area (entering it pulls all of them): wait just
+		// outside it until the priest and the rogue are within 150 px, then go in together.
+		if (mummy_regroup_needed()) {
+			if (smart.moving || character.moving) stop();
+			set_message("regroupe avant les momies");
+			setTimeout(movementLoop, 500);
+			return;
+		}
+
 		// Refresh before honoring an already-running smart_move. A recurring boss
 		// can appear while travelling; in that case the warrior must cancel the
 		// approach immediately instead of reaching it alone before this guard runs.
@@ -1256,6 +1346,19 @@ async function movementLoop() {
 		if (recurring_boss_waiting_for_priest(target)) {
 			if (smart.moving || character.moving) stop();
 			set_message("Wait priest (boss)");
+			setTimeout(movementLoop, 400);
+			return;
+		}
+		// Attente d'equipe (RuntimePolicy) : ne pas entrer seul dans le spawn, attendre dehors (albot-js).
+		var teamWait = typeof RuntimePolicy !== "undefined" && RuntimePolicy.teamHold ? RuntimePolicy.teamHold() : "";
+		var farmSpot = BOSS_SPOTS[farm_monster()];
+		if (teamWait && !cache.alliesUnderAttack.length && (target || (farmSpot && farmSpot.map === character.map && distance(character, farmSpot) < 500))) {
+			// Deja dans la zone : ressortir au point d'attente au lieu de rester dans le spawn agressif.
+			var waitSpot = WAIT_SPOTS[farm_monster()];
+			if (waitSpot && waitSpot.map === character.map && distance(character, waitSpot) > 30) {
+				if (!character.moving) move(waitSpot.x, waitSpot.y);
+			} else if (smart.moving || character.moving) stop();
+			set_message("Wait team: " + teamWait);
 			setTimeout(movementLoop, 400);
 			return;
 		}
@@ -1272,7 +1375,7 @@ async function movementLoop() {
 				return;
 			}
 		}
-		if (target && typeof TeamCoordinator !== "undefined" && !TeamCoordinator.canEngage()) {
+		if (target && !cache.alliesUnderAttack.length && typeof TeamCoordinator !== "undefined" && !TeamCoordinator.canEngage()) {
 			if (smart.moving || character.moving) stop();
 			set_message("Wait priest (mission)");
 			setTimeout(movementLoop, 400);
@@ -1317,9 +1420,17 @@ async function movementLoop() {
 			if (farmType && farmType !== "auto") {
 				var nearest = get_nearest_monster({ type: farmType });
 				if (!nearest && !smart.moving) {
-					var bossSpot = BOSS_SPOTS[farmType];
+					// User (2026-11-04): mummies at one fixed spawn (smart_move picked either). Now Spookytown only (9 mummies,
+					// "rage" area: entering it pulls them), was the level3 cavern (3 mummies) before.
+					var FARM_SPOTS = { mummy: { map: "spookytown", x: 255, y: -1432 } };
+					var bossSpot = BOSS_SPOTS[farmType] || FARM_SPOTS[farmType];
 					if (bossSpot) {
-						await smart_move(bossSpot);
+						try { await smart_move(bossSpot); } catch (moveError) {
+							// Trajet impossible : abandonner la ronde tout de suite au lieu de rester 3 min sur place.
+							var why = String((moveError && (moveError.reason || moveError.message)) || moveError);
+							if (boss_peek.phase === farmType && ["failed", "path_not_found", "invalid", "route_suspended"].indexOf(why) >= 0) boss_check_give_up("Trajet impossible vers " + boss_name(farmType) + " (" + why + ")");
+							throw moveError;
+						}
 					} else {
 						await smart_move(farmType);
 					}
@@ -1588,6 +1699,9 @@ async function partyMaintenanceLoop() {
 			for (var i = 0; i < allMembers.length; i++) {
 				var name = allMembers[i];
 				if (!name || name === character.name) continue;
+				// The server refuses party calls inside a run, and a reserved cave party
+				// must not re-invite the 4th farmer that ensure_cave_party just kicked.
+				if (typeof CaveDreams !== "undefined" && (CaveDreams.inCave() || (CaveDreams.allowsPartyMember && !CaveDreams.allowsPartyMember(name)))) continue;
 				if (!parent.party || !parent.party[name]) {
 					send_party_invite(name);
 				}
@@ -1661,6 +1775,7 @@ function on_party_invite(name) {
 function on_cm(name, data) {
 	if (typeof EventExpedition !== "undefined") EventExpedition.onCm(name, data);
 	if (typeof CaveDreams !== "undefined") CaveDreams.onCm(name, data);
+	if (typeof CryptRun !== "undefined") CryptRun.onCm(name, data);
 	if (typeof WorldEventIntel !== "undefined") WorldEventIntel.onCm(name, data);
 	if (typeof TeamCoordinator !== "undefined") TeamCoordinator.onCm(name, data);
 	if (!data) return;
@@ -1805,6 +1920,58 @@ function maybe_start_team() {
 }
 
 // ============================================================================
+// 13b. CAVALERIE (Tracktrix)
+// ============================================================================
+// User (2026-11-04): appeler la cavalerie quand une momie niveau 3+ attaque le groupe. Serveur : Tracktrix dans le
+// sac, monstre niveau >= 3 a 320 px qui cible le joueur ou un membre du groupe, 15 s d'aide sur 3 cibles, cooldown de
+// compte 10 min + 1 min par niveau (90 min au niveau 80). La reponse "game_response" donne next_call.
+var CAVALRY_KEY = "alcc:cavalry:v1:next";
+var cavalryNext = 0;
+try { cavalryNext = Number(get(CAVALRY_KEY)) || 0; } catch (e) {}
+// One handler per page: each CODE reload added another (5 after a few deploys) and the reply stopped being logged.
+try {
+	if (parent.__alccCavalryReply) parent.socket.off("game_response", parent.__alccCavalryReply);
+	parent.__alccCavalryReply = function (r) {
+		try {
+			if (!r || r.interaction !== "cavalry") return;
+			var next = r.next_call || (r.cooldown_ms ? Date.now() + r.cooldown_ms : 0) || Date.now() + 60000;
+			cavalryNext = next;
+			try { set(CAVALRY_KEY, next); } catch (e1) {}
+			game_log("cavalry: " + (r.message || r.phrase || (r.failed ? r.reason : "called")));
+		} catch (e2) {}
+	};
+	parent.socket.on("game_response", parent.__alccCavalryReply);
+} catch (e) {}
+
+function cavalry_target() {
+	var party = (typeof get_party === "function" && get_party()) || {};
+	var names = [character.name].concat(Object.keys(party));
+	for (var id in parent.entities) {
+		var m = parent.entities[id];
+		if (!m || m.type !== "monster" || m.dead || m.mtype !== "mummy" || (m.level || 1) < 3) continue;
+		if (names.indexOf(m.target) < 0 || distance(character, m) > 300) continue;
+		return m;
+	}
+	return null;
+}
+
+function cavalryLoop() {
+	try {
+		var hasTracker = (character.items || []).some(function (it) { return it && it.name === "tracker"; });
+		if (!character.rip && Date.now() > cavalryNext && hasTracker) {
+			var m = cavalry_target();
+			if (m) {
+				// 5 min until the next try even without a reply (the server keeps the real 90 min cooldown).
+				cavalryNext = Date.now() + 5 * 60000;
+				parent.socket.emit("interaction", { type: "cavalry" });
+				game_log("cavalry: called for " + m.mtype + " level " + (m.level || 1));
+			}
+		}
+	} catch (e) {}
+	setTimeout(cavalryLoop, 1000);
+}
+
+// ============================================================================
 // 14. DEMARRAGE DES BOUCLES D'EXECUTION
 // ============================================================================
 actionLoop();
@@ -1816,5 +1983,6 @@ partyMaintenanceLoop();
 huntLoop();
 dumpLoop();
 lootLoop();
+cavalryLoop();
 
 game_log("Eadroma Warrior v2 charge et pret !", "#78C13F");

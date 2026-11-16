@@ -1,0 +1,33 @@
+/** Events: which events the team joins, with which build, and recurring boss checks. */
+const duration = (minutes: number): string => (minutes >= 60 ? `${String(minutes / 60)} h` : `${String(minutes)} min`);
+
+export const events = {
+  open: 'Events',
+  title: 'Events and bosses',
+  intro: 'Which events and bosses the team leaves its farm for, and with which build. Changes take effect at the next deployment.',
+  close: 'Close',
+  noProfile: 'Create or import a profile first.',
+  master: 'Join events',
+  masterHelp: 'Off: every character keeps farming, whatever the events below.',
+  characters: 'Who takes part',
+  charactersHelp: 'Characters switched off here never leave for an event.',
+  list: 'Allowed events',
+  listHelp: 'The build is the combat style the characters switch to for this event (AOE, Mono, Tank or one of your custom loadouts).',
+  kindEvent: 'Events',
+  kindBoss: 'Bosses',
+  allow: (params: { readonly name: string }): string => `Allow ${params.name}`,
+  build: (params: { readonly name: string }): string => `Build for ${params.name}`,
+  allowAll: 'Allow all',
+  allowNone: 'Forbid all',
+  name: { graveyard: 'Graveyard Rising', goobrawl: 'Goo Brawl', abtesting: 'A/B Testing' },
+  checks: 'Recurring boss checks',
+  checksToggle: 'Check timed bosses on a schedule',
+  checksHelp: 'The party walks to each boss at the chosen interval to see if it is up.',
+  boss: 'Boss',
+  every: 'Every',
+  duration,
+  remove: (params: { readonly name: string }): string => `Remove ${params.name}`,
+  removeShort: 'Remove',
+  add: 'Add a boss',
+  noRules: 'No boss checked yet.',
+};

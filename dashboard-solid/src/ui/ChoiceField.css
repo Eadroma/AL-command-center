@@ -1,0 +1,31 @@
+.choice-field { position: relative; display: grid; gap: 4px; }
+.choice-field label { font-weight: 700; }
+/* The current choice sits in a slot next to the field, like an item in the game's inventory. */
+.choice-combo { display: flex; align-items: center; gap: 8px; max-width: 420px; }
+.choice-combo .frame-image { flex: none; background: var(--slot); border: 2px solid var(--edge); }
+.choice-combo input { flex: 1; min-width: 0; min-height: 44px; }
+.choice-combo input[aria-invalid='true'] { border-color: var(--hp); }
+.choice-hint { color: var(--text-dim); font-size: .85rem; }
+.choice-hint.error { color: var(--hp); }
+
+.choice-list {
+  position: absolute;
+  top: calc(100% - 20px);
+  left: 0;
+  z-index: 10;
+  width: min(420px, 100%);
+  max-height: 320px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--stone);
+  border: 2px solid var(--edge);
+  box-shadow: 0 8px 20px rgb(0 0 0 / .35);
+}
+.choice-list li { display: flex; align-items: center; gap: 10px; padding: 4px 8px; cursor: pointer; min-height: 48px; }
+.choice-list li.active { background: var(--slot); outline: 2px solid var(--gold); outline-offset: -2px; }
+.choice-list li[aria-selected='true'] .choice-option-name { color: var(--gold); }
+.choice-option-text { display: grid; min-width: 0; }
+.choice-option-name { font-weight: 700; overflow-wrap: anywhere; }
+.choice-option-detail { color: var(--text-dim); font-size: .8rem; overflow-wrap: anywhere; }

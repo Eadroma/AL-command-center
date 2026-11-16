@@ -15,6 +15,8 @@ var CombatGear = (function () {
   }
   function countFree() { return (character.items || []).filter(function (item) { return !item; }).length; }
   async function apply(forceTravel) {
+    // In the crypt the gold gloves are not worth the swaps (user, run 7): keep the movement pair on.
+    if (typeof CryptRun !== 'undefined' && CryptRun.inside && CryptRun.inside()) forceTravel = true;
     if (!rule || busy || character.rip || !forceTravel && Date.now() - attemptedAt < 400) return false;
     var fight = !forceTravel && inCombat(), wanted = fight ? rule.combatItem : rule.movementItem, minimum = fight ? rule.combatMinLevel : rule.movementMinLevel;
     var current = character.slots && character.slots.gloves;

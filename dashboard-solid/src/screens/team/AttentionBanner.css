@@ -1,0 +1,22 @@
+.attention { display: grid; gap: 8px; }
+.attention h3 { font-size: 1rem; font-weight: 700; color: var(--text-dim); }
+.attention ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.attention-none { margin: 0; color: var(--herb); }
+
+.signal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+  padding: 8px 12px;
+  background: var(--stone);
+  border-left: 4px solid var(--edge);
+}
+.signal-danger { border-left-color: var(--hp); }
+.signal-warning { border-left-color: var(--gold); }
+.signal-info { border-left-color: var(--mp); }
+.signal-text { overflow-wrap: anywhere; min-width: 0; flex: 1 1 280px; }
+.signal-actions { display: flex; gap: 4px; align-items: center; }
+.signal-actions a { color: var(--gold); padding: 8px 10px; text-decoration: underline; text-underline-offset: 3px; }
+.signal-actions button { min-height: 36px; padding: 6px 10px; }

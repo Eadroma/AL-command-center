@@ -23,6 +23,16 @@ describe('performance history', () => {
     expect(history.view(1).buckets[0]).toMatchObject({ elapsedMs: 5000, damage: 1000, kills: 1, lootGold: 100, lootElapsedMs: 5000 });
   });
 
+  it('stores per-monster kill and item deltas, including idle time without kills', () => {
+    const history = new PerformanceHistory(undefined, () => 600_000);
+    const at = (t: number, monsters: NonNullable<PerformanceSample['loot']>['monsters']) => ({ ...sample(t, 'one', 0, 0, 0, 0), loot: { gold: 0, monsters } });
+    history.record(at(500_000, { bscorpion: { kills: 2, gold: 100, items: [{ name: 'stramulet', level: 0, quantity: 1 }] } }));
+    history.record(at(505_000, { bscorpion: { kills: 3, gold: 400, items: [{ name: 'stramulet', level: 0, quantity: 3 }, { name: 'gem0', level: 0, quantity: 1 }] } }));
+    expect(history.view(1).buckets[0].monsters).toEqual({ bscorpion: { kills: 1, gold: 300, items: { 'stramulet@0': 2, 'gem0@0': 1 } } });
+    const idle = new PerformanceHistory(undefined, () => 600_000);
+    idle.record(at(500_000, {})); idle.record(at(505_000, {}));
+    expect(idle.view(1).buckets[0].monsters).toEqual({});
+  });
   it('ignores late samples without changing the current baseline', () => {
     const history = new PerformanceHistory(undefined, () => 600_000);
     history.record(sample(500_000, 'one', 100, 1, 100, 100));

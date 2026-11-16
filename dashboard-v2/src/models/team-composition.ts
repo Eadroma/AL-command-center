@@ -2,20 +2,26 @@ import { profileSchema, type Profile } from '../../shared/schema';
 
 export type TeamMode = 'solo' | 'team' | 'cave';
 
+/** Default full team: warrior + priest + the enabled (or first) ranger/rogue. */
+export function defaultTeam(profile: Profile): string[] {
+  const farmers = profile.characters.filter(character => character.ctype !== 'merchant');
+  const damageDealer = farmers.find(character => character.enabled && ['ranger', 'rogue'].includes(character.ctype))
+    ?? farmers.find(character => ['ranger', 'rogue'].includes(character.ctype));
+  return farmers.filter(character => ['warrior', 'priest'].includes(character.ctype) || character.name === damageDealer?.name).map(character => character.name);
+}
+
 /** Stage a composition; merchant remains separate from farmer follow/party membership. */
-export function applyTeamComposition(profile: Profile, mode: TeamMode, soloName: string): Profile {
+export function applyTeamComposition(profile: Profile, mode: TeamMode, soloName: string, members: string[] = defaultTeam(profile)): Profile {
   const next = structuredClone(profile);
   next.automation.activeActivity = '';
   next.automation.activeBuilds = {};
   next.automation.activeConsumables = [];
   const farmers = next.characters.filter(character => character.ctype !== 'merchant');
-  const damageDealer = farmers.find(character => character.enabled && ['ranger', 'rogue'].includes(character.ctype))
-    ?? farmers.find(character => ['ranger', 'rogue'].includes(character.ctype));
   const chosen = mode === 'solo'
     ? farmers.filter(character => character.name === soloName)
     : mode === 'cave'
       ? ['warrior', 'priest', 'ranger'].flatMap(type => farmers.filter(character => character.ctype === type).slice(0, 1))
-      : farmers.filter(character => ['warrior', 'priest'].includes(character.ctype) || character.name === damageDealer?.name);
+      : farmers.filter(character => members.includes(character.name));
   if (!chosen.length) throw Error('Select at least one farmer.');
   if (mode === 'cave' && chosen.length !== 3) throw Error('Cave Dreams requires a warrior, priest and ranger.');
   const names = chosen.map(character => character.name);
@@ -27,6 +33,8 @@ export function applyTeamComposition(profile: Profile, mode: TeamMode, soloName:
   });
   next.seller.teamSupervisor = { enabled: true, characters: names, soloGuard: mode === 'solo' };
   next.farming.dailyDungeon = mode === 'cave';
+  // The on-demand event duo keeps warrior + priest offline; a grouped team must start them normally.
+  if (mode !== 'solo') next.events.expedition.enabled = false;
   if (mode === 'solo') {
     next.events.enabled = false;
     next.farming.hunts = false;

@@ -1,0 +1,40 @@
+.language-switcher { position: relative; }
+
+.language-current { display: inline-flex; align-items: center; gap: 8px; background: transparent; border-color: transparent; }
+.language-current:hover, .language-current[aria-expanded='true'] { border-color: var(--edge); background: var(--slot); }
+
+/* A small pixel chevron (two squares) rather than a typographic arrow. */
+.language-current .chevron {
+  width: 8px;
+  height: 4px;
+  background: linear-gradient(var(--text-dim), var(--text-dim)) 0 0 / 2px 2px no-repeat,
+    linear-gradient(var(--text-dim), var(--text-dim)) 6px 0 / 2px 2px no-repeat,
+    linear-gradient(var(--text-dim), var(--text-dim)) 2px 2px / 4px 2px no-repeat;
+  transition: transform 120ms ease-out;
+}
+.language-current[aria-expanded='true'] .chevron { transform: rotate(180deg); }
+
+.flag { display: block; flex: none; border-radius: 50%; box-shadow: 0 0 0 1px var(--edge); }
+
+.language-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 10;
+  min-width: 180px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--stone);
+  animation: list-open 120ms ease-out;
+}
+.language-list:focus { outline: none; }
+.language-list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; min-height: 40px; cursor: pointer; }
+.language-list li.active { background: var(--slot); }
+.language-list li[aria-selected='true'] { color: var(--gold); font-weight: 700; }
+.language-list:focus-visible li.active { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+@keyframes list-open {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}

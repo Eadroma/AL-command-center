@@ -106,13 +106,13 @@ function readScripts(files: string[]): ScriptInfo[] {
       // Farm bundles also embed these shared runtime modules. Include them in
       // the catalog hash so Fleet Health requests a rebuild when one changes.
       const sharedFarmSource = kind === "farm" && ctype !== "merchant"
-        ? ["event-expedition.js", "action-timing.js", "event-router.js", "style-loadout.js", "cave-dreams.js", "world-event-intel.js", "movement-watchdog.js", "runtime-policy.js", "combat-gear.js", ...(ctype === "warrior" ? ["dragold-intel.js"] : [])]
+        ? ["event-expedition.js", "action-timing.js", "event-router.js", "style-loadout.js", "cave-dreams.js", "crypt-run.js", "world-event-intel.js", "movement-watchdog.js", "runtime-policy.js", "combat-gear.js", ...(ctype === "warrior" ? ["dragold-intel.js"] : [])]
             .map(name => path.join(sourceDir, name))
             .filter(file => fs.existsSync(file))
             .map(file => fs.readFileSync(file, "utf8"))
             .join("\n")
         : ctype === "merchant"
-          ? ["event-expedition.js", "merchant-halloween.js", "merchant-witch-cipher.js", "bank-sorter.js", "movement-watchdog.js", "runtime-policy.js"].map(name => path.join(sourceDir, name)).filter(file => fs.existsSync(file)).map(file => fs.readFileSync(file, "utf8")).join("\n")
+          ? ["event-expedition.js", "merchant-halloween.js", "merchant-witch-cipher.js", "crypt-supply.js", "bank-sorter.js", "movement-watchdog.js", "runtime-policy.js"].map(name => path.join(sourceDir, name)).filter(file => fs.existsSync(file)).map(file => fs.readFileSync(file, "utf8")).join("\n")
           : "";
       return {
         id: filename.slice(0, -3),

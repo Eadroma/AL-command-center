@@ -482,7 +482,7 @@ export const profileSchema = z
     automation: automationSchema.default(automationDefaults),
     server: z.object({
       region: z.enum(["EU", "US", "ASIA"]),
-      name: z.enum(["I", "II", "III", "PVP"]),
+      name: z.enum(["I", "II", "III", "IV", "V", "PVP"]),
     }),
     characters: z.array(characterSchema).min(1).max(20),
     farming: z.object({
@@ -935,6 +935,8 @@ export type Catalog = {
   items: {
     id: string;
     name: string;
+    /** Game `G.items[id].type` (e.g. gloves, earring, material). */
+    type?: string;
     upgrade?: boolean;
     compound?: boolean;
     exchange?: boolean;

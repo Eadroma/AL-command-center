@@ -1,0 +1,43 @@
+/** Messages des codes d'erreur renvoyés par le serveur. `detail` est la raison brute du jeu, affichée telle quelle. */
+import type { RawDictionary } from '../en/index.ts';
+
+interface Detail { readonly detail: string }
+
+export const errors = {
+  unknown: (params: { readonly code: string }): string => `Erreur inattendue (${params.code}).`,
+  mcpMissingToken: 'Colle d’abord ton jeton MCP.',
+  mcpUnreachable: 'Impossible de joindre Adventure Land. Vérifie ta connexion et l’état du jeu.',
+  mcpHttpError: (params: Detail): string => `Adventure Land a répondu par une erreur (HTTP ${params.detail}).`,
+  mcpRejected: (params: Detail): string => `Adventure Land a refusé la demande : ${params.detail}.`,
+  mcpUnexpectedResponse: 'Adventure Land a envoyé une réponse inattendue.',
+  httpUnreachable: 'Le serveur local ne répond pas. Vérifie que le dashboard tourne.',
+  httpInvalidCsrf: 'Cette page n’est plus à jour. Recharge-la.',
+  httpForbidden: 'Le serveur local a refusé cette demande.',
+  settingsInvalidInput: 'Certains champs sont invalides.',
+  settingsUnknownServer: 'Ce serveur n’existe pas. Teste la connexion et choisis-en un dans la liste.',
+  profileConflict: 'Le profil a été modifié dans une autre fenêtre. Recharge-le.',
+  profileInvalid: 'Le profil n’est pas valide (par exemple deux fois le même personnage).',
+  profileNoServer: 'Choisis d’abord un serveur principal dans les réglages.',
+  profileV2Unreachable: 'Le dashboard v2 ne répond pas. Vérifie qu’il est lancé.',
+  profileV2Invalid: (params: Detail): string => `Le profil du dashboard v2 n’a pas pu être lu : ${params.detail}.`,
+  profileV2NotConfigured: 'Aucune adresse de dashboard v2 n’est réglée (migration.relayV2Url dans settings.json).',
+  deployDisabled: 'Le déploiement est verrouillé (deploy.enabled vaut false dans settings.json).',
+  deployBusy: 'Une autre opération dans le jeu est en cours. Attends qu’elle se termine.',
+  deployNoSettings: 'Enregistre d’abord les réglages.',
+  deployNoProfile: 'Il n’y a pas encore de profil.',
+  deployStaleProfile: 'Le profil a changé depuis la préparation. Recharge, puis réessaie.',
+  deployCharacterDisabled: (params: Detail): string => `${params.detail} n’est pas actif dans le profil.`,
+  deployCaracalUnsupported: (params: Detail): string => `${params.detail} tourne avec caracAL : le dashboard v2 s’en occupe encore.`,
+  deployNoGameData: 'Les données du jeu ne sont pas encore téléchargées.',
+  deployBuildFailed: (params: Detail): string => `Le bundle n’a pas pu être construit : ${params.detail}`,
+  deployOffline: (params: Detail): string => `${params.detail} n’est pas connecté dans le jeu. Ouvre-le d’abord dans Adventure Land.`,
+  deployDuplicateSlots: (params: Detail): string => `Plusieurs emplacements CODE s’appellent ${params.detail}. Renomme ceux en trop dans le jeu.`,
+  deployNoFreeSlot: 'Aucun emplacement CODE libre. Libère-en un numéroté dans le jeu.',
+  deployBackupFailed: 'L’emplacement CODE actuel n’a pas pu être sauvegardé : rien n’a été remplacé.',
+  deployVerifyFailed: 'Le CODE envoyé ne se relit pas à l’identique : il n’a pas été démarré.',
+  deployUnexpectedResponse: (params: Detail): string => `Le jeu a envoyé une réponse inattendue (${params.detail}).`,
+  deployNoSlot: (params: Detail): string => `Pas encore d’emplacement CODE ${params.detail} : déploie d’abord ce personnage.`,
+  deployInvalidRequest: 'Requête invalide.',
+  deployUnknownBackup: 'Cette copie n’existe plus.',
+  deployNotPreviewed: 'Prévisualise la révision enregistrée avant de la déployer.',
+} satisfies RawDictionary['errors'];

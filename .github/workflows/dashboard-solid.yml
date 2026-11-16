@@ -1,0 +1,37 @@
+name: dashboard-solid
+on:
+  push:
+    branches: [main]
+    paths: ['dashboard-solid/**', '.github/workflows/dashboard-solid.yml']
+  pull_request:
+    paths: ['dashboard-solid/**', '.github/workflows/dashboard-solid.yml']
+  schedule:
+    - cron: '0 6 * * 1' # weekly dependency audit
+  workflow_dispatch:
+concurrency:
+  group: dashboard-solid-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: dashboard-solid
+    steps:
+      # Actions are pinned by commit SHA; the comment names the release.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 12.4.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: dashboard-solid/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm build
+      - run: pnpm audit --audit-level high

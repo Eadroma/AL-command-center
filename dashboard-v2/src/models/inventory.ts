@@ -27,6 +27,16 @@ export const EQUIPMENT_SLOTS = [
 
 export type EquipmentSlotId = typeof EQUIPMENT_SLOTS[number]['id'];
 
+const TYPE_CATEGORIES: Record<string, string> = {
+  pot: 'Potions', elixir: 'Elixirs', cscroll: 'Scrolls', uscroll: 'Scrolls', pscroll: 'Scrolls',
+  weapon: 'Weapons',
+  helmet: 'Armor', chest: 'Armor', pants: 'Armor', gloves: 'Armor', shoes: 'Armor', cape: 'Armor',
+  shield: 'Armor', source: 'Armor', quiver: 'Armor', misc_offhand: 'Armor',
+  ring: 'Accessories', earring: 'Accessories', amulet: 'Accessories', belt: 'Accessories', orb: 'Accessories',
+  material: 'Materials', gem: 'Materials',
+  stand: 'Utility', tracker: 'Utility', computer: 'Utility',
+};
+
 /** Categorize item name using the sprite catalog and common AL item conventions. */
 export function categorizeItem(name: string, catalog?: Catalog): string {
   const meta = catalog?.items.find(entry => entry.id === name);
@@ -34,6 +44,9 @@ export function categorizeItem(name: string, catalog?: Catalog): string {
   if (name.startsWith('elixir') || name.includes('elixir')) return 'Elixirs';
   if (name.startsWith('scroll') || name.startsWith('cscroll') || name.includes('scroll')) return 'Scrolls';
   if (meta?.exchange) return 'Exchangeables';
+  // The game type is authoritative; name heuristics below only cover catalogs imported without it.
+  const byType = meta?.type && TYPE_CATEGORIES[meta.type];
+  if (byType) return byType;
   if (['stand0', 'stand1', 'tracker', 'computer', 'supercomputer'].includes(name)) return 'Utility';
   if (name.startsWith('gem') || name.startsWith('essence') || ['leather', 'cloth', 'wood', 'feather0', 'seashell'].includes(name)) return 'Materials';
   if (['fireblade', 'ololipop', 'glolipop', 'firebow', 'bow', 'staff', 'dagger', 'sword', 'axe', 'scythe', 'wand', 'mace', 'lmace', 'vstaff', 'crossbow', 'frostbow'].some(k => name.includes(k))) return 'Weapons';

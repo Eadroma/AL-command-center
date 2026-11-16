@@ -57,6 +57,8 @@ var CONFIG = {
 	HEAL_HP_RATIO: 0.80,           // Soigner le guerrier dès qu'il passe sous 80% PV
 	PARTYHEAL_WARRIOR_RATIO: 0.70, // Partyheal d'urgence si guerrier sous 70% PV
 	PARTYHEAL_MIN_ALLIES: 2,       // Partyheal si au moins 2 alliés ont besoin de soin
+	PARTYHEAL_SELF_RATIO: 0.55,    // Partyheal si la pretresse (tank via Absorb) passe sous 55% PV
+	ABSORB_MAX_HIT_RATIO: 0.15,    // Absorb seulement si un coup du monstre < 15% PV max, sauf monstre kitable
 	SELF_HEAL_RATIO: 0.85,         // Se soigner soi-même sous 85% PV
 	SELF_CRITICAL_RATIO: 0.40,     // Priorité d'urgence absolue sur soi-même sous 40% PV
 	HEAL_MISSING_HP: 200,          // Soigner un allié s'il lui manque au moins 200 PV
@@ -74,6 +76,9 @@ var CONFIG = {
 		bossAngles: 12,            // 12 echantillons sur les boss
 		stepDistance: 40,          // Longueur du pas de kite (px)
 		repositionThreshold: 20,   // Ne bouge que si le gain est significatif
+		origins: {                 // Centre fixe du kite circulaire (albot-js BScorpionPriest)
+			bscorpion: { map: "desertland", x: -440, y: -1240 },
+		},
 	},
 	mpReserve: 800,                // Reserve MP : skip le heal mono-cible si partyheal menace (hysteresis)
 	mpHysteresisUpper: 1100,       // Reprise du heal mono au-dessus de ce seuil
@@ -81,7 +86,6 @@ var CONFIG = {
 	// --- Compétences Offensives & Malédiction ---
 	curseEnabled: true,            // Lancer Malédiction pour affaiblir les cibles
 	curseMinHp: 50000,             // Réserver curse aux boss/cibles assez longues à tuer
-	curseMinMp: 60,                // Réserve minimale de MP pour curse
 
 	// --- Équipement & Consommables Autonomes ---
 	WEAPON_PREFERENCE: ["lmace", "vstaff", "firestaff", "staff"], // Ordre de priorité des bâtons
@@ -97,6 +101,7 @@ var CONFIG = {
 	// --- Survie & Potions ---
 	SELF_POT_HP_RATIO: 0.40,       // Boire potion HP de secours si soin en cooldown
 	SELF_POT_MP_RATIO: 0.35,       // Boire potion MP sous 35% mana
+	SELF_POT_MP_MISSING: 500,      // Boire potion MP des qu'il manque 500 MP (= un mpot1, rien de gaspille)
 	HPOT: "hpot1",
 	MPOT: "mpot1",
 	POT_BUY_COUNT: 200,
@@ -219,6 +224,7 @@ function on_party_request(name) {
 function on_cm(name, data) {
 	if (typeof EventExpedition !== "undefined") EventExpedition.onCm(name, data);
 	if (typeof CaveDreams !== "undefined") CaveDreams.onCm(name, data);
+	if (typeof CryptRun !== "undefined") CryptRun.onCm(name, data);
 	if (typeof WorldEventIntel !== "undefined") WorldEventIntel.onCm(name, data);
 	if (typeof TeamCoordinator !== "undefined") TeamCoordinator.onCm(name, data);
 	if (!data || typeof data !== "object") return;
@@ -318,12 +324,12 @@ function mp_spend_ok(extraCost) {
 // Kiting angulaire (FreezePhoenix avoidMobs / Crowns3bc rangedKiting) :
 // echantillonne N directions autour du personnage (real_x/real_y interpoles),
 // privilegie la distance optimale au harceleur et les cases marchables.
-function kite_step(harasser) {
+function kite_step(harasser, optimalDistance) {
 	var k = CONFIG.kiting || {};
 	if (!k.enabled || !harasser) return false;
 	var cx = (typeof character.real_x === "number") ? character.real_x : character.x;
 	var cy = (typeof character.real_y === "number") ? character.real_y : character.y;
-	var optimal = k.optimalDistance || 120;
+	var optimal = optimalDistance || k.optimalDistance || 120;
 	var step = k.stepDistance || 40;
 	var samples = (harasser.max_hp >= 60000) ? (k.bossAngles || 12) : (k.sampleAngles || 8);
 	var threshold = k.repositionThreshold || 20;
@@ -347,6 +353,77 @@ function kite_step(harasser) {
 	if (Math.abs(newD - optimal) > Math.abs(curD - optimal) - threshold && newD <= curD) return false;
 	move(best.x, best.y);
 	return true;
+}
+
+// Monstre qui frappe la pretresse (apres Absorb) : le plus proche.
+function tanked_monster() {
+	var best = null;
+	for (var id in parent.entities) {
+		var e = parent.entities[id];
+		if (!e || e.type !== "monster" || e.dead || !e.visible || e.target !== character.name) continue;
+		if (!best || distance(character, e) < distance(character, best)) best = e;
+	}
+	return best;
+}
+
+// Distance minimale a garder : hors melee et hors aura (bscorpion weakness_aura 100 px :
+// -30 vitesse pendant 20 s, la pretresse devient plus lente que lui et ne peut plus kiter).
+function safe_gap(mob) {
+	var abilities = (G.monsters && G.monsters[mob.mtype] || {}).abilities || {}, gap = CONFIG.MELEE_SAFE;
+	for (var k in abilities) if (abilities[k] && abilities[k].aura) gap = Math.max(gap, (abilities[k].radius || 0) + 30);
+	return gap;
+}
+
+// Kitable : plus lent qu'elle et portee nettement plus courte que la sienne.
+// Vitesse hors weakness (aura bscorpion -30 pendant 20 s) : sinon un frolement de l'aura lui faisait
+// lacher Absorb et le kite, et le guerrier empoisonne (soins -75 %) tankait jusqu'a la mort.
+function can_kite(mob) {
+	var weak = character.s && character.s.weakness && G.conditions && G.conditions.weakness ? G.conditions.weakness.speed || 0 : 0;
+	return !!mob && (mob.speed || 0) < (character.speed || 0) - weak && (mob.range || 0) + 40 < (character.range || 0);
+}
+
+// Kiter seulement si le coup est dangereux (meme regle qu'Absorb) ; jamais sur Mr Green / Mr Pumpkin
+// (portee 520-620 px : fuir ne fait que sortir la pretresse de portee de soin).
+var NO_KITE_EVENTS = ["mrgreen", "mrpumpkin"];
+function must_kite(mob) {
+	if (!mob) return false;
+	var ev = typeof EventRouter !== "undefined" && EventRouter.activeMonster && EventRouter.activeMonster();
+	if (NO_KITE_EVENTS.indexOf(ev) >= 0) return false;
+	return !((mob.attack || 0) < character.max_hp * CONFIG.ABSORB_MAX_HIT_RATIO && hp_ratio(character) > 0.60);
+}
+
+// Centre du cercle de kite : fixe par monstre (CONFIG.kiting.origins), sinon la position du monstre au debut du kite.
+var kite_anchor = null;
+function kite_origin(mob) {
+	var fixed = ((CONFIG.kiting || {}).origins || {})[mob.mtype];
+	if (fixed && fixed.map === character.map) return fixed;
+	if (!kite_anchor || kite_anchor.map !== character.map || Date.now() - kite_anchor.at > 5000) kite_anchor = { map: character.map, x: mob.x, y: mob.y };
+	kite_anchor.at = Date.now();
+	return kite_anchor;
+}
+
+// Point a 90 degres du monstre autour du centre (albot-js BScorpionPriest) : le monstre suit en cercle.
+function circle_kite_point(origin, mob, radius, clockwise) {
+	var dx = mob.x - origin.x, dy = mob.y - origin.y, len = Math.hypot(dx, dy);
+	// Monstre sur le centre : tourner a partir de la position de la pretresse.
+	if (len < 1) { dx = character.x - origin.x; dy = character.y - origin.y; len = Math.hypot(dx, dy) || 1; }
+	var m = clockwise ? -1 : 1;
+	return { x: Math.round(origin.x - m * dy / len * radius), y: Math.round(origin.y + m * dx / len * radius) };
+}
+
+// Kite circulaire du monstre tanke : reste hors de sa portee, dans la sienne, sans quitter la zone.
+function tank_kite(mob) {
+	var origin = kite_origin(mob);
+	// A 90 degres du monstre, la pretresse reste a >= radius de lui (hors aura) : pas de pas de recul
+	// separe, il alternait avec le point du cercle et la faisait zigzaguer sur place.
+	var radius = Math.max(character.range * 2 / 3, (mob.range || 0) + 50, safe_gap(mob));
+	var cw = circle_kite_point(origin, mob, radius, true), acw = circle_kite_point(origin, mob, radius, false);
+	var near = Math.hypot(cw.x - character.x, cw.y - character.y) <= Math.hypot(acw.x - character.x, acw.y - character.y) ? [cw, acw] : [acw, cw];
+	for (var i = 0; i < near.length; i++) {
+		if (can_move_to(near[i].x, near[i].y)) { move(near[i].x, near[i].y); return; }
+	}
+	// Aucun point en ligne droite : bouger quand meme (albot-js), elle glisse le long du mur au lieu de s'arreter.
+	move(near[0].x, near[0].y);
 }
 
 // Revive (albot-js HawkPriest) : get_player() ne voit que les allies vivants a
@@ -384,7 +461,10 @@ async function try_revive_allies() {
 // ============================================================================
 // 4. CACHE TACTIQUE (Détection du Groupe & des Blessures)
 // ============================================================================
+var FEAR_ESCAPE_SPEED = 20;
 var state = {
+	escaping: false,
+	lastEscape: 0,
 	dumpInProgress: false,
 	dumpFailures: 0,
 	lastDumpTrip: 0,
@@ -425,7 +505,7 @@ function needs_heal(entity) {
 }
 
 function valid_attack_target(target) {
-	if (typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && target && target.mtype !== "franky") return false;
+	if (typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && target && !EventRouter.canEngage(target)) return false;
 	return !!(target && target.type === "monster" && !target.dead && target.visible);
 }
 
@@ -486,7 +566,7 @@ function updateCache() {
 		for (var id in parent.entities) {
 			var e = parent.entities[id];
 			if (!e || e.type !== "monster" || e.dead || !e.visible) continue;
-			if (typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && e.mtype !== "franky") continue;
+			if (typeof EventRouter !== "undefined" && EventRouter.activeMonster() === "franky" && !EventRouter.canEngage(e)) continue;
 			// Keep contributing even if the warrior's transient target id was not
 			// propagated yet. Any monster fighting our party is a safe shared target.
 			if (e.target === character.name || e.target === CONFIG.WARRIOR || e.target === CONFIG.RANGER) {
@@ -507,6 +587,28 @@ function updateCache() {
 // ============================================================================
 // 5. SYSTÈME DE SOINS (Heal Ciblé & Partyheal)
 // ============================================================================
+// Cible du heal mono, ou null si personne ne peut etre soigne maintenant (MP, portee, loadout).
+function pick_heal_target() {
+	var cost = G.skills.heal ? G.skills.heal.mp : 20;
+	if ((typeof StyleLoadout !== "undefined" && !StyleLoadout.allows("heal")) || !mp_spend_ok(cost) || character.mp < cost) return null;
+	// Urgence absolue : soi-même si PV critiques (< 40%)
+	if (hp_ratio(character) <= CONFIG.SELF_CRITICAL_RATIO) return character;
+	// Tank via Absorb : si elle est plus basse que le guerrier, elle se soigne d'abord.
+	if (cache.warrior && needs_heal(cache.warrior) && is_in_range(cache.warrior, "heal") && !(needs_heal(character) && hp_ratio(character) < hp_ratio(cache.warrior))) return cache.warrior;
+	if (needs_heal(character)) return character;
+	if (cache.ranger && needs_heal(cache.ranger) && is_in_range(cache.ranger, "heal")) return cache.ranger;
+	return null;
+}
+
+// Partyheal = 400 MP toutes les 200 ms : jamais pour une seule cible (le heal mono suffit), ni pour
+// une cible empoisonnee (soins -75 %) — le spam a vide 4000 MP en 5 s sur le bscorpion.
+function partyheal_needed() {
+	var several = cache.injuredAllies.length > 1;
+	var tankLow = several && cache.warrior && hp_ratio(cache.warrior) <= CONFIG.PARTYHEAL_WARRIOR_RATIO && !(cache.warrior.s && cache.warrior.s.poisoned);
+	var selfLow = several && hp_ratio(character) <= CONFIG.PARTYHEAL_SELF_RATIO && !(character.s && character.s.poisoned);
+	return !!(tankLow || selfLow || cache.criticalCount >= CONFIG.PARTYHEAL_MIN_ALLIES);
+}
+
 async function healLoop() {
 	try {
 		if (is_disabled(character) || character.rip) {
@@ -526,9 +628,7 @@ async function healLoop() {
 		}
 
 		// 1. Soin de groupe d'urgence (Partyheal) — MP protege par hysteresis
-		var tankLow = cache.warrior && hp_ratio(cache.warrior) <= CONFIG.PARTYHEAL_WARRIOR_RATIO;
-		var multipleLow = cache.criticalCount >= CONFIG.PARTYHEAL_MIN_ALLIES;
-		if ((tankLow || multipleLow) && (typeof StyleLoadout === "undefined" || StyleLoadout.allows("partyheal")) && !is_on_cooldown("partyheal") && character.mp >= 400) {
+		if (partyheal_needed() &&(typeof StyleLoadout === "undefined" || StyleLoadout.allows("partyheal")) && !is_on_cooldown("partyheal") && character.mp >= 400) {
 			try {
 				await use_skill("partyheal");
 				setTimeout(healLoop, typeof ActionTiming !== "undefined" ? ActionTiming.after("partyheal", 250, 40) : 250);
@@ -537,20 +637,8 @@ async function healLoop() {
 		}
 
 		// 2. Soin ciblé individuel (Heal) — suspendu sous reserve MP pour proteger le partyheal
-		if ((typeof StyleLoadout === "undefined" || StyleLoadout.allows("heal")) && !is_on_cooldown("heal") && mp_spend_ok(G.skills.heal ? G.skills.heal.mp : 20) && character.mp >= (G.skills.heal ? G.skills.heal.mp : 20)) {
-			var targetToHeal = null;
-
-			// Urgence absolue : soi-même si PV critiques (< 40%)
-			if (hp_ratio(character) <= CONFIG.SELF_CRITICAL_RATIO) {
-				targetToHeal = character;
-			} else if (cache.warrior && needs_heal(cache.warrior) && is_in_range(cache.warrior, "heal")) {
-				targetToHeal = cache.warrior;
-			} else if (needs_heal(character)) {
-				targetToHeal = character;
-			} else if (cache.ranger && needs_heal(cache.ranger) && is_in_range(cache.ranger, "heal")) {
-				targetToHeal = cache.ranger;
-			}
-
+		if (!is_on_cooldown("heal")) {
+			var targetToHeal = pick_heal_target();
 			if (targetToHeal) {
 				try {
 					await heal(targetToHeal);
@@ -579,6 +667,11 @@ async function combatLoop() {
 			setTimeout(combatLoop, 200);
 			return;
 		}
+		// CryptRun fights inside the crypt (safe-target whitelist only).
+		if (typeof CryptRun !== "undefined" && CryptRun.inside()) {
+			setTimeout(combatLoop, 200);
+			return;
+		}
 		updateCache();
 
 		var target = cache.target;
@@ -592,14 +685,19 @@ async function combatLoop() {
 			try { await use_skill("darkblessing"); } catch(e) {}
 		}
 
-		if (typeof StyleLoadout !== "undefined" && StyleLoadout.selected("absorb") && !is_on_cooldown("absorb") && character.mp >= 200 && hp_ratio(character) > 0.60) {
-			var ranger = cache.ranger || get_player(CONFIG.RANGER);
-			if (ranger) {
+		// Pretresse = tank principal : Absorb retire l'aggro du guerrier (puis du ranger). Monstre kitable :
+		// toujours (albot-js, elle le kite sans etre touchee) ; sinon seulement si elle a la vie pour encaisser.
+		if ((typeof StyleLoadout === "undefined" || StyleLoadout.allows("absorb")) && !is_on_cooldown("absorb") && mp_spend_ok(200) && character.mp >= 200) {
+			var absorbFrom = [cache.warrior || get_player(CONFIG.WARRIOR), cache.ranger || get_player(CONFIG.RANGER)];
+			absorbLoop:
+			for (var ai = 0; ai < absorbFrom.length; ai++) {
+				var ally = absorbFrom[ai];
+				if (!ally || ally.rip) continue;
 				for (var eid in parent.entities) {
 					var enemy = parent.entities[eid];
-					if (enemy && enemy.type === "monster" && !enemy.dead && enemy.target === ranger.name) {
-						try { await use_skill("absorb", ranger); } catch(e) {}
-						break;
+					if (enemy && enemy.type === "monster" && !enemy.dead && enemy.target === ally.name && (can_kite(enemy) || (enemy.attack || 0) < character.max_hp * CONFIG.ABSORB_MAX_HIT_RATIO && hp_ratio(character) > 0.60)) {
+						try { await use_skill("absorb", ally); } catch(e) {}
+						break absorbLoop;
 					}
 				}
 			}
@@ -607,7 +705,7 @@ async function combatLoop() {
 
 		// 1. Malédiction (Curse) sur les gros monstres — n'utilise pas le cooldown
 		// d'attaque, donc ne jamais quitter le cycle avant l'attaque de base.
-		if (CONFIG.curseEnabled && (typeof StyleLoadout === "undefined" || StyleLoadout.allows("curse")) && !is_on_cooldown("curse") && character.mp >= CONFIG.curseMinMp) {
+		if (CONFIG.curseEnabled && (typeof StyleLoadout === "undefined" || StyleLoadout.allows("curse")) && !is_on_cooldown("curse") && mp_spend_ok((G.skills.curse && G.skills.curse.mp) || 400)) {
 			var isBigMonster = (target.max_hp >= CONFIG.curseMinHp);
 			var notCurseImmune = (!target.s || !target.s.cursed);
 			if (isBigMonster && notCurseImmune) {
@@ -618,7 +716,8 @@ async function combatLoop() {
 		}
 
 		// 2. Attaque d'appoint (si heal en cooldown ou tout le monde est en bonne santé)
-		if (can_attack(target) && !is_on_cooldown("attack")) {
+		// heal() partage le cooldown d'attaque : ne pas le bruler tant qu'un allie attend un soin.
+		if (!pick_heal_target() && can_attack(target) && !is_on_cooldown("attack")) {
 			try {
 				await attack(target);
 				if (typeof ActionTiming !== "undefined") combatDelay = ActionTiming.after("attack", 100, 20);
@@ -650,12 +749,27 @@ function get_heal_pocket(warrior, monster) {
 	// Anchor from the monster, not from the warrior. The previous formula put
 	// the priest at monster→warrior distance + 120px, commonly outside the
 	// priest's own attack range. Keep a safe ranged pocket that can still fire.
-	var attackPocket = Math.max(CONFIG.MELEE_SAFE, Math.min(CONFIG.ANCHOR, character.range * 0.82));
+	var attackPocket = Math.max(safe_gap(monster) + 10, Math.min(CONFIG.ANCHOR, character.range * 0.82));
 	return {
 		x: Math.round(monster.x + nx * attackPocket),
 		y: Math.round(monster.y + ny * attackPocket)
 	};
 }
+
+// 2026-11-04 21:45: movementLoop waits in await smart_move() for the whole walk, so the intent hold never ran and the
+// follower walked into the Spookytown mummies' rage area alone. Stop the walk at its edge until the warrior is near.
+setInterval(function () {
+	try {
+		if (!(smart.moving || character.moving) || character.map !== "spookytown" || character.rip) return;
+		// Leaving spookytown (e.g. to Dorr for the cave) passes this edge; only hold walks that stay on the map.
+		if (smart.moving && smart.map && smart.map !== "spookytown") return;
+		var R = [-124, -1631, 614, -1130], E = 140, x = character.x, y = character.y;
+		var inRage = x > R[0] && x < R[2] && y > R[1] && y < R[3];
+		var nearRage = x > R[0] - E && x < R[2] + E && y > R[1] - E && y < R[3] + E;
+		var w = get_player(CONFIG.WARRIOR);
+		if (nearRage && !inRage && (!w || distance(character, w) > 200)) { stop(); set_message("attente du tank"); }
+	} catch (e) {}
+}, 250);
 
 function get_leader_target() {
 	// En combat visible, suivre la position réelle du tank. Une destination CM
@@ -665,6 +779,10 @@ function get_leader_target() {
 	// The destination broadcast lets followers leave immediately instead of
 	// waiting until the warrior has already reached the next map or monster.
 	if (leader_intent.at && Date.now() - leader_intent.at < 12000 && leader_intent.map) {
+		// User (2026-11-04): the priest reached the mummies before the warrior. Travel towards his destination, but
+		// stop 350 px short of it until the warrior is within 200 px of us.
+		var wn = get_player(CONFIG.WARRIOR);
+		if (character.map === leader_intent.map && distance(character, leader_intent) < 350 && (!wn || distance(character, wn) > 200)) { set_message("attente du tank"); return null; }
 		var intentFar = character.map !== leader_intent.map || distance(character, leader_intent) > 110;
 		if (intentFar) return { map: leader_intent.map, x: leader_intent.x, y: leader_intent.y, entity: null, intent: true };
 	}
@@ -698,6 +816,11 @@ async function movementLoop() {
 			setTimeout(movementLoop, 300);
 			return;
 		}
+		// Crypt run (merchant HUD) owns movement before events, dumps and hunts, as for the warrior.
+		if (typeof CryptRun !== "undefined" && await CryptRun.tick()) {
+			setTimeout(movementLoop, 250);
+			return;
+		}
 		// Pause le suivi si un voyage vers la mule ou Daisy est en cours
 		if (state.dumpInProgress || state.huntInProgress) {
 			setTimeout(movementLoop, 500);
@@ -716,6 +839,21 @@ async function movementLoop() {
 			setTimeout(movementLoop, 300);
 			return;
 		}
+		// Tank : kiter le monstre qui la frappe au lieu de se placer selon le guerrier.
+		// Centre fixe (albot-js BScorpionPriest) : tourner en continu des qu'elle est a < 200 px du centre,
+		// quelle que soit la cible du monstre — un taunt du guerrier ne la fige plus dans le pocket.
+		var tanked = tanked_monster();
+		var fixedOrigin = cache.target && ((CONFIG.kiting || {}).origins || {})[cache.target.mtype];
+		var holding = typeof RuntimePolicy !== "undefined" && RuntimePolicy.teamHold && RuntimePolicy.teamHold();
+		var circled = !holding && fixedOrigin && fixedOrigin.map === character.map && distance(character, fixedOrigin) < 200 ? cache.target : null;
+		var kiteMob = circled || (tanked && can_kite(tanked) && must_kite(tanked) ? tanked : null);
+		if (kiteMob) {
+			if (smart.moving) stop();
+			tank_kite(kiteMob);
+			setTimeout(movementLoop, 200);
+			return;
+		}
+
 		var leader = get_leader_target();
 
 		if (!leader) {
@@ -723,6 +861,22 @@ async function movementLoop() {
 			if (smart.moving) stop();
 			travel_dest_map = "";
 			setTimeout(movementLoop, 1500);
+			return;
+		}
+
+		// Peur (fear) : chaque monstre en trop sur elle retire de la vitesse, jusqu'a 5 (5 booboo apres Mr Green).
+		// Marcher ne sert plus a rien : town, sans move/stop/equip pendant les 3 s d'incantation (ils l'annulent).
+		if (leader.map && leader.map !== character.map && character.speed <= FEAR_ESCAPE_SPEED && typeof town === "function" && Date.now() - state.lastEscape > 15000) {
+			state.lastEscape = Date.now();
+			state.escaping = true;
+			if (smart.moving) stop();
+			set_message("town (fear)");
+			game_log("Peur : vitesse " + character.speed + ", town vers l'equipe", "#FFD166");
+			var escapeTimer;
+			try {
+				await Promise.race([town(), new Promise(function (_, reject) { escapeTimer = setTimeout(function () { reject({ reason: "town_timeout" }); }, 6000); })]);
+			} catch (e) {} finally { clearTimeout(escapeTimer); state.escaping = false; }
+			setTimeout(movementLoop, 250);
 			return;
 		}
 
@@ -762,14 +916,14 @@ async function movementLoop() {
 			var tooCloseMob = null;
 			for (var id in parent.entities) {
 				var e = parent.entities[id];
-				if (e && e.type === "monster" && !e.dead && e.visible && distance(character, e) < CONFIG.MELEE_SAFE) {
+				if (e && e.type === "monster" && !e.dead && e.visible && distance(character, e) < safe_gap(e) && must_kite(e)) {
 					tooCloseMob = e;
 					break;
 				}
 			}
 
 			if (tooCloseMob) {
-				if (kite_step(tooCloseMob)) {
+				if (kite_step(tooCloseMob, Math.max((CONFIG.kiting || {}).optimalDistance || 120, safe_gap(tooCloseMob) + 30))) {
 					setTimeout(movementLoop, 250);
 					return;
 				}
@@ -787,7 +941,9 @@ async function movementLoop() {
 			// ne doit pas fuir le guerrier toutes les 250 ms uniquement parce que
 			// celui-ci passe sous MIN_RANGE : les menaces au contact sont deja
 			// traitees par le bloc de kiting ci-dessus.
-			var targetInRange = cache.target && is_in_range(cache.target, "attack");
+			// Attente d'equipe : ignorer la cible pour rester avec le guerrier, hors du spawn.
+			var moveTarget = typeof RuntimePolicy !== "undefined" && RuntimePolicy.teamHold && RuntimePolicy.teamHold() ? null : cache.target;
+			var targetInRange = moveTarget && is_in_range(moveTarget, "attack");
 			var combatStable = targetInRange && dist <= CONFIG.FOLLOW_RANGE + 40;
 			if (combatStable) {
 				// Un pas de kite peut continuer plusieurs cycles après la sortie de la
@@ -795,10 +951,10 @@ async function movementLoop() {
 				// annule les projectiles suivants.
 				if (character.moving) stop();
 			}
-			var attackPocketNeeded = cache.target && !targetInRange;
-			var idleSpacingNeeded = !cache.target && dist < CONFIG.MIN_RANGE;
+			var attackPocketNeeded = moveTarget && !targetInRange;
+			var idleSpacingNeeded = !moveTarget && dist < CONFIG.MIN_RANGE;
 			if (!combatStable && (dist > CONFIG.FOLLOW_RANGE || idleSpacingNeeded || attackPocketNeeded)) {
-				var pocket = get_heal_pocket(warrior, cache.target);
+				var pocket = get_heal_pocket(warrior, moveTarget);
 				var pocketChanged = pocket && (Math.hypot(pocket.x - last_pocket_move.x, pocket.y - last_pocket_move.y) > 18 || Date.now() - last_pocket_move.at > 750);
 				if (pocketChanged) {
 					last_pocket_move = { x: pocket.x, y: pocket.y, at: Date.now() };
@@ -991,7 +1147,7 @@ async function auto_drink_elixir() {
 
 async function equipmentLoop() {
 	try {
-		if (is_disabled(character) || character.rip) {
+		if (is_disabled(character) || character.rip || state.escaping) {
 			setTimeout(equipmentLoop, 3000);
 			return;
 		}
@@ -1023,13 +1179,19 @@ async function potionLoop() {
 		var mp = character.mp || 0;
 		var maxMp = character.max_mp || 1;
 
+		// Crypte runs 28-42 : sous 40% HP elle ne buvait que des potions HP (cooldown partage de 2 s) et mourait a sec de
+		// mana. Une potion MP (500) paie plusieurs soins, bien plus qu'une potion HP (400) : sous 25% MP, MP d'abord.
+		if ((mp / maxMp) < 0.25 && !is_on_cooldown("use_mp")) {
+			try { await use_skill("use_mp"); if (typeof ActionTiming !== "undefined") potionDelay = ActionTiming.after("use_mp", 250, 40); } catch(e) {}
+		}
 		// Potion HP de secours si soin en recharge
-		if (hpRatio <= CONFIG.SELF_POT_HP_RATIO && !is_on_cooldown("use_hp")) {
+		else if (hpRatio <= CONFIG.SELF_POT_HP_RATIO && !is_on_cooldown("use_hp")) {
 			try { await use_skill("use_hp"); if (typeof ActionTiming !== "undefined") potionDelay = ActionTiming.after("use_hp", 250, 40); } catch(e) {}
 		}
 
-		// Potion MP si mana bas
-		if ((mp / maxMp) <= CONFIG.SELF_POT_MP_RATIO && !is_on_cooldown("use_mp")) {
+		// Potion MP des qu'il manque une potion pleine (albot-js needs_mp), plus le plancher en ratio.
+		// else : les potions partagent le meme cooldown, une potion HP vient d'etre bue.
+		else if ((maxMp - mp >= CONFIG.SELF_POT_MP_MISSING || (mp / maxMp) <= CONFIG.SELF_POT_MP_RATIO) && !is_on_cooldown("use_mp")) {
 			try { await use_skill("use_mp"); if (typeof ActionTiming !== "undefined") potionDelay = ActionTiming.after("use_mp", 250, 40); } catch(e) {}
 		}
 
@@ -1220,7 +1382,9 @@ async function dumpLoop() {
 		var mule = get_player(CONFIG.MERCHANT);
 		var freeSlots = character.esize || 0;
 		var dumpLimit = (CONFIG.inventory && CONFIG.inventory.dumpEsize) || 4;
-		var needDump = (freeSlots <= dumpLimit && dumpable_count() > 0);
+		// Pendant un evenement, ne quitter le boss que sac totalement plein.
+		var eventLive = typeof EventRouter !== "undefined" && EventRouter.activeMonster && !!EventRouter.activeMonster();
+		var needDump = (freeSlots <= (eventLive ? 0 : dumpLimit) && dumpable_count() > 0);
 
 		// 1. Si la mule est tout près, décharger directement
 		if (!state.dumpInProgress && mule && distance(character, mule) <= 250 && dumpable_count() > 0) {

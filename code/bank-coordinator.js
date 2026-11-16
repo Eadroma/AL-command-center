@@ -53,9 +53,11 @@ var BankStock = (function () {
 var BankCoordinator = (function () {
   var owner = '', phase = 'idle', since = 0, visits = 0, countedVisit = false, journal = [], current = null, persistenceError = false;
   var key = 'alcc:bank-hub:' + character.name;
+  /** Telemetry validates journal evidence as text; an object here made the server reject every pulse. */
+  function text(value) { try { return JSON.stringify(value).slice(0, 300); } catch (e) { return String(value).slice(0, 300); } }
   try {
     var saved = get(key);
-    if (saved && Array.isArray(saved.journal)) journal = saved.journal.slice(-50);
+    if (saved && Array.isArray(saved.journal)) journal = saved.journal.slice(-50).map(function (row) { return row && row.evidence != null && typeof row.evidence !== 'string' ? Object.assign({}, row, { evidence: text(row.evidence) }) : row; });
     if (saved && saved.current) { journal.push(Object.assign({},saved.current,{state:'review',evidence:'Legacy evidence hold removed; outcome unverified'}));journal=journal.slice(-50); }
   } catch (e) { persistenceError = true; }
   function persist() {
@@ -84,7 +86,7 @@ var BankCoordinator = (function () {
   }
   function finish(confirmed, evidence) {
     if (!current) return;
-    current.state = confirmed ? 'confirmed' : 'review'; current.evidence = evidence;
+    current.state = confirmed ? 'confirmed' : 'review'; current.evidence = typeof evidence === 'string' || evidence == null ? evidence : text(evidence);
     journal.push(Object.assign({}, current)); journal = journal.slice(-50);
     current = null;
     persist(); BankStock.observe();

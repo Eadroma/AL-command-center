@@ -1,0 +1,1595 @@
+[
+  {
+    "id": "aedroma-crypt",
+    "filename": "aedroma-crypt.js",
+    "label": "Aedroma · Crypt",
+    "ctype": "priest",
+    "kind": "crypt",
+    "bytes": 16908,
+    "hash": "40f13a52f7971848779fc388923b8c1154c39b1f9dafe3f13c8cd534009a3f64",
+    "config": {
+      "NAME": "Aedroma",
+      "WARRIOR": "Eadroma",
+      "RANGER": "Droma",
+      "FARM": "vbat",
+      "DOOR": {
+        "map": "cave",
+        "x": -193,
+        "y": -1296
+      },
+      "ENTER_RANGE": 40,
+      "HIT_PAD": 16,
+      "UNIQUE_FLEE": 240,
+      "HEAL_RATIO": 0.96,
+      "HEAL_MISSING": 180,
+      "SELF_RATIO": 0.9,
+      "SELF_CRITICAL": 0.45,
+      "PARTYHEAL_HP": 0.72,
+      "PARTYHEAL_MP": 400,
+      "CURSE_MP": 400,
+      "ABSORB_MP": 200,
+      "STUCK_MS": 8000
+    },
+    "variables": {}
+  },
+  {
+    "id": "aedroma-priest-v2",
+    "filename": "aedroma-priest-v2.js",
+    "label": "Aedroma · Priest · V2",
+    "ctype": "priest",
+    "kind": "farm",
+    "bytes": 55156,
+    "hash": "a10470e67dcd25af7b41f9a218d410e6055ccb77a51fa4aadcbbe1e1b99fa931",
+    "config": {
+      "NAME": "Aedroma",
+      "WARRIOR": "Eadroma",
+      "RANGER": "Droma",
+      "MERCHANT": "EadroSell",
+      "PARTY": [
+        "Eadroma",
+        "Droma"
+      ],
+      "PARTY_GUESTS": [
+        "EadroSell"
+      ],
+      "DEFAULT_FARM": "spider",
+      "FARM_INDEPENDENT": false,
+      "DAILY_DUNGEON": false,
+      "RARE_VISITS": true,
+      "HEAL_HP_RATIO": 0.8,
+      "PARTYHEAL_WARRIOR_RATIO": 0.7,
+      "PARTYHEAL_MIN_ALLIES": 2,
+      "PARTYHEAL_SELF_RATIO": 0.55,
+      "ABSORB_MAX_HIT_RATIO": 0.15,
+      "SELF_HEAL_RATIO": 0.85,
+      "SELF_CRITICAL_RATIO": 0.4,
+      "HEAL_MISSING_HP": 200,
+      "partyHealMinMp": 2000,
+      "FOLLOW_RANGE": 140,
+      "MIN_RANGE": 95,
+      "ANCHOR": 120,
+      "MELEE_SAFE": 60,
+      "kiting": {
+        "enabled": true,
+        "optimalDistance": 120,
+        "sampleAngles": 8,
+        "bossAngles": 12,
+        "stepDistance": 40,
+        "repositionThreshold": 20,
+        "origins": {
+          "bscorpion": {
+            "map": "desertland",
+            "x": -440,
+            "y": -1240
+          }
+        }
+      },
+      "mpReserve": 800,
+      "mpHysteresisUpper": 1100,
+      "curseEnabled": true,
+      "curseMinHp": 50000,
+      "WEAPON_PREFERENCE": [
+        "lmace",
+        "vstaff",
+        "firestaff",
+        "staff"
+      ],
+      "KEEP_ITEMS": [
+        "vstaff",
+        "staff",
+        "oozingterror",
+        "elixirint0",
+        "ecape",
+        "tracker",
+        "hpot0",
+        "mpot0",
+        "hpot1",
+        "mpot1"
+      ],
+      "GIVE_ARMOR": [
+        "coat",
+        "gloves",
+        "pants",
+        "helmet",
+        "shoes"
+      ],
+      "GIVE_WEAPONS": [
+        "blade",
+        "claw"
+      ],
+      "AUTO_ELIXIR": "elixirint0",
+      "SELF_POT_HP_RATIO": 0.4,
+      "SELF_POT_MP_RATIO": 0.35,
+      "SELF_POT_MP_MISSING": 500,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_BUY_COUNT": 200,
+      "POT_MIN_STOCK": 60,
+      "needH": 200,
+      "needM": 300,
+      "hunts": {
+        "enabled": true
+      },
+      "loot": {
+        "enabled": true,
+        "intervalMs": 500,
+        "chestRange": 350
+      },
+      "inventory": {
+        "dumpEsize": 4,
+        "dumpCooldownMs": 30000
+      }
+    },
+    "variables": {
+      "JOIN_EVENTS": [
+        "crabxx",
+        "goobrawl",
+        "franky",
+        "icegolem",
+        "abtesting",
+        "phoenix",
+        "mrpumpkin",
+        "mrgreen",
+        "snowman",
+        "grinch",
+        "wabbit"
+      ]
+    }
+  },
+  {
+    "id": "aedroma-priest",
+    "filename": "aedroma-priest.js",
+    "label": "Aedroma · Priest",
+    "ctype": "priest",
+    "kind": "farm",
+    "bytes": 104804,
+    "hash": "1a35bf6f133b0db543cdc43d64be2c2afb3b7ecf84b443a92301794725811894",
+    "config": {
+      "KITE_ENABLED": true,
+      "KITE_LEASH": 240,
+      "KITE_PANIC_RATIO": 0.45,
+      "PARTNER": "Eadroma",
+      "DEFAULT_FARM": "spider",
+      "FARM_INDEPENDENT": false,
+      "MAGE": "Droma",
+      "MERCHANT": "EadroSell",
+      "GIVE_WEAPONS": [
+        "firestaff",
+        "staff"
+      ],
+      "GIVE_ARMOR": [
+        "helmet",
+        "shoes",
+        "coat",
+        "gloves",
+        "pants"
+      ],
+      "KEEP_ITEMS": [
+        "ololipop",
+        "glolipop",
+        "vstaff",
+        "oozingterror",
+        "elixirint0",
+        "ecape"
+      ],
+      "DAILY_DUNGEON": false,
+      "DAILY_DUNGEON_BUY": false,
+      "HEAL_HP_RATIO": 0.8,
+      "PARTYHEAL_WARRIOR_RATIO": 0.7,
+      "HEAL_MISSING_HP": 180,
+      "SELF_HEAL_RATIO": 0.85,
+      "SELF_HEAL_MISSING": 180,
+      "SELF_CRITICAL_RATIO": 0.4,
+      "FOLLOW_RANGE": 140,
+      "MIN_RANGE": 100,
+      "ANCHOR": 120,
+      "MELEE_SAFE": 55,
+      "ANCHOR_SLACK": 24,
+      "SELF_POT_HP_RATIO": 0.35,
+      "CURSE_MIN_HP": 3000,
+      "CURSE_KEEP_MP": 40,
+      "POT_MIN": 40,
+      "POT_ASK_HP": 80,
+      "POT_ASK_MP": 120,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_BUY": 200,
+      "POT_CRITICAL": 8,
+      "POT_STARVE_MS": 45000,
+      "MLUCK_REFRESH_MS": 600000,
+      "GOLD_RESERVE": 400,
+      "GOLD_KEEP": 800,
+      "CITY": {
+        "map": "main",
+        "x": 0,
+        "y": 0
+      },
+      "CITY_WAIT_MS": 180000,
+      "GEAR_MS": 1500,
+      "UPGRADE_MAX_LEVEL": 7,
+      "UPGRADE_MAX_TRIES": 20,
+      "UPGRADE_TRIP_GOLD": 15000,
+      "SCROLL_KEEP": 6,
+      "CSCROLL_KEEP": 4,
+      "INTSCROLL": "intscroll"
+    },
+    "variables": {
+      "WANDERER_SLOT": {
+        "wcap": "helmet",
+        "wattire": "chest",
+        "wgloves": "gloves",
+        "wbreeches": "pants",
+        "wshoes": "shoes"
+      }
+    }
+  },
+  {
+    "id": "droma-crypt",
+    "filename": "droma-crypt.js",
+    "label": "Droma · Crypt",
+    "ctype": "ranger",
+    "kind": "crypt",
+    "bytes": 14086,
+    "hash": "737db4afabf535d2b8946df600f45cbe592645477eee27fd164036fa51bb9c24",
+    "config": {
+      "NAME": "Droma",
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "FARM": "vbat",
+      "DOOR": {
+        "map": "cave",
+        "x": -193,
+        "y": -1296
+      },
+      "ENTER_RANGE": 40,
+      "HIT_PAD": 16,
+      "UNIQUE_FLEE": 240,
+      "MARK_MP": 240,
+      "SHOT_MP": 400,
+      "STUCK_MS": 8000
+    },
+    "variables": {}
+  },
+  {
+    "id": "droma-ranger-crab-aoe-v2",
+    "filename": "droma-ranger-crab-aoe-v2.js",
+    "label": "Droma · Ranger · Crab · Aoe · V2",
+    "ctype": "ranger",
+    "kind": "farm",
+    "bytes": 38746,
+    "hash": "9039b959101d26640f5b8f46efbbadd156f844eaa73e1c3187eb3a313cc4e4e3",
+    "config": {
+      "NAME": "Droma",
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "MERCHANT": "EadroSell",
+      "PARTY": [
+        "Eadroma",
+        "Aedroma"
+      ],
+      "PARTY_GUESTS": [
+        "EadroSell"
+      ],
+      "DEFAULT_FARM": "crab",
+      "FARM_INDEPENDENT": true,
+      "FIXED_FARM": true,
+      "DAILY_DUNGEON": false,
+      "RARE_VISITS": false,
+      "crabFarm": {
+        "map": "main",
+        "x": -1195.61,
+        "y": -64.12,
+        "radius": 235,
+        "returnDistance": 190,
+        "maxTargets": 5,
+        "lowHpMaxTargets": 2,
+        "lowHpRatio": 0.55
+      },
+      "FOLLOW_RANGE": 170,
+      "MIN_RANGE": 90,
+      "ANCHOR": 120,
+      "MELEE_SAFE": 55,
+      "kiting": {
+        "enabled": true,
+        "optimalDistance": 170,
+        "sampleAngles": 8,
+        "bossAngles": 12,
+        "stepDistance": 40,
+        "repositionThreshold": 20
+      },
+      "bossLuckHp": {
+        "dragold": 200000,
+        "franky": 80000,
+        "tiger": 60000,
+        "greenjr": 150000,
+        "jr": 120000,
+        "default": 100000
+      },
+      "skills": {
+        "huntersmarkEnabled": true,
+        "huntersmarkMinHp": 3000,
+        "multishotEnabled": true,
+        "multishotMinMp": 260,
+        "mpReserve": 240,
+        "mpHysteresisUpper": 420,
+        "supershotEnabled": true,
+        "supershotMinHp": 4000,
+        "supershotMinMp": 150,
+        "energizeEnabled": true
+      },
+      "offhand": {
+        "manageQuiver": true,
+        "alloyQuiverName": "alloyquiver",
+        "defaultQuiverName": "quiver"
+      },
+      "AUTO_ELIXIR": "elixirdex0",
+      "potions": {
+        "hpThreshold": 0.35,
+        "mpThreshold": 0.55,
+        "hpot": "hpot1",
+        "mpot": "mpot1",
+        "needH": 200,
+        "needM": 300
+      },
+      "hunts": {
+        "enabled": false
+      },
+      "loot": {
+        "enabled": true,
+        "intervalMs": 500,
+        "chestRange": 350
+      },
+      "inventory": {
+        "dumpEsize": 4,
+        "dumpCooldownMs": 30000
+      }
+    },
+    "variables": {
+      "JOIN_EVENTS": [
+        "crabxx",
+        "goobrawl",
+        "franky",
+        "icegolem",
+        "abtesting",
+        "phoenix",
+        "mrpumpkin",
+        "mrgreen",
+        "snowman",
+        "grinch",
+        "wabbit"
+      ]
+    }
+  },
+  {
+    "id": "droma-ranger-v2",
+    "filename": "droma-ranger-v2.js",
+    "label": "Droma · Ranger · V2",
+    "ctype": "ranger",
+    "kind": "farm",
+    "bytes": 40830,
+    "hash": "ce2981c784b43d757dc537f7d980f0d4eae058bc9c7bcd336d198e5180163791",
+    "config": {
+      "NAME": "Droma",
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "MERCHANT": "EadroSell",
+      "PARTY": [
+        "Eadroma",
+        "Aedroma"
+      ],
+      "PARTY_GUESTS": [
+        "EadroSell"
+      ],
+      "DEFAULT_FARM": "spider",
+      "FARM_INDEPENDENT": false,
+      "DAILY_DUNGEON": false,
+      "RARE_VISITS": true,
+      "FOLLOW_RANGE": 170,
+      "MIN_RANGE": 90,
+      "ANCHOR": 120,
+      "MELEE_SAFE": 55,
+      "kiting": {
+        "enabled": true,
+        "optimalDistance": 170,
+        "sampleAngles": 8,
+        "bossAngles": 12,
+        "stepDistance": 40,
+        "repositionThreshold": 20
+      },
+      "bossLuckHp": {
+        "dragold": 200000,
+        "franky": 80000,
+        "tiger": 60000,
+        "greenjr": 150000,
+        "jr": 120000,
+        "default": 100000
+      },
+      "skills": {
+        "huntersmarkEnabled": true,
+        "huntersmarkMinHp": 3000,
+        "multishotEnabled": true,
+        "multishotMinMp": 220,
+        "mpReserve": 220,
+        "mpHysteresisUpper": 350,
+        "supershotEnabled": true,
+        "supershotMinHp": 4000,
+        "supershotMinMp": 150,
+        "energizeEnabled": true
+      },
+      "offhand": {
+        "manageQuiver": true,
+        "alloyQuiverName": "alloyquiver",
+        "defaultQuiverName": "quiver"
+      },
+      "AUTO_ELIXIR": "elixirdex0",
+      "potions": {
+        "hpThreshold": 0.35,
+        "mpThreshold": 0.3,
+        "hpot": "hpot1",
+        "mpot": "mpot1",
+        "needH": 200,
+        "needM": 300
+      },
+      "hunts": {
+        "enabled": true
+      },
+      "loot": {
+        "enabled": true,
+        "intervalMs": 500,
+        "chestRange": 350
+      },
+      "inventory": {
+        "dumpEsize": 4,
+        "dumpCooldownMs": 30000
+      }
+    },
+    "variables": {
+      "JOIN_EVENTS": [
+        "crabxx",
+        "goobrawl",
+        "franky",
+        "icegolem",
+        "abtesting",
+        "phoenix",
+        "mrpumpkin",
+        "mrgreen",
+        "snowman",
+        "grinch",
+        "wabbit"
+      ]
+    }
+  },
+  {
+    "id": "droma-ranger",
+    "filename": "droma-ranger.js",
+    "label": "Droma · Ranger",
+    "ctype": "ranger",
+    "kind": "farm",
+    "bytes": 99987,
+    "hash": "865da171330e2335fd84992e95f7c55a113c1d7e655b4913161db9b4b118e438",
+    "config": {
+      "KITE_ENABLED": true,
+      "KITE_LEASH": 240,
+      "KITE_PANIC_RATIO": 0.45,
+      "NAME": "Droma",
+      "DEFAULT_FARM": "spider",
+      "FARM_INDEPENDENT": false,
+      "PACK_STYLE": {},
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "MERCHANT": "EadroSell",
+      "GIVE_WEAPONS": [
+        "firebow",
+        "frostbow",
+        "hbow",
+        "bow"
+      ],
+      "GIVE_ARMOR": [
+        "helmet",
+        "shoes",
+        "coat",
+        "gloves",
+        "pants"
+      ],
+      "KEEP_ITEMS": [
+        "ololipop",
+        "glolipop",
+        "firebow",
+        "poison",
+        "elixirdex1",
+        "quiver",
+        "alloyquiver",
+        "dexring"
+      ],
+      "DAILY_DUNGEON": false,
+      "DAILY_DUNGEON_BUY": false,
+      "FOLLOW_RANGE": 170,
+      "MIN_RANGE": 90,
+      "MELEE_SAFE": 55,
+      "ANCHOR": 110,
+      "ANCHOR_SLACK": 32,
+      "POT_HP_RATIO": 0.25,
+      "POT_MP_RATIO": 0.2,
+      "POT_MIN": 40,
+      "POT_ASK_HP": 80,
+      "POT_ASK_MP": 120,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_BUY": 200,
+      "POT_CRITICAL": 8,
+      "POT_STARVE_MS": 45000,
+      "MLUCK_REFRESH_MS": 600000,
+      "GOLD_RESERVE": 400,
+      "GOLD_KEEP": 800,
+      "CITY": {
+        "map": "main",
+        "x": 0,
+        "y": 0
+      },
+      "CITY_WAIT_MS": 180000,
+      "QUIVER_MAX": 7,
+      "GEAR_MS": 1500,
+      "UPGRADE_MAX_LEVEL": 7,
+      "UPGRADE_MAX_TRIES": 20,
+      "UPGRADE_TRIP_GOLD": 15000,
+      "SCROLL_KEEP": 6,
+      "CSCROLL_KEEP": 4
+    },
+    "variables": {}
+  },
+  {
+    "id": "dromas-rogue-party-v2",
+    "filename": "dromas-rogue-party-v2.js",
+    "label": "Dromas · Rogue · Party · V2",
+    "ctype": "rogue",
+    "kind": "farm",
+    "bytes": 24426,
+    "hash": "0957691a8e8db040c3bc6872d95016377cd199b9d379c32491900ce167170280",
+    "config": {
+      "NAME": "Dromas",
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "MERCHANT": "EadroSell",
+      "PARTY": [
+        "Eadroma",
+        "Aedroma"
+      ],
+      "PARTY_GUESTS": [
+        "EadroSell"
+      ],
+      "DEFAULT_FARM": "spider",
+      "FARM_INDEPENDENT": false,
+      "DAILY_DUNGEON": false,
+      "RARE_VISITS": true,
+      "FOLLOW_RANGE": 110,
+      "MIN_RANGE": 35,
+      "ANCHOR": 60,
+      "MELEE_SAFE": 45,
+      "kiting": {
+        "enabled": true,
+        "optimalDistance": 100,
+        "sampleAngles": 8,
+        "bossAngles": 12,
+        "stepDistance": 40,
+        "repositionThreshold": 20
+      },
+      "skills": {
+        "fanEnabled": true,
+        "fanMinTargets": 2,
+        "burstEnabled": true,
+        "swiftnessEnabled": true,
+        "mpReserve": 200
+      },
+      "potions": {
+        "hpThreshold": 0.45,
+        "mpThreshold": 0.3,
+        "hpot": "hpot1",
+        "mpot": "mpot1",
+        "needH": 200,
+        "needM": 300
+      },
+      "hunts": {
+        "enabled": true
+      },
+      "loot": {
+        "enabled": true,
+        "intervalMs": 500,
+        "chestRange": 350
+      },
+      "inventory": {
+        "dumpEsize": 4,
+        "dumpCooldownMs": 30000
+      }
+    },
+    "variables": {}
+  },
+  {
+    "id": "dromas-rogue-v2",
+    "filename": "dromas-rogue-v2.js",
+    "label": "Dromas · Rogue · V2",
+    "ctype": "rogue",
+    "kind": "farm",
+    "bytes": 13711,
+    "hash": "1818dcb49adbd003dc79ad8e594604dc20a1513096ef21f249054ffc1f289d7b",
+    "config": {
+      "FIXED_FARM": true,
+      "NAME": "Dromas",
+      "MERCHANT": "EadroSell",
+      "DEFAULT_FARM": "crab",
+      "FARM_INDEPENDENT": true,
+      "farm": {
+        "map": "main",
+        "x": -1200,
+        "y": -70
+      },
+      "merchantSpot": {
+        "map": "main",
+        "x": -100,
+        "y": -20
+      },
+      "manaReserve": 100,
+      "skills": {
+        "fanofknives": true,
+        "mentalburst": true,
+        "rspeed": true
+      },
+      "combatGloves": "handofmidas",
+      "travelGloves": "gloves",
+      "maxTargets": 5,
+      "pullHpPercent": 70,
+      "hpPotionPercent": 75,
+      "mpPotionPercent": 80,
+      "needHpot": 200,
+      "needMpot": 300,
+      "dumpFreeSlots": 4,
+      "keepGold": 50000
+    },
+    "variables": {}
+  },
+  {
+    "id": "eadroma-crypt",
+    "filename": "eadroma-crypt.js",
+    "label": "Eadroma · Crypt",
+    "ctype": "warrior",
+    "kind": "crypt",
+    "bytes": 24414,
+    "hash": "22bb5e38bab4cdbc2e3256e79f67d4afdb249667b4daa9934cc475e97cc0c6f9",
+    "config": {
+      "PRIEST": "Aedroma",
+      "NAME": "Eadroma",
+      "PARTY": [
+        "Droma",
+        "Aedroma"
+      ],
+      "KEY": "cryptkey",
+      "FARM": "vbat",
+      "PULL": {
+        "map": "crypt",
+        "x": 800,
+        "y": -520
+      },
+      "PULL_WEST": 660,
+      "PULL_EAST": 860,
+      "SPAWN": {
+        "map": "crypt",
+        "x": 0,
+        "y": 0
+      },
+      "DOOR": {
+        "map": "cave",
+        "x": -193,
+        "y": -1296
+      },
+      "WAIT_KEY": {
+        "map": "main",
+        "x": -80,
+        "y": -50
+      },
+      "ENTER_RANGE": 40,
+      "PEEL": 42,
+      "STEP_IN": 3,
+      "UNIQUE_FLEE": 240,
+      "CORRIDOR": {
+        "x1": 620,
+        "y1": -660,
+        "x2": 900,
+        "y2": -340
+      },
+      "MAX_PULL": 1,
+      "TAUNT_MAX": 200,
+      "BILL_KEEP": 305,
+      "BILL_SPAWN": {
+        "x": 1109.81,
+        "y": -632.68
+      },
+      "POT_HP": 0.45,
+      "POT_MP": 0.35,
+      "DASH_MP": 120,
+      "TAUNT_MP": 40,
+      "SHELL_MP": 480,
+      "DASH_WHEN": 18,
+      "SHELL_WHEN": 6,
+      "CHARGE_WHEN": 30,
+      "STUCK_MS": 8000
+    },
+    "variables": {}
+  },
+  {
+    "id": "eadroma-warrior-v2",
+    "filename": "eadroma-warrior-v2.js",
+    "label": "Eadroma · Warrior · V2",
+    "ctype": "warrior",
+    "kind": "farm",
+    "bytes": 68067,
+    "hash": "5209f88a936baaea59454b556cd741145270a0982ce8778261592007e8b3bb16",
+    "config": {
+      "NAME": "Eadroma",
+      "PRIEST": "Aedroma",
+      "RANGER": "Droma",
+      "MERCHANT": "EadroSell",
+      "PARTY": [
+        "Aedroma",
+        "Droma"
+      ],
+      "PARTY_GUESTS": [
+        "EadroSell"
+      ],
+      "HOME": {
+        "region": "EU",
+        "name": "III"
+      },
+      "DEFAULT_FARM": "stoneworm",
+      "FARM_INDEPENDENT": false,
+      "DAILY_DUNGEON": false,
+      "RARE_VISITS": true,
+      "TEAM_SLOTS": {
+        "Aedroma": "CH_EiXQ8dHoXlqTOtyTH5IzbbafFAif9",
+        "Droma": "CH_TWNS1mcRp22XMAehvezNnJTPc2VBB"
+      },
+      "hunts": {
+        "enabled": true,
+        "maxWipes": 3,
+        "wipeTimeoutMs": 2160000
+      },
+      "skills": {
+        "warcryEnabled": true,
+        "chargeEnabled": true,
+        "tauntEnabled": true,
+        "tauntCooldown": 3000,
+        "inviteContesters": true,
+        "cleaveEnabled": true,
+        "cleaveMinMobs": 2,
+        "cleaveMinMp": 120,
+        "stompEnabled": true,
+        "stompPanicRatio": 0.35,
+        "agitateEnabled": false,
+        "agitateMinMobs": 2,
+        "mpReserve": 300,
+        "mpHysteresisUpper": 450,
+        "circleWalk": true,
+        "circleRadius": 35
+      },
+      "bossLuckHp": {
+        "dragold": 200000,
+        "franky": 80000,
+        "tiger": 60000,
+        "greenjr": 150000,
+        "jr": 120000,
+        "default": 100000
+      },
+      "potions": {
+        "autoBuy": true,
+        "hpThreshold": 0.8,
+        "mpThreshold": 0.65,
+        "minStock": 100,
+        "needH": 200,
+        "needM": 300,
+        "hpot": "hpot1",
+        "mpot": "mpot1",
+        "potBuyCount": 200
+      },
+      "movement": {
+        "enabled": true,
+        "approachRatio": 0.85,
+        "followPriest": true,
+        "priestMaxDist": 350
+      },
+      "WEAPONS": {
+        "default": "lolipop",
+        "lolipop": {
+          "main": "ololipop",
+          "off": "glolipop"
+        },
+        "fireblade": {
+          "main": "fireblade",
+          "off": "fireblade",
+          "shiny_main": true
+        },
+        "pack": {
+          "goo": "lolipop",
+          "bee": "lolipop",
+          "crab": "lolipop",
+          "croc": "lolipop",
+          "armadillo": "lolipop",
+          "minimush": "fireblade",
+          "spider": "fireblade",
+          "scorpion": "fireblade",
+          "stoneworm": "fireblade",
+          "bigbird": "fireblade",
+          "booboo": "fireblade",
+          "phoenix": "fireblade",
+          "jr": "fireblade",
+          "greenjr": "fireblade",
+          "dragold": "fireblade",
+          "franky": "fireblade",
+          "icegolem": "fireblade",
+          "crabxx": "fireblade"
+        }
+      },
+      "KEEP_ITEMS": [
+        "ololipop",
+        "glolipop",
+        "fireblade",
+        "tracker",
+        "hpot0",
+        "mpot0",
+        "hpot1",
+        "mpot1"
+      ],
+      "GIVE_WEAPONS": [],
+      "GIVE_ARMOR": [
+        "coat",
+        "gloves",
+        "pants",
+        "helmet",
+        "shoes"
+      ],
+      "loot": {
+        "enabled": true,
+        "intervalMs": 400,
+        "chestRange": 350
+      },
+      "inventory": {
+        "dumpEsize": 4,
+        "dumpCooldownMs": 60000,
+        "goldKeep": 50000
+      },
+      "DUMP_ESIZE": 4,
+      "HUNT_WIPE_MAX": 3
+    },
+    "variables": {
+      "HUNT_ALLOW": {
+        "goo": 1,
+        "bee": 1,
+        "crab": 1,
+        "frog": 1,
+        "squig": 1,
+        "squigtoad": 1,
+        "armadillo": 1,
+        "snake": 1,
+        "osnake": 1,
+        "tortoise": 1,
+        "croc": 1,
+        "rat": 1,
+        "spider": 1,
+        "bat": 1,
+        "jr": 1,
+        "greenjr": 1,
+        "minimush": 1,
+        "arcticbee": 1,
+        "iceroamer": 1,
+        "scorpion": 1,
+        "crabx": 1,
+        "bigbird": 1,
+        "phoenix": 1,
+        "poisio": 1,
+        "stoneworm": 1,
+        "mvampire": 1,
+        "porcupine": 1,
+        "cgoo": 1,
+        "prat": 1,
+        "boar": 1,
+        "mole": 1,
+        "wolfie": 1,
+        "ghost": 1,
+        "booboo": 1,
+        "fireroamer": 1,
+        "mummy": 1,
+        "nerfedmummy": 1
+      },
+      "JOIN_EVENTS": [
+        "crabxx",
+        "goobrawl",
+        "franky",
+        "icegolem",
+        "abtesting",
+        "phoenix",
+        "mrpumpkin",
+        "mrgreen",
+        "snowman",
+        "grinch",
+        "wabbit"
+      ],
+      "BOSS_CHECKS": [
+        {
+          "boss": "jr",
+          "everyMinutes": 240
+        },
+        {
+          "boss": "greenjr",
+          "everyMinutes": 240
+        },
+        {
+          "boss": "dragold",
+          "everyMinutes": 120
+        }
+      ]
+    }
+  },
+  {
+    "id": "eadroma-warrior",
+    "filename": "eadroma-warrior.js",
+    "label": "Eadroma · Warrior",
+    "ctype": "warrior",
+    "kind": "farm",
+    "bytes": 135056,
+    "hash": "53a495b473d6447c3799b4106ffe90c1012464414d3d29990b19f6ad8cb3ae49",
+    "config": {
+      "KITE_ENABLED": true,
+      "KITE_LEASH": 240,
+      "KITE_PANIC_RATIO": 0.45,
+      "PRIEST": "Aedroma",
+      "MERCHANT": "EadroSell",
+      "PARTY": [
+        "Droma",
+        "Aedroma"
+      ],
+      "PARTY_GUESTS": [
+        "EadroSell"
+      ],
+      "TEAM_SLOTS": {
+        "Aedroma": "CH_EiXQ8dHoXlqTOtyTH5IzbbafFAif9",
+        "Droma": "CH_TWNS1mcRp22XMAehvezNnJTPc2VBB"
+      },
+      "HOME": {
+        "region": "EU",
+        "name": "III"
+      },
+      "GIVE_WEAPONS": [],
+      "GIVE_ARMOR": [
+        "coat",
+        "gloves",
+        "pants",
+        "helmet",
+        "shoes"
+      ],
+      "KEEP_ITEMS": [
+        "ololipop",
+        "glolipop",
+        "fireblade"
+      ],
+      "DAILY_DUNGEON": false,
+      "DAILY_DUNGEON_BUY": false,
+      "EMERGENCY_HP_RATIO": 0.22,
+      "CRITICAL_HP_RATIO": 0.12,
+      "HP_POT_RATIO": 0.8,
+      "MP_POT_BELOW": 40,
+      "MP_USE_RATIO": 0.3,
+      "PRIEST_HEAL_RANGE": 110,
+      "INVITE_MS": 8000,
+      "POS_CM_MS": 4000,
+      "SHARE_MS": 12000,
+      "KIT_WAIT_MS": 18000,
+      "KIT_RETRY_MS": 120000,
+      "POT_CRITICAL": 8,
+      "POT_STARVE_MS": 45000,
+      "USE_CHARGE": true,
+      "POT_MIN": 40,
+      "POT_ASK_HP": 80,
+      "POT_ASK_MP": 80,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_BUY": 200,
+      "GOLD_KEEP": 2500,
+      "GOLD_RESERVE": 2000,
+      "GEAR_MS": 5000,
+      "UPGRADE_MAX_LEVEL": 7,
+      "UPGRADE_MAX_TRIES": 20,
+      "UPGRADE_TRIP_GOLD": 15000,
+      "SCROLL_KEEP": 8,
+      "COMPOUND_MAX_GRADE0": true,
+      "CSCROLL_KEEP": 4,
+      "ALLY_GOLD": 12000,
+      "DEFAULT_FARM": "stoneworm",
+      "FARM": [
+        [
+          8,
+          "bee"
+        ],
+        [
+          12,
+          "crab"
+        ],
+        [
+          16,
+          "armadillo"
+        ],
+        [
+          24,
+          "croc"
+        ],
+        [
+          38,
+          "bat"
+        ],
+        [
+          40,
+          "spider"
+        ],
+        [
+          50,
+          "scorpion"
+        ],
+        [
+          64,
+          "stoneworm"
+        ]
+      ],
+      "WEAPONS": {
+        "default": "lolipop",
+        "lolipop": {
+          "main": "ololipop",
+          "off": "glolipop"
+        },
+        "fireblade": {
+          "main": "fireblade",
+          "off": "fireblade",
+          "shiny_main": true
+        },
+        "pack": {
+          "goo": "lolipop",
+          "bee": "lolipop",
+          "crab": "lolipop",
+          "frog": "lolipop",
+          "squig": "lolipop",
+          "squigtoad": "lolipop",
+          "armadillo": "lolipop",
+          "snake": "lolipop",
+          "osnake": "lolipop",
+          "tortoise": "lolipop",
+          "croc": "lolipop",
+          "rat": "lolipop",
+          "bat": "lolipop",
+          "minimush": "fireblade",
+          "arcticbee": "lolipop",
+          "spider": "fireblade",
+          "phoenix": "fireblade",
+          "jr": "fireblade",
+          "greenjr": "fireblade",
+          "iceroamer": "fireblade",
+          "scorpion": "fireblade",
+          "bigbird": "fireblade",
+          "crabx": "fireblade",
+          "booboo": "fireblade",
+          "stoneworm": "fireblade",
+          "mvampire": "fireblade",
+          "fireroamer": "fireblade",
+          "mole": "fireblade",
+          "wolfie": "fireblade",
+          "ghost": "fireblade",
+          "boar": "lolipop",
+          "porcupine": "lolipop",
+          "cgoo": "lolipop",
+          "prat": "lolipop",
+          "mummy": "lolipop",
+          "nerfedmummy": "lolipop",
+          "poisio": "lolipop",
+          "goobrawl": "lolipop",
+          "crabxx": "fireblade",
+          "franky": "fireblade",
+          "icegolem": "fireblade",
+          "snowman": "fireblade",
+          "dragold": "fireblade",
+          "grinch": "fireblade",
+          "wabbit": "fireblade",
+          "pinkgoo": "lolipop",
+          "mrpumpkin": "fireblade",
+          "mrgreen": "fireblade",
+          "slenderman": "fireblade",
+          "tiger": "fireblade"
+        }
+      },
+      "RETREAT_MS": 600000,
+      "PRIEST_LEASH": 260,
+      "PRIEST_COVER": 420,
+      "HUNT_WIPE_MAX": 3,
+      "STUCK_MS": 8000,
+      "DAISY": {
+        "map": "main",
+        "x": 126,
+        "y": -413
+      },
+      "CITY": {
+        "map": "main",
+        "x": 0,
+        "y": 0
+      },
+      "CITY_POT": 200,
+      "DUMP_ESIZE": 4,
+      "MLUCK_REFRESH_MS": 600000,
+      "CITY_WAIT_MS": 180000
+    },
+    "variables": {
+      "HUNT_ALLOW": {
+        "goo": 1,
+        "bee": 1,
+        "crab": 1,
+        "frog": 1,
+        "squig": 1,
+        "squigtoad": 1,
+        "armadillo": 1,
+        "snake": 1,
+        "osnake": 1,
+        "tortoise": 1,
+        "croc": 1,
+        "rat": 1,
+        "spider": 1,
+        "bat": 1,
+        "jr": 1,
+        "greenjr": 1,
+        "minimush": 1,
+        "arcticbee": 1,
+        "iceroamer": 1,
+        "scorpion": 1,
+        "crabx": 1,
+        "bigbird": 1,
+        "phoenix": 1,
+        "poisio": 1,
+        "stoneworm": 1,
+        "mvampire": 1,
+        "porcupine": 1,
+        "cgoo": 1,
+        "prat": 1,
+        "boar": 1,
+        "mole": 1,
+        "wolfie": 1,
+        "ghost": 1,
+        "booboo": 1,
+        "fireroamer": 1,
+        "mummy": 1,
+        "nerfedmummy": 1
+      },
+      "BOSS_CHECKS": [
+        {
+          "boss": "jr",
+          "everyMinutes": 240
+        },
+        {
+          "boss": "greenjr",
+          "everyMinutes": 240
+        }
+      ]
+    }
+  },
+  {
+    "id": "eadrosell-merchant-v2",
+    "filename": "eadrosell-merchant-v2.js",
+    "label": "Eadrosell · Merchant · V2",
+    "ctype": "merchant",
+    "kind": "farm",
+    "bytes": 130594,
+    "hash": "5daaaf0c88bf7c62611bb67a40868d2343f2beb835edaeac312ec73dc6950455",
+    "config": {
+      "NAME": "EadroSell",
+      "FARMERS": [
+        "Eadroma",
+        "Droma",
+        "Aedroma"
+      ],
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "RANGER": "Droma",
+      "TEAM_SLOTS": {
+        "Eadroma": "CC_Eadroma",
+        "Aedroma": "CC_Aedroma",
+        "Droma": "CC_Droma"
+      },
+      "TEAM_SUPERVISOR_ENABLED": true,
+      "TEAM_START_INTERVAL_MS": 8000,
+      "TEAM_START_RETRY_MS": 60000,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_STOCK": 3000,
+      "MPOT_STOCK": 3000,
+      "POT_GIVE": 1000,
+      "MPOT_GIVE": 1000,
+      "POT_THRESHOLD_H": 800,
+      "POT_THRESHOLD_M": 800,
+      "SELF_HP_RATIO": 0.7,
+      "SELF_MP_RATIO": 0.65,
+      "SELF_HPOT_RESERVE": 100,
+      "SELF_MPOT_RESERVE": 150,
+      "POT_STOCK_LOW_H": 1200,
+      "POT_STOCK_LOW_M": 1200,
+      "RESTOCK_COOLDOWN_MS": 60000,
+      "SCROLL_STOCK": {
+        "scroll0": 50,
+        "cscroll0": 8,
+        "cscroll1": 2
+      },
+      "BAG_DUMP": 10,
+      "EXCHANGE_ITEMS": [
+        "anniversarygift",
+        "gem0",
+        "gift0",
+        "candy1",
+        "candy0",
+        "mistletoe",
+        "candy1v2",
+        "candy0v2",
+        "candy1v3",
+        "candy0v3"
+      ],
+      "EXCHANGE_MIN": {
+        "anniversarygift": 50
+      },
+      "GABRIEL_SELL": [
+        "ringsj",
+        "seashell",
+        "beewings",
+        "gslime",
+        "hpbelt",
+        "hpamulet",
+        "rattail",
+        "spores",
+        "reefglass",
+        "crabclaw",
+        "dstones",
+        "helmet",
+        "coat",
+        "gloves",
+        "pants",
+        "shoes",
+        "helmet1",
+        "coat1",
+        "gloves1",
+        "pants1",
+        "shoes1",
+        "poker",
+        "confetti",
+        "stinger",
+        "mushroomstaff",
+        "slimestaff",
+        "partyhat",
+        "wcap",
+        "wbreeches",
+        "wgloves",
+        "wshoes",
+        "pumpkinspice",
+        "smoke",
+        "phelmet",
+        "xmasshoes",
+        "merry"
+      ],
+      "NEVER_UPGRADE": {
+        "blade": 1,
+        "fireblade": 1,
+        "wcap": 1,
+        "wbreeches": 1,
+        "ecape": 1,
+        "quiver": 1,
+        "alloyquiver": 1,
+        "ololipop": 1,
+        "glolipop": 1
+      },
+      "UPGRADE_GOLD_MIN": 0,
+      "BAG_BANK_THRESHOLD": 10,
+      "BANK_COOLDOWN_MS": 45000,
+      "BANK_ALWAYS": [
+        "gem0",
+        "gem1",
+        "gem2",
+        "gem3",
+        "gem4",
+        "candy0",
+        "candy1",
+        "mistletoe",
+        "vorb",
+        "offering",
+        "goldenpower",
+        "seashell",
+        "frozenstone",
+        "platinumnugget",
+        "goldnugget",
+        "armorbox",
+        "weaponbox",
+        "xbox",
+        "essenceofgreed",
+        "essenceoflife",
+        "essenceoffire",
+        "essenceofnature"
+      ],
+      "BANK_NEVER": {
+        "hpot0": 1,
+        "hpot1": 1,
+        "mpot0": 1,
+        "mpot1": 1,
+        "scroll0": 1,
+        "scroll1": 1,
+        "cscroll0": 1,
+        "cscroll1": 1,
+        "stand0": 1,
+        "computer": 1,
+        "tracker": 1,
+        "marketparcel": 1,
+        "monstertoken": 1,
+        "feather0": 1,
+        "wingedboots": 1
+      },
+      "MUX_MS": 8000,
+      "REACH": 300,
+      "HOME": {
+        "map": "main",
+        "x": -100,
+        "y": -20
+      }
+    },
+    "variables": {}
+  },
+  {
+    "id": "eadrosell-merchant",
+    "filename": "eadrosell-merchant.js",
+    "label": "Eadrosell · Merchant",
+    "ctype": "merchant",
+    "kind": "farm",
+    "bytes": 154688,
+    "hash": "a0e3c6a363bad0607dc731c19b6d2cd662a5411d00d37cb743565cf3d6f89f95",
+    "config": {
+      "NAME": "EadroSell",
+      "FARMERS": [
+        "Eadroma",
+        "Droma",
+        "Aedroma"
+      ],
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "MAGE": "Droma",
+      "TEAM_SLOTS": {
+        "Eadroma": "CH_ESdwg4snAtoFZXRzGzAX2q7zMMfVZ",
+        "Aedroma": "CH_EiXQ8dHoXlqTOtyTH5IzbbafFAif9",
+        "Droma": "CH_TWNS1mcRp22XMAehvezNnJTPc2VBB"
+      },
+      "REACH": 300,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_STOCK": 3000,
+      "MPOT_STOCK": 3000,
+      "POT_GIVE": 1000,
+      "MPOT_GIVE": 1000,
+      "POT_NEED": 1000,
+      "MPOT_NEED": 1000,
+      "MPOT_NEED_CASTER": 1000,
+      "POT_VISIT": 80,
+      "MPOT_VISIT": 80,
+      "MPOT_VISIT_CASTER": 120,
+      "DUMP_VISIT_MIN": 8,
+      "GOLD_MULE_SKIP": 8000,
+      "SCROLL_KEEP": 50,
+      "CSCROLL_KEEP": 8,
+      "CSCROLL1_KEEP": 2,
+      "ACCESSORY_GOAL": 3,
+      "SCROLL1_KEEP": 8,
+      "SCROLL2_KEEP": 4,
+      "INTSCROLL_GIVE": 20,
+      "ELIXIRINT_GIVE": 5,
+      "STRSCROLL_KEEP": 40,
+      "STRSCROLL_GIVE": 20,
+      "SCROLL1_GIVE": 10,
+      "QUIVER_MAX": 7,
+      "UPGRADE_MAX": 7,
+      "GOLD_FARMER_KEEP": 2500,
+      "CRAFT_GOLD": 20000,
+      "MUX_MS": 8000,
+      "BAG_MIN": 3,
+      "BAG_DUMP": 10,
+      "POT_ASK_MS": 120000,
+      "KIT_REPORT_MS": 120000,
+      "BOUNCE_MS": 3600000,
+      "SAFE_STAND": 220,
+      "SAFE_STAND_HOT": 300,
+      "DANGER": 140,
+      "FERRY_TIMEOUT_MS": 240000,
+      "DWELL_MIN_MS": 20000,
+      "TOWN_JOB_DWELL_MS": 180000,
+      "HOT_DWELL_MS": 30000,
+      "IDLE_REPORT_MS": 60000,
+      "XP_GOLD_KEEP": 40000,
+      "XP_BUY_Q": 20,
+      "TOKEN": "monstertoken",
+      "TOKEN_PRICE": 500000,
+      "GABRIEL_SELL": [
+        "ringsj",
+        "seashell",
+        "beewings",
+        "gslime",
+        "hpbelt",
+        "hpamulet",
+        "rattail",
+        "spores",
+        "reefglass",
+        "crabclaw",
+        "dstones",
+        "helmet",
+        "coat",
+        "gloves",
+        "pants",
+        "shoes",
+        "helmet1",
+        "coat1",
+        "gloves1",
+        "pants1",
+        "shoes1",
+        "poker",
+        "confetti",
+        "stinger",
+        "mushroomstaff",
+        "slimestaff",
+        "partyhat",
+        "wcap",
+        "wbreeches",
+        "pumpkinspice",
+        "smoke",
+        "phelmet",
+        "xmasshoes",
+        "merry"
+      ],
+      "EXCHANGE_ITEMS": [
+        "anniversarygift",
+        "gem0",
+        "gift0",
+        "candy1",
+        "candy0",
+        "mistletoe",
+        "candy1v2",
+        "candy0v2",
+        "candy1v3",
+        "candy0v3"
+      ],
+      "EXCHANGE_MIN": {
+        "anniversarygift": 50
+      },
+      "PONTY_MS": 3600000,
+      "PONTY_GOLD_KEEP": 200000,
+      "PONTY_ITEMS": [
+        "ololipop",
+        "glolipop"
+      ],
+      "PONTY_HOME": {
+        "region": "EU",
+        "name": "III"
+      },
+      "UPGRADE_GOLD_MIN": 0
+    },
+    "variables": {
+      "WANDERER_SLOT": {
+        "wcap": "helmet",
+        "wattire": "chest",
+        "wgloves": "gloves",
+        "wbreeches": "pants",
+        "wshoes": "shoes"
+      }
+    }
+  },
+  {
+    "id": "stand-sell",
+    "filename": "stand-sell.js",
+    "label": "Stand · Sell",
+    "ctype": "utility",
+    "kind": "utility",
+    "bytes": 3699,
+    "hash": "6e4626756ec0cb91e70e391defaee0cac12610b28a3613b2ac8522f115130c6d",
+    "config": {
+      "MERCHANT": "MuaBan",
+      "ITEM": "feather0",
+      "LEVEL": null,
+      "MIN_PRICE": 0,
+      "Q": 0,
+      "RANGE": 600
+    },
+    "variables": {}
+  },
+  {
+    "id": "tonerre-mage",
+    "filename": "tonerre-mage.js",
+    "label": "Tonerre · Mage",
+    "ctype": "mage",
+    "kind": "farm",
+    "bytes": 87190,
+    "hash": "2951ae0f49cde7c0acafb417173c87a05d753268fa26e64659d086fd55f69ff0",
+    "config": {
+      "KITE_ENABLED": true,
+      "KITE_LEASH": 240,
+      "KITE_PANIC_RATIO": 0.45,
+      "NAME": "Tonerre",
+      "WARRIOR": "Eadroma",
+      "PRIEST": "Aedroma",
+      "MERCHANT": "EadroSell",
+      "GIVE_WEAPONS": [
+        "firestaff",
+        "staff"
+      ],
+      "GIVE_ARMOR": [
+        "helmet",
+        "shoes",
+        "coat",
+        "gloves",
+        "pants"
+      ],
+      "KEEP_ITEMS": [
+        "ololipop",
+        "glolipop",
+        "vstaff"
+      ],
+      "FOLLOW_RANGE": 140,
+      "MIN_RANGE": 85,
+      "MELEE_SAFE": 55,
+      "ANCHOR": 90,
+      "ANCHOR_SLACK": 32,
+      "ENERGIZE_PRIEST_MP_RATIO": 0.55,
+      "POT_HP_RATIO": 0.25,
+      "POT_MP_RATIO": 0.2,
+      "POT_MIN": 40,
+      "POT_ASK_HP": 80,
+      "POT_ASK_MP": 120,
+      "HPOT": "hpot1",
+      "MPOT": "mpot1",
+      "POT_BUY": 200,
+      "POT_CRITICAL": 8,
+      "POT_STARVE_MS": 45000,
+      "MLUCK_REFRESH_MS": 600000,
+      "GOLD_RESERVE": 400,
+      "GOLD_KEEP": 800,
+      "CITY": {
+        "map": "main",
+        "x": 0,
+        "y": 0
+      },
+      "CITY_WAIT_MS": 180000,
+      "GEAR_MS": 1500,
+      "UPGRADE_MAX_LEVEL": 7,
+      "UPGRADE_MAX_TRIES": 20,
+      "UPGRADE_TRIP_GOLD": 15000,
+      "SCROLL_KEEP": 6,
+      "CSCROLL_KEEP": 4
+    },
+    "variables": {
+      "JOIN_EVENTS": [
+        "crabxx",
+        "goobrawl",
+        "franky",
+        "icegolem",
+        "abtesting"
+      ]
+    }
+  }
+]

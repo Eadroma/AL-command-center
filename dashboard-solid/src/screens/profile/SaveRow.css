@@ -1,0 +1,4 @@
+.save-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; background: var(--slot); border-left: 4px solid var(--gold); }
+.save-row p { flex: 1 1 100%; margin: 0; }
+.save-row button { min-height: 40px; }
+.save-row-note { color: var(--text-dim); font-size: .85rem; }

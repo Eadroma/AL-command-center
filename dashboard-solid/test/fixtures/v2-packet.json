@@ -1,0 +1,22 @@
+{
+  "ticket": "REPLACED_BY_TEST",
+  "character": "Hero",
+  "sequence": 1793025456907,
+  "commandProtocol": 2,
+  "commandReceipts": [],
+  "stats": {
+    "maxXp": 620000000, "cc": 43.5, "attack": 48, "frequency": 0.72, "speed": 93, "range": 86,
+    "skin": "marmor12b", "hp": 6222, "max_hp": 6715, "mp": 2169, "max_mp": 3315, "gold": 1000000,
+    "xp": 595209085, "level": 74, "map": "main", "x": -120, "y": 40, "target": "1345944",
+    "server": "EU Europas III", "armor": 211, "resistance": 267, "evasion": 14,
+    "goldMultiplier": 1.005, "luckMultiplier": 1.12, "xpMultiplier": 1
+  },
+  "intent": { "state": "Hunting bigbird", "since": 1793025400000, "updatedAt": 1793025456000, "map": "main", "target": "bigbird", "destination": null, "blockedBy": null },
+  "activeEffects": [{ "id": "mluck", "ms": 3600000 }],
+  "inventory": [{ "slot": 0, "name": "hpot1", "level": 0, "quantity": 120, "locked": false, "bound": false, "upgradeable": false, "sellable": true }],
+  "equipment": [{ "slot": "mainhand", "name": "blade", "level": 7, "quantity": 1 }],
+  "combat": { "startedAt": 1793020000000, "damageDealt": 120000, "damageTakenPhysical": 5000, "damageTakenMagical": 200, "healing": 0, "manaRestored": 0, "kills": 42, "deaths": 0, "attacks": 300, "potions": 12, "movingMs": 60000, "combatMs": 240000, "healerCoverageMs": 200000, "kiteMoves": 3 },
+  "network": { "pingMs": 42, "socketConnected": true },
+  "failures": [],
+  "logs": ["Command Center: script initialization completed."]
+}

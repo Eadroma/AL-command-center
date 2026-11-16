@@ -1,0 +1,7 @@
+.meter { display: grid; grid-template-columns: 3.5em minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: .875rem; }
+.meter-label { color: var(--text-dim); }
+.meter-track { height: 10px; background: var(--ground); border: 1px solid var(--edge); overflow: hidden; }
+.meter-fill { display: block; height: 100%; transition: width 300ms ease-out; }
+.meter-hp .meter-fill { background: var(--hp); }
+.meter-mp .meter-fill { background: var(--mp); }
+.meter-value { font-variant-numeric: tabular-nums; color: var(--text-dim); min-width: 8ch; text-align: right; }

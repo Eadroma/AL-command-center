@@ -5,6 +5,10 @@
  */
 var StyleLoadout = (function () {
 	function active_mtype() {
+		// Inside the crypt the whole run wears the crypt style (farming.style maps vbat/a3/a7 to it).
+		// A retreat waits 60 s at the door: keep the crypt gear instead of swapping out and back.
+		var crypt = typeof CryptRun !== "undefined" && CryptRun.monster && (CryptRun.inside() || (CryptRun.snapshot() || {}).phase === "retreat");
+		if (crypt) return CryptRun.monster();
 		if (typeof combat_mtype === "function") return combat_mtype();
 		if (typeof EventRouter !== "undefined" && EventRouter.activeMonster) {
 			var eventMonster = EventRouter.activeMonster();
@@ -24,10 +28,20 @@ var StyleLoadout = (function () {
 		if (s && ((CONFIG.STYLE_LOADOUTS || {})[s] || s === "aoe" || s === "mono" || s === "tank")) return s;
 		return "aoe";
 	}
+	// The priest tanks: against magical damage the Lantern's resistance replaces the offhand.
+	// shortcut: hardcoded priest/lantern+4, move into the profile when another class or item needs it.
+	var MAGIC_OFFHAND = { slot: "offhand", item: "lantern", minLevel: 4 };
+	function magic_rule(mtype) {
+		var m = mtype && typeof G !== "undefined" && G.monsters && G.monsters[mtype];
+		return typeof character !== "undefined" && character.ctype === "priest" && m && m.damage_type === "magical" ? MAGIC_OFFHAND : null;
+	}
 	function current(mtype) {
+		if (mtype == null) mtype = active_mtype();
 		var all = (typeof CONFIG !== "undefined" && CONFIG.STYLE_LOADOUTS) || {};
 		var lo = all[pack_mode(mtype)] || {};
-		return { gear: lo.gear || [], skills: lo.skills || [] };
+		var gear = lo.gear || [];
+		if (magic_rule(mtype)) gear = gear.filter(function (g) { return g.slot !== "offhand"; }).concat([MAGIC_OFFHAND]);
+		return { gear: gear, skills: lo.skills || [] };
 	}
 	function base_mode(mtype) {
 		var mode = pack_mode(mtype);
@@ -46,7 +60,7 @@ var StyleLoadout = (function () {
 		if (!skills.length) {
 			var mode = base_mode(mtype);
 			if (mode === "mono" || mode === "tank") {
-				if (skill === "3shot" || skill === "5shot" || skill === "cleave" || skill === "stomp" || skill === "agitate" || skill === "cburst") { if (typeof RuntimePolicy !== "undefined") RuntimePolicy.skillBlocked(skill); return false; }
+				if (skill === "3shot" || skill === "5shot" || skill === "cleave" || skill === "stomp" || skill === "agitate" || skill === "cburst" || skill === "fanofknives") { if (typeof RuntimePolicy !== "undefined") RuntimePolicy.skillBlocked(skill); return false; }
 			}
 			return true;
 		}
@@ -59,7 +73,7 @@ var StyleLoadout = (function () {
 	}
 	function is_aoe(mtype) {
 		if (current(mtype).skills.length) {
-			return allows("3shot", mtype) || allows("5shot", mtype) || allows("cleave", mtype) || allows("cburst", mtype);
+			return allows("3shot", mtype) || allows("5shot", mtype) || allows("cleave", mtype) || allows("cburst", mtype) || allows("fanofknives", mtype);
 		}
 		return base_mode(mtype) === "aoe";
 	}
